@@ -1,0 +1,21 @@
+{
+    "preset": "react-native",
+    "collectCoverage": true,
+    "moduleDirectories": [
+            "node_modules",
+            "src"
+    ],
+    "transform": {
+            "^.+\\.js$": "C:/Users/Anik Chowdhury/Desktop/ReactNativeProject/FundooNotes/node_modules/react-native/jest/preprocessor.js"
+    },
+    "setupFiles": [
+            "C:/Users/Anik Chowdhury/Desktop/ReactNativeProject/FundooNotes/jest/setup.js"
+    ],
+    "transformIgnorePatterns": [
+            "node_modules/(?!(jest-)?react-native)"
+    ],
+    "coveragePathIgnorePatterns": [
+            "/node_modules/",
+            "/jest"
+    ]
+}
