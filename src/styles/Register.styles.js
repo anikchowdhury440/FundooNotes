@@ -43,6 +43,7 @@ const RegisterStyle = StyleSheet.create({
     textinput_style : {
         paddingLeft : '5%',
         paddingRight : '5%',
+        width : '100%'
     },
 
     icon_style : {

@@ -58,19 +58,23 @@ export default class Login extends Component {
         }
     }
 
-    handleSecureTextPassword = async () => {
-        const {onPress} = this.props;
+    handleSecureTextPassword = () => {
+        //const {onPress} = this.props
         if(this.state.secureTextPassword == true) {
-            await this.setState({
+            this.setState({
                 secureTextPassword : false
             })
         }
         else {
-            await this.setState({
+            this.setState({
                 secureTextPassword : true
             })
         }
-        onPress();
+        //onPress();
+    }
+
+    handleSignUpButton = () => {
+        this.props.navigation.navigate("Register")
     }
 
     render() {
@@ -130,7 +134,7 @@ export default class Login extends Component {
                         </View>
                         <View style = {LoginStyle.signup_block}>
                             <Text>Don't have an account? </Text>
-                            <TouchableOpacity onPress = {() => this.props.navigation.navigate("Register")}>
+                            <TouchableOpacity onPress = {this.handleSignUpButton}>
                                 <Text style = {LoginStyle.signup_text}>SIGN UP</Text>
                             </TouchableOpacity>
                         </View>

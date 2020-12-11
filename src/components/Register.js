@@ -124,7 +124,6 @@ export default class Register extends Component {
                 confirmPasswordValidation : false
             })
         }
-        console.log(this.state.confirmPasswordValidation)
     }
 
     handleSecureTextPassword = async () => {
