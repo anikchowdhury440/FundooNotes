@@ -2,9 +2,9 @@ import { StyleSheet } from 'react-native';
 
 const LoginStyle = StyleSheet.create({
     container : {
-        flex : 1,
-        justifyContent: 'center',
-        alignItems : 'center'
+        marginTop : 100,
+        alignItems : "center",
+        marginBottom : 100
     },
 
     signin_container : {
@@ -29,15 +29,53 @@ const LoginStyle = StyleSheet.create({
         fontSize : 20
     },
 
+    textinput_view_style : {
+        borderWidth : 1, 
+        borderColor : '#D3D3D3', 
+        borderRadius : 10,
+        alignSelf : "center",
+        width : '80%',
+        marginLeft : '10%',
+        marginRight : '10%',
+        flexDirection : 'row'
+    },
+
     textinput_style : {
-        borderWidth : 1,
-        marginBottom : 20,
-        marginLeft : 25,
+        paddingLeft : '5%',
+        paddingRight : '5%',
+    },
+
+    icon_style : {
+        height : 35,
+        width : 35,
+        marginTop : 5,
+        alignSelf : 'flex-end',
+    },
+
+    icon : {
+        width : '13%'
+    },
+
+    password_textinput_style : {
+        width : '85%'
+    },
+
+    text_error_style : {
+        alignSelf : 'flex-end',
         marginRight : 25,
-        borderColor : '#D3D3D3',
-        paddingLeft : 10,
-        paddingRight : 10,
-        borderRadius : 10
+        marginBottom : 10,
+        color : 'red'
+    },
+
+    forgot_password_style : {
+        alignSelf : 'flex-end',
+        marginBottom : 20,
+        marginRight : 25
+    },
+
+    forgot_password_text_style : {
+        color : "#339EFF",
+        fontWeight : 'bold'
     },
 
     signin_button_styles : {
