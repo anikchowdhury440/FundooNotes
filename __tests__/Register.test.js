@@ -114,4 +114,60 @@ describe('test Register', () => {
         component.instance().validateConfirmPassword();
         expect(component.instance().state.confirmPasswordValidation).toBe(false)
     })
+
+    it('test onPress event of eye icon of password textinput called it will change the secureTextPassword State', () => {
+        const onPressEvent = jest.fn();
+        const component = shallow(<Register onPress = {onPressEvent}/>)
+        const instance = component.instance();
+        expect(instance.state.secureTextPassword).toBe(true);
+        instance.handleSecureTextPassword();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(onPressEvent).toHaveBeenCalledTimes(1);
+        expect(instance.state.secureTextPassword).toBe(false);
+        instance.handleSecureTextPassword();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(onPressEvent).toHaveBeenCalledTimes(2);
+        expect(instance.state.secureTextPassword).toBe(true);
+    })
+
+    it('test onPress event of eye icon of confirm password textinput called it will change the secureTextPassword State', () => {
+        const onPressEvent = jest.fn();
+        const component = shallow(<Register onPress = {onPressEvent}/>)
+        const instance = component.instance();
+        expect(instance.state.secureTextConfirmPassword).toBe(true);
+        instance.handleSecureTextConfirmPassword();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(onPressEvent).toHaveBeenCalledTimes(1);
+        expect(instance.state.secureTextConfirmPassword).toBe(false);
+        instance.handleSecureTextConfirmPassword();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(onPressEvent).toHaveBeenCalledTimes(2);
+        expect(instance.state.secureTextConfirmPassword).toBe(true);
+    })
+
+    it('test onPress event of sign in button it will navigate to sign in screen', () => {
+        const navigation = { navigate : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<Register onPress = {onPressEvent} navigation = {navigation}/>)
+        const instance = component.instance();
+        instance.handleSignInButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(navigation.navigate).toBeCalledWith("Login");
+    })
+
+    it('test onPress event of sign up button it will store credential in keychain', () => {
+        const navigation = { navigate : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<Register onPress = {onPressEvent} navigation = {navigation}/>)
+        const instance = component.instance();
+        instance.state.firstName = "Anik";
+        instance.state.lastName = "Chowdhury"
+        instance.state.email = "anik@gmail.com"
+        instance.state.password = "Anik#1234"
+        instance.state.confirmPassword = "Anik#1234"
+        instance.handleSignUpButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(navigation.navigate).toBeCalledWith("Login");
+        expect(instance.setGenericPassword().toBeCalledWith("anik@gmail.com","Anik#1234"))
+    })
 })

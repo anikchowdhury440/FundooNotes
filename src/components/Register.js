@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import RegisterStyle from '../styles/Register.styles';
+import * as KeyChain from 'react-native-keychain'
 
 export default class Register extends Component {
     constructor(props) {
@@ -72,7 +73,7 @@ export default class Register extends Component {
     }
 
     validateLastName = () => {
-        const nameRegex = new RegExp("^[A-Z][a-z]{1,}$")
+        const nameRegex = new RegExp("^[A-Z][a-z]{2,}$")
         if(nameRegex.test(this.state.lastName)) {
             this.setState({
                 lastNameValidation : true
@@ -126,30 +127,64 @@ export default class Register extends Component {
         }
     }
 
-    handleSecureTextPassword = async () => {
+    handleSecureTextPassword = () => {
+        const {onPress} = this.props
         if(this.state.secureTextPassword == true) {
-            await this.setState({
+            this.setState({
                 secureTextPassword : false
             })
         }
         else {
-            await this.setState({
+            this.setState({
                 secureTextPassword : true
             })
         }
+        onPress();
     }
 
-    handleSecureTextConfirmPassword = async () => {
+    handleSecureTextConfirmPassword = () => {
+        const {onPress} = this.props
         if(this.state.secureTextConfirmPassword == true) {
-            await this.setState({
+            this.setState({
                 secureTextConfirmPassword : false
             })
         }
         else {
-            await this.setState({
+            this.setState({
                 secureTextConfirmPassword : true
             })
         }
+        onPress();
+    }
+
+    handleSignInButton = () => {
+        const {onPress} = this.props;
+        this.props.navigation.navigate('Login')
+        onPress();
+    }
+
+    handleSignUpButton = () => {
+        const {onPress} = this.props;
+        if(this.state.firstName != '' && 
+            this.state.lastName != '' &&
+            this.state.email != '' &&
+            this.state.password != '' &&
+            this.state.confirmPassword != '' &&
+            this.state.firstNameValidation == true &&
+            this.state.lastNameValidation == true &&
+            this.state.emailValidation == true &&
+            this.state.passwordValidation == true &&
+            this.state.confirmPasswordValidation == true ) {
+                this.storeCredential();
+                this.props.navigation.navigate("Login");
+        }
+        onPress();
+    }
+
+    storeCredential = async () => {
+        const username = this.state.email
+        const password = this.state.password;
+        await KeyChain.setGenericPassword(username, password)
     }
 
     render() {
@@ -168,7 +203,7 @@ export default class Register extends Component {
                         </View>
                         <View>
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.firstNameValidation || this.state.firstName == '') ? null : 'Invalid First Name..'}
+                                {(this.state.firstName == '') ? 'required..' : (this.state.firstNameValidation) ? null : 'Invalid First Name..'}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
@@ -179,7 +214,7 @@ export default class Register extends Component {
                         </View>
                         <View>
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.lastNameValidation || this.state.lastName == '') ? null : 'Invalid Last Name..'}
+                                {(this.state.lastName == '') ? 'required..' : (this.state.lastNameValidation) ? null : 'Invalid Last Name..'}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
@@ -190,7 +225,7 @@ export default class Register extends Component {
                         </View>
                         <View>    
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.emailValidation || this.state.email == '') ? null : 'Invalid Email..'}
+                                {(this.state.email == '') ? 'required..' : (this.state.emailValidation) ? null : 'Invalid Email..'}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
@@ -203,20 +238,20 @@ export default class Register extends Component {
                                     <TouchableOpacity 
                                         style = {RegisterStyle.icon}
                                         onPress = {this.handleSecureTextPassword}>
-                                            <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye-off.png')}/>
+                                            <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye.png')}/>
                                     </TouchableOpacity> 
                                     : 
                                     <TouchableOpacity 
                                         style = {RegisterStyle.icon}
                                         onPress = {this.handleSecureTextPassword}>
-                                            <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye.png')}/>
+                                            <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye-off.png')}/>
                                     </TouchableOpacity>  
                                 }
                             
                         </View>
                         <View>    
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.passwordValidation || this.state.password == '') ? null : 'Weak Password..'}
+                                {(this.state.password == '') ? 'required..' : (this.state.passwordValidation) ? null : 'Invalid Password..'}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
@@ -229,29 +264,31 @@ export default class Register extends Component {
                                 <TouchableOpacity 
                                     style = {RegisterStyle.icon}
                                     onPress = {this.handleSecureTextConfirmPassword}>
-                                        <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye-off.png')}/>
+                                        <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye.png')}/>
                                 </TouchableOpacity> 
                                 : 
                                 <TouchableOpacity 
                                     style = {RegisterStyle.icon}
                                     onPress = {this.handleSecureTextConfirmPassword}>
-                                    <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye.png')}/>
+                                    <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye-off.png')}/>
                                 </TouchableOpacity>  
                             }
                         </View>
                         <View>    
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.confirmPasswordValidation || this.state.confirmPassword == '') ? null : 'Password not matching..'}
+                                {(this.state.confirmPassword == '') ? 'required..' : (this.state.confirmPasswordValidation) ? null : 'Password does not matching'}
                             </Text>
                         </View>
                         <View>
-                            <TouchableOpacity style = {RegisterStyle.signup_button_styles}>    
-                                <Text style = {RegisterStyle.signup_button_text}>SIGN UP</Text>
+                            <TouchableOpacity 
+                                style = {RegisterStyle.signup_button_styles}
+                                onPress = {this.handleSignUpButton}>    
+                                    <Text style = {RegisterStyle.signup_button_text}>SIGN UP</Text>
                             </TouchableOpacity> 
                         </View>
                         <View style = {RegisterStyle.signin_block}>
                             <Text>Already have an account? </Text>
-                            <TouchableOpacity onPress = {() => this.props.navigation.navigate('Login')}>
+                            <TouchableOpacity onPress = {this.handleSignInButton}>
                                 <Text style = {RegisterStyle.signin_text}>SIGN IN</Text>
                             </TouchableOpacity>
                         </View>

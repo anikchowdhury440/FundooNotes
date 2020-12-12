@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Image } from 'react-native';
+import * as KeyChain from 'react-native-keychain'
 
 import LoginStyle from '../styles/Login.styles'
 
@@ -74,7 +75,29 @@ export default class Login extends Component {
     }
 
     handleSignUpButton = () => {
+        //const {onPress} = this.props
         this.props.navigation.navigate("Register")
+        //onPress();
+    }
+
+    handleSignInButton = async () => {
+        try{
+            const credential = await KeyChain.getGenericPassword();
+            if(credential) {
+                if(credential.username == this.state.email && credential.password == this.state.password) {
+                    console.log('Valid Credential');
+                }
+                else {
+                    console.log('Invalid Credential');
+                }
+            }
+            else {
+                console.log('no credential');
+            }
+        }
+        catch(error) {
+            console.log('Error', error);
+        }
     }
 
     render() {
@@ -93,7 +116,7 @@ export default class Login extends Component {
                         </View>
                         <View>
                             <Text style = {LoginStyle.text_error_style}>
-                                {(this.state.emailValidation || this.state.email == '') ? null : 'Invalid Email..'}
+                                {(this.state.email == '') ? 'required..' : (this.state.emailValidation) ? null : 'Invalid Email..'}
                             </Text>
                         </View>
                         <View style = {LoginStyle.textinput_view_style}>
@@ -106,20 +129,20 @@ export default class Login extends Component {
                                 <TouchableOpacity 
                                     style = {LoginStyle.icon}
                                     onPress = {this.handleSecureTextPassword}>
-                                        <Image style = {LoginStyle.icon_style} source = {require('../assets/eye-off.png')}/>
+                                        <Image style = {LoginStyle.icon_style} source = {require('../assets/eye.png')}/>
                                 </TouchableOpacity> 
                                 : 
                                  <TouchableOpacity 
                                     style = {LoginStyle.icon}
                                     onPress = {this.handleSecureTextPassword}>
-                                        <Image style = {LoginStyle.icon_style} source = {require('../assets/eye.png')}/>
+                                        <Image style = {LoginStyle.icon_style} source = {require('../assets/eye-off.png')}/>
                                  </TouchableOpacity>  
                             }
                             
                         </View>
                         <View>
                             <Text style = {LoginStyle.text_error_style}>
-                                {(this.state.passwordValidation || this.state.password == '') ? null : 'Weak Password..'}
+                                {(this.state.password == '') ? 'required..' : (this.state.passwordValidation) ? null : 'Invalid Password..'}
                             </Text>
                         </View>
                         <View>
@@ -128,7 +151,9 @@ export default class Login extends Component {
                             </TouchableOpacity>
                         </View>
                         <View>
-                            <TouchableOpacity style = {LoginStyle.signin_button_styles}>    
+                            <TouchableOpacity 
+                                style = {LoginStyle.signin_button_styles}
+                                onPress = {this.handleSignInButton}>    
                                 <Text style = {LoginStyle.signin_button_text}>SIGN IN</Text>
                             </TouchableOpacity> 
                         </View>

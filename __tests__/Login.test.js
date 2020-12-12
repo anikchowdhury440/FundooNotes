@@ -1,5 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
+import renderer from 'react-test-renderer';
 
 import Login from '../src/components/Login'
 
@@ -51,17 +52,28 @@ describe('test Login', () => {
         expect(component.instance().state.passwordValidation).toBe(false)
     })
 
-    // it('test onPress event of eye icon called it will change the secureTextPassword State', () => {
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<Login onPress = {onPressEvent}/>)
-    //     expect(component.instance().state.secureTextPassword).toBe(true);
-    //     component.instance().handleSecureTextPassword();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(onPressEvent).toHaveBeenCalledTimes(1);
-    //     expect(component.instance().state.secureTextPassword).toBe(false);
-    //     component.instance().handleSecureTextPassword();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(onPressEvent).toHaveBeenCalledTimes(2);
-    //     expect(component.instance().state.secureTextPassword).toBe(true);
-    // })
+    it('test onPress event of eye icon of password textinput called it will change the secureTextPassword State', () => {
+        const onPressEvent = jest.fn();
+        const component = shallow(<Login onPress = {onPressEvent}/>)
+        const instance = component.instance();
+        expect(instance.state.secureTextPassword).toBe(true);
+        instance.handleSecureTextPassword();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(onPressEvent).toHaveBeenCalledTimes(1);
+        expect(instance.state.secureTextPassword).toBe(false);
+        instance.handleSecureTextPassword();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(onPressEvent).toHaveBeenCalledTimes(2);
+        expect(instance.state.secureTextPassword).toBe(true);
+    })
+
+    it('test onPress event of sign up button it will navigate to sign up screen', () => {
+        const navigation = { navigate : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation}/>)
+        const instance = component.instance();
+        instance.handleSignUpButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(navigation.navigate).toBeCalledWith("Register");
+    })
 })
