@@ -1,8 +1,21 @@
 import { StyleSheet } from 'react-native';
 
 const RegisterStyle = StyleSheet.create({
+    image_view_style: {
+        alignSelf : "center", 
+        marginTop : 20, 
+        borderWidth : 2, 
+        borderRadius : 70
+    },
+
+    image_style: {
+        width : 80, 
+        height : 80, 
+        margin : 20
+    },
+
     container : {
-        marginTop : 50,
+        marginTop : 20,
         alignItems : "center",
         marginBottom : 100
     },
@@ -31,7 +44,7 @@ const RegisterStyle = StyleSheet.create({
 
     textinput_view_style : {
         borderWidth : 1, 
-        borderColor : '#D3D3D3', 
+        borderColor : '#808080', 
         borderRadius : 10,
         alignSelf : "center",
         width : '80%',
@@ -43,7 +56,8 @@ const RegisterStyle = StyleSheet.create({
     textinput_style : {
         paddingLeft : '5%',
         paddingRight : '5%',
-        width : '100%'
+        height : 40,
+        width : '100%',
     },
 
     icon_style : {

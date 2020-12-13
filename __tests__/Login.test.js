@@ -76,4 +76,14 @@ describe('test Login', () => {
         expect(onPressEvent).toHaveBeenCalled();
         expect(navigation.navigate).toBeCalledWith("Register");
     })
+
+    it('test onPress event of forgot password button it will navigate forgot password screen', () => {
+        const navigation = { navigate : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation}/>)
+        const instance = component.instance();
+        instance.handleForgotPasswordButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(navigation.navigate).toBeCalledWith("ForgotPassword");
+    })
 })

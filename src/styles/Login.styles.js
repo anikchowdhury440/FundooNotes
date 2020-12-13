@@ -1,8 +1,21 @@
 import { StyleSheet } from 'react-native';
 
 const LoginStyle = StyleSheet.create({
+    image_view_style: {
+        alignSelf : "center", 
+        marginTop : 50, 
+        borderWidth : 2, 
+        borderRadius : 70
+    },
+
+    image_style: {
+        width : 80, 
+        height : 80, 
+        margin : 20
+    },
+
     container : {
-        marginTop : 100,
+        marginTop : 30,
         alignItems : "center",
         marginBottom : 100
     },
@@ -31,7 +44,7 @@ const LoginStyle = StyleSheet.create({
 
     textinput_view_style : {
         borderWidth : 1, 
-        borderColor : '#D3D3D3', 
+        borderColor : '#808080', 
         borderRadius : 10,
         alignSelf : "center",
         width : '80%',

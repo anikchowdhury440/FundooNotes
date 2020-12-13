@@ -74,6 +74,9 @@ export default class ForgotPassword extends Component {
     render() {
         return(
             <ScrollView>
+                <View style = {ForgotPasswordStyle.image_view_style}>
+                    <Image style = {ForgotPasswordStyle.image_style} source = {require('../assets/app-logo.png')}/>
+                </View>
                 <View style = {ForgotPasswordStyle.container}>
                     <View style = {ForgotPasswordStyle.forgetPassword_container}>
                         <View>

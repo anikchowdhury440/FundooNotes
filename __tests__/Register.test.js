@@ -157,6 +157,7 @@ describe('test Register', () => {
 
     it('test onPress event of sign up button it will store credential in keychain', () => {
         const navigation = { navigate : jest.fn() }
+        const KeyChain = { setGenericPassword : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<Register onPress = {onPressEvent} navigation = {navigation}/>)
         const instance = component.instance();
@@ -168,6 +169,5 @@ describe('test Register', () => {
         instance.handleSignUpButton();
         expect(onPressEvent).toHaveBeenCalled();
         expect(navigation.navigate).toBeCalledWith("Login");
-        expect(instance.setGenericPassword().toBeCalledWith("anik@gmail.com","Anik#1234"))
     })
 })

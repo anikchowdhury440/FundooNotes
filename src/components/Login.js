@@ -60,7 +60,7 @@ export default class Login extends Component {
     }
 
     handleSecureTextPassword = () => {
-        //const {onPress} = this.props
+        const {onPress} = this.props
         if(this.state.secureTextPassword == true) {
             this.setState({
                 secureTextPassword : false
@@ -71,13 +71,13 @@ export default class Login extends Component {
                 secureTextPassword : true
             })
         }
-        //onPress();
+        onPress();
     }
 
     handleSignUpButton = () => {
-        //const {onPress} = this.props
+        const {onPress} = this.props
         this.props.navigation.navigate("Register")
-        //onPress();
+        onPress();
     }
 
     handleSignInButton = async () => {
@@ -101,12 +101,17 @@ export default class Login extends Component {
     }
 
     handleForgotPasswordButton = () => {
+        const {onPress} = this.props
         this.props.navigation.navigate("ForgotPassword")
+        onPress();
     }
 
     render() {
         return(
             <ScrollView>
+                <View style = {LoginStyle.image_view_style}>
+                    <Image style = {LoginStyle.image_style} source = {require('../assets/app-logo.png')}/>
+                </View>
                 <View style = {LoginStyle.container} >
                     <View style = {LoginStyle.signin_container}>
                         <View>
