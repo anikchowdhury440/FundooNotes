@@ -100,6 +100,10 @@ export default class Login extends Component {
         }
     }
 
+    handleForgotPasswordButton = () => {
+        this.props.navigation.navigate("ForgotPassword")
+    }
+
     render() {
         return(
             <ScrollView>
@@ -146,8 +150,10 @@ export default class Login extends Component {
                             </Text>
                         </View>
                         <View>
-                            <TouchableOpacity style = {LoginStyle.forgot_password_style}>
-                                <Text style = {LoginStyle.forgot_password_text_style}>Forgot Password ?</Text>
+                            <TouchableOpacity 
+                                style = {LoginStyle.forgot_password_style}
+                                onPress = {this.handleForgotPasswordButton}>
+                                    <Text style = {LoginStyle.forgot_password_text_style}>Forgot Password ?</Text>
                             </TouchableOpacity>
                         </View>
                         <View>
