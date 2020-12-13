@@ -58,6 +58,7 @@ const RegisterStyle = StyleSheet.create({
         paddingRight : '5%',
         height : 40,
         width : '100%',
+        fontSize : 15
     },
 
     icon_style : {

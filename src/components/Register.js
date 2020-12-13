@@ -131,7 +131,7 @@ export default class Register extends Component {
     }
 
     handleSecureTextPassword = () => {
-        //const {onPress} = this.props
+        const {onPress} = this.props
         if(this.state.secureTextPassword == true) {
             this.setState({
                 secureTextPassword : false
@@ -142,11 +142,11 @@ export default class Register extends Component {
                 secureTextPassword : true
             })
         }
-        //onPress();
+        onPress();
     }
 
     handleSecureTextConfirmPassword = () => {
-        //const {onPress} = this.props
+        const {onPress} = this.props
         if(this.state.secureTextConfirmPassword == true) {
             this.setState({
                 secureTextConfirmPassword : false
@@ -157,17 +157,17 @@ export default class Register extends Component {
                 secureTextConfirmPassword : true
             })
         }
-        //onPress();
+        onPress();
     }
 
     handleSignInButton = () => {
-        //const {onPress} = this.props;
+        const {onPress} = this.props;
         this.props.navigation.navigate('Login')
-        //onPress();
+        onPress();
     }
 
     handleSignUpButton = async () => {
-        //const {onPress} = this.props;
+        const {onPress} = this.props;
         if(this.state.firstName != '' && 
             this.state.lastName != '' &&
             this.state.email != '' &&
@@ -178,10 +178,12 @@ export default class Register extends Component {
             this.state.emailValidation == true &&
             this.state.passwordValidation == true &&
             this.state.confirmPasswordValidation == true ) {
-                await KeyChain.setGenericPassword(this.state.email, this.state.password)
+                const username = this.state.email;
+                const password = this.state.password;
+                await KeyChain.setGenericPassword(username, password)
                 this.props.navigation.navigate("Login");
         }
-        //onPress();
+        onPress();
     }
 
     render() {

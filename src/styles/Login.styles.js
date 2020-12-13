@@ -56,7 +56,8 @@ const LoginStyle = StyleSheet.create({
     textinput_style : {
         paddingLeft : '5%',
         paddingRight : '5%',
-        width : '100%'
+        width : '100%',
+        fontSize : 15
     },
 
     icon_style : {

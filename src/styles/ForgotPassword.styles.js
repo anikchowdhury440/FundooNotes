@@ -50,13 +50,14 @@ const ForgotPasswordStyle = StyleSheet.create({
         width : '80%',
         marginLeft : '10%',
         marginRight : '10%',
-        flexDirection : 'row'
+        flexDirection : 'row',
     },
 
     textinput_style : {
         paddingLeft : '5%',
         paddingRight : '5%',
-        width : '100%'
+        width : '100%',
+        fontSize : 15
     },
 
     text_error_style : {
@@ -101,7 +102,18 @@ const ForgotPasswordStyle = StyleSheet.create({
         color : '#696969',
         fontWeight : 'bold',
         marginBottom : 20
-    }
+    },
+    
+    signup_block : {
+        flexDirection : "row",
+        justifyContent : "center",
+        marginBottom : 20,
+    },
+
+    signup_text : {
+        color : "#339EFF",
+        fontWeight : 'bold'
+    },
 })
 
 export default ForgotPasswordStyle;

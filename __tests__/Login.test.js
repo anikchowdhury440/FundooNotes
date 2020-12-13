@@ -1,8 +1,8 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import renderer from 'react-test-renderer';
 
 import Login from '../src/components/Login'
+
 
 describe('test Login', () => {
     it('test when render should match to snapshot', () => {
@@ -22,34 +22,6 @@ describe('test Login', () => {
         expect(component.instance().state.password).toBe('')
         component.instance().passwordHandler('Anik#1998')
         expect(component.instance().state.password).toBe('Anik#1998')
-    })
-
-    it('test when provided email is valid email validation state will be true', () => {
-        const component = shallow(<Login/>)
-        component.instance().setState({ email : 'anik@gmail.com'})
-        component.instance().validateEmail();
-        expect(component.instance().state.emailValidation).toBe(true)
-    })
-
-    it('test when provided email is invalid email validation state will be false', () => {
-        const component = shallow(<Login/>)
-        component.instance().setState({ email : 'anik.@gmail.com'})
-        component.instance().validateEmail();
-        expect(component.instance().state.emailValidation).toBe(false)
-    })
-
-    it('test when provided password is valid password validation state will be true', () => {
-        const component = shallow(<Login/>)
-        component.instance().setState({ password : 'Anik#1234'})
-        component.instance().validatePassword();
-        expect(component.instance().state.passwordValidation).toBe(true)
-    })
-
-    it('test when password password is invalid password validation state will be false', () => {
-        const component = shallow(<Login/>)
-        component.instance().setState({ password : 'anik1234'})
-        component.instance().validatePassword();
-        expect(component.instance().state.passwordValidation).toBe(false)
     })
 
     it('test onPress event of eye icon of password textinput called it will change the secureTextPassword State', () => {
@@ -86,4 +58,18 @@ describe('test Login', () => {
         expect(onPressEvent).toHaveBeenCalled();
         expect(navigation.navigate).toBeCalledWith("ForgotPassword");
     })
+
+    // it('test onPress event of sign in button when correct credential it will navigate dashboard screen', async () => {
+    //     const navigation = { navigate : jest.fn() }
+    //     const onPressEvent = jest.fn();
+    //     const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation}/>)
+    //     const instance = component.instance();
+    //     instance.setState({
+    //         email : 'anik@gmail.com',
+    //         password : 'Anik@1234',
+    //     })
+    //     await instance.handleSignInButton();
+    //     expect(onPressEvent).toHaveBeenCalled();
+    //     expect(navigation.navigate).toBeCalledWith("DashBoard");
+    // })
 })

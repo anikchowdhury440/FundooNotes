@@ -72,6 +72,7 @@ export default class ForgotPassword extends Component {
     }
 
     handleSecureTextPassword = () => {
+        const {onPress} = this.props
         if(this.state.secureTextPassword == true) {
             this.setState({
                 secureTextPassword : false
@@ -82,9 +83,11 @@ export default class ForgotPassword extends Component {
                 secureTextPassword : true
             })
         }
+        onPress();
     }
 
-    handleSecureConfirmTextPassword = () => {
+    handleSecureTextConfirmPassword = () => {
+        const {onPress} = this.props
         if(this.state.secureTextConfirmPassword == true) {
             this.setState({
                 secureTextConfirmPassword : false
@@ -95,9 +98,11 @@ export default class ForgotPassword extends Component {
                 secureTextConfirmPassword : true
             })
         }
+        onPress();
     }
 
     handleResetPasswordButton = async () => {
+        //const {onPress} = this.props
         if(this.state.email != '' && this.state.password != '' && this.state.confirmPassword != '') {
             try{
                 const credential = await KeyChain.getGenericPassword();
@@ -115,6 +120,13 @@ export default class ForgotPassword extends Component {
                 console.log('Error', error);
             }
         }
+        //onPress();
+    }
+    
+    handleSignUpButton = () => {
+        const {onPress} = this.props
+        this.props.navigation.navigate("Register")
+        onPress();
     }
 
     render() {
@@ -136,7 +148,7 @@ export default class ForgotPassword extends Component {
                         </View>
                         <View>    
                             <Text style = {ForgotPasswordStyle.text_error_style}>
-                                {(this.state.email == '') ? 'required..' : null}
+                                {(this.state.email == '') ? 'required..' : (this.state.invalidEmail) ? 'Email not Found..' : null}
                             </Text>
                         </View>
                         <View style = {ForgotPasswordStyle.textinput_view_style}>
@@ -162,25 +174,26 @@ export default class ForgotPassword extends Component {
                         </View>
                         <View>    
                             <Text style = {ForgotPasswordStyle.text_error_style}>
-                                {(this.state.password == '') ? 'required..' : (this.state.passwordValidation) ? null : 'Invalid Password..'}
+                                {(this.state.password == '') ? 'required..' : (this.state.passwordValidation) ? null : 'Weak Password..'}
                             </Text>
                         </View>
                         <View style = {ForgotPasswordStyle.textinput_view_style}>
                             <TextInput placeholder = {"Confirm Password"} 
                                 style = {[ForgotPasswordStyle.textinput_style, ForgotPasswordStyle.password_textinput_style]}
                                 secureTextEntry = {this.state.secureTextConfirmPassword}
+                                maxLength = {25}
                                 onChangeText = {this.confirmPasswordHandler}/>
 
                                 {(this.state.secureTextConfirmPassword) ?
                                     <TouchableOpacity 
                                         style = {ForgotPasswordStyle.icon}
-                                        onPress = {this.handleSecureConfirmTextPassword}>
+                                        onPress = {this.handleSecureTextConfirmPassword}>
                                             <Image style = {ForgotPasswordStyle.icon_style} source = {require('../assets/eye.png')}/>
                                     </TouchableOpacity> 
                                     : 
                                     <TouchableOpacity 
                                         style = {ForgotPasswordStyle.icon}
-                                        onPress = {this.handleSecureConfirmTextPassword}>
+                                        onPress = {this.handleSecureTextConfirmPassword}>
                                             <Image style = {ForgotPasswordStyle.icon_style} source = {require('../assets/eye-off.png')}/>
                                     </TouchableOpacity>  
                                 }
@@ -198,12 +211,13 @@ export default class ForgotPassword extends Component {
                                     <Text style = {ForgotPasswordStyle.resetPassword_button_text}>RESET PASSWORD</Text>
                             </TouchableOpacity> 
                         </View>
-                        <View>
-                            <TouchableOpacity
-                                onPress = {() => this.props.navigation.navigate('Login')}>    
-                                    <Text style = {ForgotPasswordStyle.backSignIn_button}>Back to SIGN IN</Text>
-                            </TouchableOpacity> 
-                        </View>
+                        <View style = {ForgotPasswordStyle.signup_block}>
+                            <Text>Don't have an account? </Text>
+                            <TouchableOpacity onPress = {this.handleSignUpButton}>
+                                <Text style = {ForgotPasswordStyle.signup_text}>SIGN UP</Text>
+                            </TouchableOpacity>
+                        </View> 
+                        
                     </View>
                 </View>
             </ScrollView>

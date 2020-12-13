@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
 import * as KeyChain from 'react-native-keychain'
 
 import LoginStyle from '../styles/Login.styles'
@@ -34,7 +34,7 @@ export default class Login extends Component {
     }
 
     handleSecureTextPassword = () => {
-        //const {onPress} = this.props
+        const {onPress} = this.props
         if(this.state.secureTextPassword == true) {
             this.setState({
                 secureTextPassword : false
@@ -45,32 +45,33 @@ export default class Login extends Component {
                 secureTextPassword : true
             })
         }
-        //onPress();
+        onPress();
     }
 
     handleSignUpButton = () => {
-        //const {onPress} = this.props
+        const {onPress} = this.props
         this.props.navigation.navigate("Register")
-        //onPress();
+        onPress();
     }
 
     handleSignInButton = async () => {
+        //const {onPress} = this.props
         if(this.state.email != '' && this.state.password != '')
         {
             try{
                 const credential = await KeyChain.getGenericPassword();
                 if(credential.username == this.state.email) {
                     if(credential.password == this.state.password) {
-                        console.log('Valid Credential');
+                        this.props.navigation.navigate("Dashboard");
                     }
                     else {
-                        this.setState({
+                        await this.setState({
                             invalidPassword : true
                         })
                     }
                 }
                 else {
-                    this.setState({
+                    await this.setState({
                         invalidEmail : true
                     })
                 }
@@ -79,12 +80,13 @@ export default class Login extends Component {
                 console.log('Error', error);
             }
         }
+        //onPress();
     }
 
     handleForgotPasswordButton = () => {
-        //const {onPress} = this.props
+        const {onPress} = this.props
         this.props.navigation.navigate("ForgotPassword")
-        //onPress();
+        onPress();
     }
 
     render() {
