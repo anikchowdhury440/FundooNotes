@@ -11,56 +11,30 @@ export default class Login extends Component {
         this.state = {
             email : '',
             password : '',
-            emailValidation : true,
-            passwordValidation : true,
+            invalidEmail : false,
+            invalidPassword : false,
             secureTextPassword : true,
         }
     }
 
     emailHandler = async (email) => {
         await this.setState({
-            email : email
+            email : email,
+            invalidEmail : false,
+            invalidPassword : false
         })
-        this.validateEmail();
     }
 
     passwordHandler = async (password) => {
         await this.setState({
-            password : password
+            password : password,
+            invalidEmail : false,
+            invalidPassword : false
         })
-        this.validatePassword();
-    }
-
-    validateEmail = () => {
-        const emailRejex = new RegExp("^[0-9a-zA-Z]+([._+-][0-9A-Za-z]+)*@[0-9A-Za-z]+[.][a-zA-Z]{2,4}([.][a-zA-Z]{2,4})?$")
-        if(emailRejex.test(this.state.email)) {
-            this.setState({
-                emailValidation : true
-            })
-        } 
-        else {
-            this.setState({
-                emailValidation : false
-            })
-        }
-    }
-
-    validatePassword = () => {
-        const passwordRegex = new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[*.!@#$%^&(){}:'<>,.>/~`_+=|].).{8,}$");
-        if(passwordRegex.test(this.state.password)) {
-            this.setState({
-                passwordValidation: true
-            })
-        }
-        else {
-            this.setState({
-                passwordValidation: false
-            })
-        }
     }
 
     handleSecureTextPassword = () => {
-        const {onPress} = this.props
+        //const {onPress} = this.props
         if(this.state.secureTextPassword == true) {
             this.setState({
                 secureTextPassword : false
@@ -71,39 +45,46 @@ export default class Login extends Component {
                 secureTextPassword : true
             })
         }
-        onPress();
+        //onPress();
     }
 
     handleSignUpButton = () => {
-        const {onPress} = this.props
+        //const {onPress} = this.props
         this.props.navigation.navigate("Register")
-        onPress();
+        //onPress();
     }
 
     handleSignInButton = async () => {
-        try{
-            const credential = await KeyChain.getGenericPassword();
-            if(credential) {
-                if(credential.username == this.state.email && credential.password == this.state.password) {
-                    console.log('Valid Credential');
+        if(this.state.email != '' && this.state.password != '')
+        {
+            try{
+                const credential = await KeyChain.getGenericPassword();
+                if(credential.username == this.state.email) {
+                    if(credential.password == this.state.password) {
+                        console.log('Valid Credential');
+                    }
+                    else {
+                        this.setState({
+                            invalidPassword : true
+                        })
+                    }
                 }
                 else {
-                    console.log('Invalid Credential');
+                    this.setState({
+                        invalidEmail : true
+                    })
                 }
             }
-            else {
-                console.log('no credential');
+            catch(error) {
+                console.log('Error', error);
             }
-        }
-        catch(error) {
-            console.log('Error', error);
         }
     }
 
     handleForgotPasswordButton = () => {
-        const {onPress} = this.props
+        //const {onPress} = this.props
         this.props.navigation.navigate("ForgotPassword")
-        onPress();
+        //onPress();
     }
 
     render() {
@@ -125,7 +106,7 @@ export default class Login extends Component {
                         </View>
                         <View>
                             <Text style = {LoginStyle.text_error_style}>
-                                {(this.state.email == '') ? 'required..' : (this.state.emailValidation) ? null : 'Invalid Email..'}
+                                {(this.state.email == '') ? 'required..' : (this.state.invalidEmail) ? 'Email not Found..' : null}
                             </Text>
                         </View>
                         <View style = {LoginStyle.textinput_view_style}>
@@ -151,7 +132,7 @@ export default class Login extends Component {
                         </View>
                         <View>
                             <Text style = {LoginStyle.text_error_style}>
-                                {(this.state.password == '') ? 'required..' : (this.state.passwordValidation) ? null : 'Invalid Password..'}
+                                {(this.state.password == '') ? 'required..' : (this.state.invalidPassword) ? 'Invalid Password..' : null}
                             </Text>
                         </View>
                         <View>

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const ForgotPasswordStyle = StyleSheet.create({
     image_view_style: {
         alignSelf : "center", 
-        marginTop : 50, 
+        marginTop : 20, 
         borderWidth : 2, 
         borderRadius : 70
     },

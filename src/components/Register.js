@@ -49,6 +49,9 @@ export default class Register extends Component {
             password : password
         })
         this.validatePassword();
+        if(this.state.confirmPassword != '') {
+            this.validateConfirmPassword();
+        }
     }
 
     confirmPasswordHandler = async (confirmPassword) => {
@@ -128,7 +131,7 @@ export default class Register extends Component {
     }
 
     handleSecureTextPassword = () => {
-        const {onPress} = this.props
+        //const {onPress} = this.props
         if(this.state.secureTextPassword == true) {
             this.setState({
                 secureTextPassword : false
@@ -139,11 +142,11 @@ export default class Register extends Component {
                 secureTextPassword : true
             })
         }
-        onPress();
+        //onPress();
     }
 
     handleSecureTextConfirmPassword = () => {
-        const {onPress} = this.props
+        //const {onPress} = this.props
         if(this.state.secureTextConfirmPassword == true) {
             this.setState({
                 secureTextConfirmPassword : false
@@ -154,17 +157,17 @@ export default class Register extends Component {
                 secureTextConfirmPassword : true
             })
         }
-        onPress();
+        //onPress();
     }
 
     handleSignInButton = () => {
-        const {onPress} = this.props;
+        //const {onPress} = this.props;
         this.props.navigation.navigate('Login')
-        onPress();
+        //onPress();
     }
 
-    handleSignUpButton = () => {
-        const {onPress} = this.props;
+    handleSignUpButton = async () => {
+        //const {onPress} = this.props;
         if(this.state.firstName != '' && 
             this.state.lastName != '' &&
             this.state.email != '' &&
@@ -175,16 +178,10 @@ export default class Register extends Component {
             this.state.emailValidation == true &&
             this.state.passwordValidation == true &&
             this.state.confirmPasswordValidation == true ) {
-                this.storeCredential();
+                await KeyChain.setGenericPassword(this.state.email, this.state.password)
                 this.props.navigation.navigate("Login");
         }
-        onPress();
-    }
-
-    storeCredential = async () => {
-        const username = this.state.email
-        const password = this.state.password;
-        await KeyChain.setGenericPassword(username, password)
+        //onPress();
     }
 
     render() {

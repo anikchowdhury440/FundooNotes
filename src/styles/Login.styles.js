@@ -76,7 +76,7 @@ const LoginStyle = StyleSheet.create({
 
     text_error_style : {
         alignSelf : 'flex-end',
-        marginRight : 25,
+        marginRight : '10%',
         marginBottom : 10,
         color : 'red'
     },

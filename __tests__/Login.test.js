@@ -10,42 +10,42 @@ describe('test Login', () => {
         expect(component).toMatchSnapshot();
     })
 
-    it('test the email handler method should update email state', () => {
+    it('test when email provided in textinput should update email state', () => {
         const component = shallow(<Login/>)
         expect(component.instance().state.email).toBe('')
         component.instance().emailHandler('anik@gmail.com')
         expect(component.instance().state.email).toBe('anik@gmail.com')
     })
 
-    it('test the password handler method should update password state', async () => {
+    it('test when password provided in textinput should update password state', async () => {
         const component = shallow(<Login/>)
         expect(component.instance().state.password).toBe('')
         component.instance().passwordHandler('Anik#1998')
         expect(component.instance().state.password).toBe('Anik#1998')
     })
 
-    it('test when email correct email validation state will be true', () => {
+    it('test when provided email is valid email validation state will be true', () => {
         const component = shallow(<Login/>)
         component.instance().setState({ email : 'anik@gmail.com'})
         component.instance().validateEmail();
         expect(component.instance().state.emailValidation).toBe(true)
     })
 
-    it('test when email incorrect email validation state will be false', () => {
+    it('test when provided email is invalid email validation state will be false', () => {
         const component = shallow(<Login/>)
         component.instance().setState({ email : 'anik.@gmail.com'})
         component.instance().validateEmail();
         expect(component.instance().state.emailValidation).toBe(false)
     })
 
-    it('test when password correct password validation state will be true', () => {
+    it('test when provided password is valid password validation state will be true', () => {
         const component = shallow(<Login/>)
         component.instance().setState({ password : 'Anik#1234'})
         component.instance().validatePassword();
         expect(component.instance().state.passwordValidation).toBe(true)
     })
 
-    it('test when password incorrect password validation state will be false', () => {
+    it('test when password password is invalid password validation state will be false', () => {
         const component = shallow(<Login/>)
         component.instance().setState({ password : 'anik1234'})
         component.instance().validatePassword();
