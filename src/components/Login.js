@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, TextInput, ScrollView, TouchableOpacity, Image} from 'react-native';
 import * as KeyChain from 'react-native-keychain'
+
 
 import LoginStyle from '../styles/Login.styles'
 
@@ -14,6 +15,8 @@ export default class Login extends Component {
             invalidEmail : false,
             invalidPassword : false,
             secureTextPassword : true,
+            emailEmpty : false,
+            passwordEmpty : false
         }
     }
 
@@ -21,7 +24,8 @@ export default class Login extends Component {
         await this.setState({
             email : email,
             invalidEmail : false,
-            invalidPassword : false
+            invalidPassword : false,
+            emailEmpty : false
         })
     }
 
@@ -29,7 +33,8 @@ export default class Login extends Component {
         await this.setState({
             password : password,
             invalidEmail : false,
-            invalidPassword : false
+            invalidPassword : false,
+            passwordEmpty : false
         })
     }
 
@@ -48,14 +53,14 @@ export default class Login extends Component {
         onPress();
     }
 
-    handleSignUpButton = () => {
+    handleSignUpButton = async () => {
         const {onPress} = this.props
         this.props.navigation.navigate("Register")
         onPress();
     }
 
     handleSignInButton = async () => {
-        //const {onPress} = this.props
+        const {onPress} = this.props
         if(this.state.email != '' && this.state.password != '')
         {
             try{
@@ -80,13 +85,25 @@ export default class Login extends Component {
                 console.log('Error', error);
             }
         }
-        //onPress();
+        else{
+            if(this.state.email == '') {
+                await this.setState({
+                    emailEmpty : true
+                })
+            }
+            if(this.state.password == '') {
+                await this.setState({
+                    passwordEmpty : true
+                })
+            }
+        }
+        onPress();
     }
 
-    handleForgotPasswordButton = () => {
-        const {onPress} = this.props
+    handleForgotPasswordButton = async () => {
+        //const {onPress} = this.props
         this.props.navigation.navigate("ForgotPassword")
-        onPress();
+        //onPress();
     }
 
     render() {
@@ -103,18 +120,20 @@ export default class Login extends Component {
                         <View style = {LoginStyle.textinput_view_style}>
                             <TextInput 
                                 placeholder = {"Email"} 
+                                maxLength = {30}
                                 style = {LoginStyle.textinput_style}
                                 onChangeText = {this.emailHandler}/>
                         </View>
                         <View>
                             <Text style = {LoginStyle.text_error_style}>
-                                {(this.state.email == '') ? 'required..' : (this.state.invalidEmail) ? 'Email not Found..' : null}
+                                {(this.state.emailEmpty) ? 'required..' : (this.state.invalidEmail) ? 'Email not Found..' : null}
                             </Text>
                         </View>
                         <View style = {LoginStyle.textinput_view_style}>
                             <TextInput placeholder = {"Password"} 
                                 style = {[LoginStyle.textinput_style, LoginStyle.password_textinput_style]}
                                 onChangeText = {this.passwordHandler}
+                                maxLength = {20}
                                 secureTextEntry = {this.state.secureTextPassword}/>
 
                             {(this.state.secureTextPassword) ?
@@ -134,7 +153,7 @@ export default class Login extends Component {
                         </View>
                         <View>
                             <Text style = {LoginStyle.text_error_style}>
-                                {(this.state.password == '') ? 'required..' : (this.state.invalidPassword) ? 'Invalid Password..' : null}
+                                {(this.state.passwordEmpty) ? 'required..' : (this.state.invalidPassword) ? 'Invalid Password..' : null}
                             </Text>
                         </View>
                         <View>

@@ -115,6 +115,15 @@ describe('test Register', () => {
         expect(component.instance().state.confirmPasswordValidation).toBe(false)
     })
 
+    it('test when password provided in textinput updated after confirm password is correct, confirm password validation should be true', async () => {
+        const component = shallow(<Register/>)
+        expect(component.instance().state.password).toBe('')
+        component.instance().passwordHandler('Anik#123')
+        component.instance().confirmPasswordHandler('Anik#1234')
+        component.instance().passwordHandler('Anik#1234')
+        expect(component.instance().state.confirmPasswordValidation).toBe(true)
+    })
+
     it('test onPress event of eye icon of password textinput called it will change the secureTextPassword State', () => {
         const onPressEvent = jest.fn();
         const component = shallow(<Register onPress = {onPressEvent}/>)
@@ -166,6 +175,11 @@ describe('test Register', () => {
             email : 'anik@gmail.com',
             password : 'Anik@1234',
             confirmPassword : 'Anik@1234',
+            firstNameValidation : true,
+            lastNameValidation : true,
+            emailValidation : true,
+            passwordValidation : true,
+            confirmPasswordValidation : true,
         })
         await instance.handleSignUpButton();
         expect(onPressEvent).toHaveBeenCalled();

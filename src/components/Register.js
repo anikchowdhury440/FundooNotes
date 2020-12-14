@@ -20,33 +20,42 @@ export default class Register extends Component {
             confirmPasswordValidation : true,
             secureTextPassword : true,
             secureTextConfirmPassword : true, 
+            firstNameEmpty : false,
+            lastNameEmpty : false,
+            emailEmpty : false,
+            passwordEmpty : false,
+            confirmPasswordEmpty : false,
         }
     }
 
     firstNameHandler = async (firstName) => {
         await this.setState({
-            firstName : firstName
+            firstName : firstName,
+            firstNameEmpty : false,
         })
         this.validateFirstName();
     }
 
     lastNameHandler = async (lastName) => {
         await this.setState({
-            lastName : lastName
+            lastName : lastName,
+            lastNameEmpty : false,
         })
         this.validateLastName();
     }
 
     emailHandler = async (email) => {
         await this.setState({
-            email : email
+            email : email,
+            emailEmpty : false,
         })
         this.validateEmail();
     }
 
     passwordHandler = async (password) => {
         await this.setState({
-            password : password
+            password : password,
+            passwordEmpty : false,
         })
         this.validatePassword();
         if(this.state.confirmPassword != '') {
@@ -56,7 +65,8 @@ export default class Register extends Component {
 
     confirmPasswordHandler = async (confirmPassword) => {
         await this.setState({
-            confirmPassword : confirmPassword
+            confirmPassword : confirmPassword,
+            confirmPasswordEmpty : false,
         })
         this.validateConfirmPassword();
     }
@@ -176,12 +186,39 @@ export default class Register extends Component {
             this.state.firstNameValidation == true &&
             this.state.lastNameValidation == true &&
             this.state.emailValidation == true &&
-            this.state.passwordValidation == true &&
+            this.state.passwordValidation == true && 
             this.state.confirmPasswordValidation == true ) {
                 const username = this.state.email;
                 const password = this.state.password;
                 await KeyChain.setGenericPassword(username, password)
                 this.props.navigation.navigate("Login");
+        }
+        else {
+            if(this.state.firstName == ''){
+                await this.setState({
+                    firstNameEmpty : true
+                })
+            }
+            if(this.state.lastName == ''){
+                await this.setState({
+                    lastNameEmpty : true
+                })
+            }
+            if(this.state.email == '') {
+                await this.setState({
+                    emailEmpty : true
+                })
+            }
+            if(this.state.password == '') {
+                await this.setState({
+                    passwordEmpty : true
+                })
+            }
+            if(this.state.confirmPassword == '') {
+                await this.setState({
+                    confirmPasswordEmpty : true
+                })
+            }
         }
         onPress();
     }
@@ -201,39 +238,43 @@ export default class Register extends Component {
                             <TextInput 
                                 placeholder = {"First Name"} 
                                 style = {RegisterStyle.textinput_style}
+                                maxLength = {20}
                                 onChangeText = {this.firstNameHandler}/>
                         </View>
                         <View>
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.firstName == '') ? 'required..' : (this.state.firstNameValidation) ? null : 'Invalid First Name..'}
+                                {(this.state.firstNameEmpty) ? 'required..' : (this.state.firstNameValidation) ? null : 'Invalid First Name..'}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
                             <TextInput 
                                 placeholder = {"Last Name"} 
                                 style = {RegisterStyle.textinput_style}
+                                maxLength = {20}
                                 onChangeText = {this.lastNameHandler}/>
                         </View>
                         <View>
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.lastName == '') ? 'required..' : (this.state.lastNameValidation) ? null : 'Invalid Last Name..'}
+                                {(this.state.lastNameEmpty) ? 'required..' : (this.state.lastNameValidation) ? null : 'Invalid Last Name..'}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
                             <TextInput 
-                                placeholder = {"Email"} 
+                                placeholder = {"Email"}
+                                maxLength = {30} 
                                 style = {RegisterStyle.textinput_style}
                                 onChangeText = {this.emailHandler}/>
                         </View>
                         <View>    
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.email == '') ? 'required..' : (this.state.emailValidation) ? null : 'Invalid Email..'}
+                                {(this.state.emailEmpty) ? 'required..' : (this.state.emailValidation) ? null : 'Invalid Email..'}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
                             <TextInput placeholder = {"Password"} 
                                 style = {[RegisterStyle.textinput_style, RegisterStyle.password_textinput_style]}
                                 secureTextEntry = {this.state.secureTextPassword}
+                                maxLength = {25}
                                 onChangeText = {this.passwordHandler}/>
 
                                 {(this.state.secureTextPassword) ?
@@ -253,32 +294,33 @@ export default class Register extends Component {
                         </View>
                         <View>    
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.password == '') ? 'required..' : (this.state.passwordValidation) ? null : 'Invalid Password..'}
+                                {(this.state.passwordEmpty) ? 'required..' : (this.state.passwordValidation) ? null : 'Invalid Password..'}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
                             <TextInput placeholder = {"Confirm Password"} 
                                 style = {[RegisterStyle.textinput_style, RegisterStyle.password_textinput_style]}
                                 secureTextEntry = {this.state.secureTextConfirmPassword}
+                                maxLength = {25}
                                 onChangeText = {this.confirmPasswordHandler}/>
                             
-                            {(this.state.secureTextConfirmPassword) ?
-                                <TouchableOpacity 
-                                    style = {RegisterStyle.icon}
-                                    onPress = {this.handleSecureTextConfirmPassword}>
-                                        <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye.png')}/>
-                                </TouchableOpacity> 
-                                : 
-                                <TouchableOpacity 
-                                    style = {RegisterStyle.icon}
-                                    onPress = {this.handleSecureTextConfirmPassword}>
-                                    <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye-off.png')}/>
-                                </TouchableOpacity>  
-                            }
+                                {(this.state.secureTextConfirmPassword) ?
+                                    <TouchableOpacity 
+                                        style = {RegisterStyle.icon}
+                                        onPress = {this.handleSecureTextConfirmPassword}>
+                                            <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye.png')}/>
+                                    </TouchableOpacity> 
+                                    : 
+                                    <TouchableOpacity 
+                                        style = {RegisterStyle.icon}
+                                        onPress = {this.handleSecureTextConfirmPassword}>
+                                        <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye-off.png')}/>
+                                    </TouchableOpacity>  
+                                }
                         </View>
                         <View>    
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.confirmPassword == '') ? 'required..' : (this.state.confirmPasswordValidation) ? null : 'Password does not matching'}
+                                {(this.state.confirmPasswordEmpty) ? 'required..' : (this.state.confirmPasswordValidation) ? null : 'Password does not matching'}
                             </Text>
                         </View>
                         <View>

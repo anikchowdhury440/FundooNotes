@@ -98,18 +98,27 @@ describe('test ForgotPassword', () => {
         expect(navigation.navigate).toBeCalledWith("Register");
     })
 
-    // it('test onPress event of reset password button when correct credential it will navigate login screen', async () => {
-    //     const navigation = { navigate : jest.fn() }
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<ForgotPassword onPress = {onPressEvent} navigation = {navigation}/>)
-    //     const instance = component.instance();
-    //     instance.setState({
-    //         email : 'anik@gmail.com',
-    //         password : 'Anik#1234',
-    //         confirmPassword : 'Anik#1234'
-    //     })
-    //     await instance.handleResetPasswordButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(navigation.navigate).toBeCalledWith("Login");
-    // })
+    it('test when password provided in textinput updated after confirm password is correct, confirm password validation should be true', async () => {
+        const component = shallow(<ForgotPassword/>)
+        expect(component.instance().state.password).toBe('')
+        component.instance().passwordHandler('Anik#123')
+        component.instance().confirmPasswordHandler('Anik#1234')
+        component.instance().passwordHandler('Anik#1234')
+        expect(component.instance().state.confirmPasswordValidation).toBe(true)
+    })
+
+    it('test onPress event of reset password button when correct credential it will navigate login screen', async () => {
+        const navigation = { navigate : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<ForgotPassword onPress = {onPressEvent} navigation = {navigation}/>)
+        const instance = component.instance();
+        instance.setState({
+            email : 'anik@gmail.com',
+            password : 'Anik#1234',
+            confirmPassword : 'Anik#1234'
+        })
+        await instance.handleResetPasswordButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(navigation.navigate).toBeCalledWith("Login");
+    })
 })

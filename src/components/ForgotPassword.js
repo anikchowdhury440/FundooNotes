@@ -17,19 +17,24 @@ export default class ForgotPassword extends Component {
             confirmPasswordValidation : true,
             secureTextPassword : true,
             secureTextConfirmPassword : true,
+            emailEmpty : false,
+            passwordEmpty : false,
+            confirmPasswordEmpty : false,
         }
     }
 
     emailHandler = async (email) => {
         await this.setState({
             email : email,
-            invalidEmail : false
+            invalidEmail : false,
+            emailEmpty : false,
         })
     }
 
     passwordHandler = async (password) => {
         await this.setState({
-            password : password
+            password : password,
+            passwordEmpty : false,
         })
         this.validatePassword();
         if(this.state.confirmPassword != '') {
@@ -39,7 +44,8 @@ export default class ForgotPassword extends Component {
 
     confirmPasswordHandler = async (confirmPassword) => {
         await this.setState({
-            confirmPassword : confirmPassword
+            confirmPassword : confirmPassword,
+            confirmPasswordEmpty : false,
         })
         this.validateConfirmPassword();
     }
@@ -102,7 +108,7 @@ export default class ForgotPassword extends Component {
     }
 
     handleResetPasswordButton = async () => {
-        //const {onPress} = this.props
+        const {onPress} = this.props
         if(this.state.email != '' && this.state.password != '' && this.state.confirmPassword != '') {
             try{
                 const credential = await KeyChain.getGenericPassword();
@@ -120,7 +126,24 @@ export default class ForgotPassword extends Component {
                 console.log('Error', error);
             }
         }
-        //onPress();
+        else {
+            if(this.state.email == '') {
+                await this.setState({
+                    emailEmpty : true
+                })
+            }
+            if(this.state.password == '') {
+                await this.setState({
+                    passwordEmpty : true
+                })
+            }
+            if(this.state.confirmPassword == '') {
+                await this.setState({
+                    confirmPasswordEmpty : true
+                })
+            }
+        }
+        onPress();
     }
     
     handleSignUpButton = () => {
@@ -143,18 +166,20 @@ export default class ForgotPassword extends Component {
                         <View style = {ForgotPasswordStyle.textinput_view_style}>
                             <TextInput 
                                 placeholder = {"Email"} 
+                                maxLength = {30}
                                 style = {ForgotPasswordStyle.textinput_style}
                                 onChangeText = {this.emailHandler}/>
                         </View>
                         <View>    
                             <Text style = {ForgotPasswordStyle.text_error_style}>
-                                {(this.state.email == '') ? 'required..' : (this.state.invalidEmail) ? 'Email not Found..' : null}
+                                {(this.state.emailEmpty) ? 'required..' : (this.state.invalidEmail) ? 'Email not Found..' : null}
                             </Text>
                         </View>
                         <View style = {ForgotPasswordStyle.textinput_view_style}>
                             <TextInput placeholder = {"New Password"} 
                                 style = {[ForgotPasswordStyle.textinput_style, ForgotPasswordStyle.password_textinput_style]}
                                 secureTextEntry = {this.state.secureTextPassword}
+                                maxLength = {20}
                                 onChangeText = {this.passwordHandler}/>
 
                                 {(this.state.secureTextPassword) ?
@@ -174,14 +199,14 @@ export default class ForgotPassword extends Component {
                         </View>
                         <View>    
                             <Text style = {ForgotPasswordStyle.text_error_style}>
-                                {(this.state.password == '') ? 'required..' : (this.state.passwordValidation) ? null : 'Weak Password..'}
+                                {(this.state.passwordEmpty) ? 'required..' : (this.state.passwordValidation) ? null : 'Weak Password..'}
                             </Text>
                         </View>
                         <View style = {ForgotPasswordStyle.textinput_view_style}>
                             <TextInput placeholder = {"Confirm Password"} 
                                 style = {[ForgotPasswordStyle.textinput_style, ForgotPasswordStyle.password_textinput_style]}
                                 secureTextEntry = {this.state.secureTextConfirmPassword}
-                                maxLength = {25}
+                                maxLength = {20}
                                 onChangeText = {this.confirmPasswordHandler}/>
 
                                 {(this.state.secureTextConfirmPassword) ?
@@ -201,7 +226,7 @@ export default class ForgotPassword extends Component {
                         </View>
                         <View>    
                             <Text style = {ForgotPasswordStyle.text_error_style}>
-                                {(this.state.confirmPassword == '') ? 'required..' : (this.state.confirmPasswordValidation) ? null : 'Password does not matching'}
+                                {(this.state.confirmPasswordEmpty) ? 'required..' : (this.state.confirmPasswordValidation) ? null : 'Password does not matching'}
                             </Text>
                         </View>
                         <View>
