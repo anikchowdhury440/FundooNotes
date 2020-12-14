@@ -155,17 +155,17 @@ describe('test Register', () => {
     })
 
     it('test onPress event of sign in button it will navigate to sign in screen', () => {
-        const navigation = { navigate : jest.fn() }
+        const navigation = { push : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<Register onPress = {onPressEvent} navigation = {navigation}/>)
         const instance = component.instance();
         instance.handleSignInButton();
         expect(onPressEvent).toHaveBeenCalled();
-        expect(navigation.navigate).toBeCalledWith("Login");
+        expect(navigation.push).toBeCalledWith("Login");
     })
 
     it('test onPress event of sign up button when valid data it will navigate to sign in screen', async () => {
-        const navigation = { navigate : jest.fn() }
+        const navigation = { push : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<Register onPress = {onPressEvent} navigation = {navigation}/>)
         const instance = component.instance();
@@ -175,14 +175,29 @@ describe('test Register', () => {
             email : 'anik@gmail.com',
             password : 'Anik@1234',
             confirmPassword : 'Anik@1234',
-            firstNameValidation : true,
-            lastNameValidation : true,
-            emailValidation : true,
-            passwordValidation : true,
-            confirmPasswordValidation : true,
         })
         await instance.handleSignUpButton();
         expect(onPressEvent).toHaveBeenCalled();
-        expect(navigation.navigate).toBeCalledWith("Login");
+        expect(navigation.push).toBeCalledWith("Login");
+    })
+
+    it('test onPress event of sign up button when all textinput empty it will update the stateEmpty state to true ', async () => {
+        const onPressEvent = jest.fn();
+        const component = shallow(<Register onPress = {onPressEvent}/>)
+        const instance = component.instance();
+        instance.setState({
+            firstName : '',
+            lastName : '',
+            email : '',
+            password : '',
+            confirmPassword : '',
+        })
+        await instance.handleSignUpButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(instance.state.firstNameEmpty).toBe(true)
+        expect(instance.state.lastNameEmpty).toBe(true)
+        expect(instance.state.emailEmpty).toBe(true)
+        expect(instance.state.passwordEmpty).toBe(true)
+        expect(instance.state.confirmPasswordEmpty).toBe(true)
     })
 })

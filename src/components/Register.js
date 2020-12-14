@@ -152,7 +152,7 @@ export default class Register extends Component {
                 secureTextPassword : true
             })
         }
-        onPress();
+        (onPress == undefined) ? null : onPress();
     }
 
     handleSecureTextConfirmPassword = () => {
@@ -167,12 +167,12 @@ export default class Register extends Component {
                 secureTextConfirmPassword : true
             })
         }
-        onPress();
+        (onPress == undefined) ? null : onPress();
     }
 
     handleSignInButton = () => {
         const {onPress} = this.props;
-        this.props.navigation.navigate('Login')
+        this.props.navigation.push('Login')
         onPress();
     }
 
@@ -191,7 +191,7 @@ export default class Register extends Component {
                 const username = this.state.email;
                 const password = this.state.password;
                 await KeyChain.setGenericPassword(username, password)
-                this.props.navigation.navigate("Login");
+                this.props.navigation.push("Login");
         }
         else {
             if(this.state.firstName == ''){

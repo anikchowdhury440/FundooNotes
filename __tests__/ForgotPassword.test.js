@@ -1,6 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import ForgotPassword from '../src/components/ForgotPassword';
+
 describe('test ForgotPassword', () => {
     it('should match to snapshot', () => {
         const component = shallow(<ForgotPassword/>)
@@ -108,7 +109,7 @@ describe('test ForgotPassword', () => {
     })
 
     it('test onPress event of reset password button when correct credential it will navigate login screen', async () => {
-        const navigation = { navigate : jest.fn() }
+        const navigation = { push : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<ForgotPassword onPress = {onPressEvent} navigation = {navigation}/>)
         const instance = component.instance();
@@ -119,6 +120,22 @@ describe('test ForgotPassword', () => {
         })
         await instance.handleResetPasswordButton();
         expect(onPressEvent).toHaveBeenCalled();
-        expect(navigation.navigate).toBeCalledWith("Login");
+        expect(navigation.push).toBeCalledWith("Login");
+    })
+
+    it('test onPress event of reset password button when all textinput empty it will update the stateEmpty state to true ', async () => {
+        const onPressEvent = jest.fn();
+        const component = shallow(<ForgotPassword onPress = {onPressEvent}/>)
+        const instance = component.instance();
+        instance.setState({
+            email : '',
+            password : '',
+            confirmPassword : '',
+        })
+        await instance.handleResetPasswordButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(instance.state.emailEmpty).toBe(true)
+        expect(instance.state.passwordEmpty).toBe(true)
+        expect(instance.state.confirmPasswordEmpty).toBe(true)
     })
 })

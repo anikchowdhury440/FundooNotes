@@ -89,7 +89,7 @@ export default class ForgotPassword extends Component {
                 secureTextPassword : true
             })
         }
-        onPress();
+        (onPress == undefined) ? null : onPress();
     }
 
     handleSecureTextConfirmPassword = () => {
@@ -104,7 +104,7 @@ export default class ForgotPassword extends Component {
                 secureTextConfirmPassword : true
             })
         }
-        onPress();
+        (onPress == undefined) ? null : onPress();
     }
 
     handleResetPasswordButton = async () => {
@@ -114,7 +114,7 @@ export default class ForgotPassword extends Component {
                 const credential = await KeyChain.getGenericPassword();
                 if(credential.username == this.state.email) {
                     await KeyChain.setGenericPassword(credential.username, this.state.password)
-                    this.props.navigation.navigate('Login');
+                    this.props.navigation.push('Login');
                 }
                 else {
                     this.setState({
@@ -147,8 +147,8 @@ export default class ForgotPassword extends Component {
     }
     
     handleSignUpButton = () => {
-        const {onPress} = this.props
-        this.props.navigation.navigate("Register")
+        const {onPress} = this.props;
+        this.props.navigation.navigate("Register");
         onPress();
     }
 

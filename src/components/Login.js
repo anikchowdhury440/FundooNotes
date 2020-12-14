@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Image} from 'react-native';
 import * as KeyChain from 'react-native-keychain'
 
-
 import LoginStyle from '../styles/Login.styles'
 
 export default class Login extends Component {
@@ -50,11 +49,11 @@ export default class Login extends Component {
                 secureTextPassword : true
             })
         }
-        onPress();
+        (onPress == undefined) ? null : onPress();
     }
 
     handleSignUpButton = async () => {
-        const {onPress} = this.props
+        const {onPress} = this.props;
         this.props.navigation.navigate("Register")
         onPress();
     }
@@ -68,6 +67,10 @@ export default class Login extends Component {
                 if(credential.username == this.state.email) {
                     if(credential.password == this.state.password) {
                         this.props.navigation.navigate("Dashboard");
+                        await this.setState({
+                            email : '',
+                            password : '',
+                        })
                     }
                     else {
                         await this.setState({
@@ -100,10 +103,10 @@ export default class Login extends Component {
         onPress();
     }
 
-    handleForgotPasswordButton = async () => {
-        //const {onPress} = this.props
+    handleForgotPasswordButton = () => {
+        const {onPress} = this.props;
         this.props.navigation.navigate("ForgotPassword")
-        //onPress();
+        onPress();
     }
 
     render() {

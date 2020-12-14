@@ -77,4 +77,18 @@ describe('test Login', () => {
         expect(onPressEvent).toHaveBeenCalled();
         expect(navigation.navigate).toBeCalledWith("DashBoard");
     })
+
+    it('test onPress event of sign in button when all textinput empty it will update the stateEmpty state to true ', async () => {
+        const onPressEvent = jest.fn();
+        const component = shallow(<Login onPress = {onPressEvent}/>)
+        const instance = component.instance();
+        instance.setState({
+            email : '',
+            password : '',
+        })
+        await instance.handleSignInButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(instance.state.emailEmpty).toBe(true)
+        expect(instance.state.passwordEmpty).toBe(true)
+    })
 })
