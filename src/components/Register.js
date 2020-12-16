@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import RegisterStyle from '../styles/Register.styles';
 import * as KeyChain from 'react-native-keychain'
+import auth from '@react-native-firebase/auth';
 
 export default class Register extends Component {
     constructor(props) {
@@ -25,6 +26,7 @@ export default class Register extends Component {
             emailEmpty : false,
             passwordEmpty : false,
             confirmPasswordEmpty : false,
+            emailPresent : false
         }
     }
 
@@ -48,6 +50,7 @@ export default class Register extends Component {
         await this.setState({
             email : email,
             emailEmpty : false,
+            emailPresent : false,
         })
         this.validateEmail();
     }
@@ -173,7 +176,7 @@ export default class Register extends Component {
     handleSignInButton = () => {
         const {onPress} = this.props;
         this.props.navigation.push('Login')
-        onPress();
+        //onPress();
     }
 
     handleSignUpButton = async () => {
@@ -188,10 +191,20 @@ export default class Register extends Component {
             this.state.emailValidation == true &&
             this.state.passwordValidation == true && 
             this.state.confirmPasswordValidation == true ) {
-                const username = this.state.email;
-                const password = this.state.password;
-                await KeyChain.setGenericPassword(username, password)
-                this.props.navigation.push("Login");
+                await KeyChain.setGenericPassword(this.state.email, this.state.password)
+                auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+                    .then(() => {
+                        this.props.navigation.push("Login");
+                    })
+                    .catch(error => {
+                        if (error.code === 'auth/email-already-in-use') {
+                            this.setState({
+                                emailPresent : true
+                            })
+                        }
+                      
+                        console.log(error);
+                    })
         }
         else {
             if(this.state.firstName == ''){
@@ -220,7 +233,7 @@ export default class Register extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
 
     render() {
@@ -267,7 +280,7 @@ export default class Register extends Component {
                         </View>
                         <View>    
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.emailEmpty) ? 'required..' : (this.state.emailValidation) ? null : 'Invalid Email..'}
+                                {(this.state.emailEmpty) ? 'required..' : (this.state.emailValidation) ? (this.state.emailPresent) ? 'Email Already Exist' : null : 'Invalid Email..'}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>

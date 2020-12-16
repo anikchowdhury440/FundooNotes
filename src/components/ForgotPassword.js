@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, ScrollView, TextInput, TouchableOpacity, Image} from 'react-native';
 import * as KeyChain from 'react-native-keychain'
+import auth from '@react-native-firebase/auth';
 
 import ForgotPasswordStyle from '../styles/ForgotPassword.styles'
 
@@ -110,6 +111,8 @@ export default class ForgotPassword extends Component {
     handleResetPasswordButton = async () => {
         const {onPress} = this.props
         if(this.state.email != '' && this.state.password != '' && this.state.confirmPassword != '') {
+            auth().sendPasswordResetEmail(this.state.email)
+
             try{
                 const credential = await KeyChain.getGenericPassword();
                 if(credential.username == this.state.email) {
@@ -143,13 +146,7 @@ export default class ForgotPassword extends Component {
                 })
             }
         }
-        onPress();
-    }
-    
-    handleSignUpButton = () => {
-        const {onPress} = this.props;
-        this.props.navigation.navigate("Register");
-        onPress();
+        //onPress();
     }
 
     render() {
@@ -236,13 +233,6 @@ export default class ForgotPassword extends Component {
                                     <Text style = {ForgotPasswordStyle.resetPassword_button_text}>RESET PASSWORD</Text>
                             </TouchableOpacity> 
                         </View>
-                        <View style = {ForgotPasswordStyle.signup_block}>
-                            <Text>Don't have an account? </Text>
-                            <TouchableOpacity onPress = {this.handleSignUpButton}>
-                                <Text style = {ForgotPasswordStyle.signup_text}>SIGN UP</Text>
-                            </TouchableOpacity>
-                        </View> 
-                        
                     </View>
                 </View>
             </ScrollView>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Image} from 'react-native';
 import * as KeyChain from 'react-native-keychain'
+import auth from '@react-native-firebase/auth';
 
 import LoginStyle from '../styles/Login.styles'
 
@@ -55,13 +56,28 @@ export default class Login extends Component {
     handleSignUpButton = async () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("Register")
-        onPress();
+        //onPress();
     }
 
     handleSignInButton = async () => {
         const {onPress} = this.props
         if(this.state.email != '' && this.state.password != '')
         {
+            auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then(() => this.props.navigation.navigate('Dashboard'))
+                .catch(error => {
+                    if (error.code === 'auth/user-not-found') {
+                        this.setState({
+                            invalidEmail : true
+                        })
+                    }
+                    if (error.code === 'auth/wrong-password') {
+                        this.setState({
+                            invalidPassword : true
+                        })
+                    }
+                    console.log(error)
+                })
             try{
                 const credential = await KeyChain.getGenericPassword();
                 if(credential.username == this.state.email) {
@@ -100,13 +116,13 @@ export default class Login extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
 
     handleForgotPasswordButton = () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("ForgotPassword")
-        onPress();
+        //onPress();
     }
 
     render() {

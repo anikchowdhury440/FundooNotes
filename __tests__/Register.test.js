@@ -185,13 +185,7 @@ describe('test Register', () => {
         const onPressEvent = jest.fn();
         const component = shallow(<Register onPress = {onPressEvent}/>)
         const instance = component.instance();
-        instance.setState({
-            firstName : '',
-            lastName : '',
-            email : '',
-            password : '',
-            confirmPassword : '',
-        })
+        
         await instance.handleSignUpButton();
         expect(onPressEvent).toHaveBeenCalled();
         expect(instance.state.firstNameEmpty).toBe(true)

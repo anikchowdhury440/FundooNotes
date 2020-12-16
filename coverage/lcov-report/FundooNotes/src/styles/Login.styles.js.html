@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for styles/Register.styles.js</title>
+    <title>Code coverage report for FundooNotes/src/styles/Login.styles.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../prettify.css" />
-    <link rel="stylesheet" href="../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../sort-arrow-sprite.png);
+            background-image: url(../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">styles</a> Register.styles.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">FundooNotes/src/styles</a> Login.styles.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -169,9 +169,23 @@
 <a name='L110'></a><a href='#L110'>110</a>
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -281,12 +295,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">import { StyleSheet } from 'react-native';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span></td><td class="text"><pre class="prettyprint lang-js">import { StyleSheet } from 'react-native';
 &nbsp;
-const RegisterStyle = StyleSheet.create({
+const LoginStyle = StyleSheet.create({
     image_view_style: {
         alignSelf : "center", 
-        marginTop : 20, 
+        marginTop : 50, 
         borderWidth : 2, 
         borderRadius : 70
     },
@@ -298,12 +326,12 @@ const RegisterStyle = StyleSheet.create({
     },
 &nbsp;
     container : {
-        marginTop : 20,
+        marginTop : 30,
         alignItems : "center",
         marginBottom : 100
     },
 &nbsp;
-    signup_container : {
+    signin_container : {
         backgroundColor : 'white',
         width : '80%',
         shadowColor: "#000",
@@ -317,7 +345,7 @@ const RegisterStyle = StyleSheet.create({
         borderRadius : 10
     },
 &nbsp;
-    signup_text : {
+    signin_text : {
         paddingTop : 20,
         paddingBottom : 20,
         alignSelf : 'center',
@@ -339,7 +367,6 @@ const RegisterStyle = StyleSheet.create({
     textinput_style : {
         paddingLeft : '5%',
         paddingRight : '5%',
-        height : 40,
         width : '100%',
         fontSize : 15
     },
@@ -366,7 +393,18 @@ const RegisterStyle = StyleSheet.create({
         color : 'red'
     },
 &nbsp;
-    signup_button_styles : {
+    forgot_password_style : {
+        alignSelf : 'flex-end',
+        marginBottom : 20,
+        marginRight : 25
+    },
+&nbsp;
+    forgot_password_text_style : {
+        color : "#339EFF",
+        fontWeight : 'bold'
+    },
+&nbsp;
+    signin_button_styles : {
         width : '50%',
         marginBottom : 20,
         backgroundColor : "#339EFF",
@@ -374,43 +412,47 @@ const RegisterStyle = StyleSheet.create({
         borderRadius : 20
     },
 &nbsp;
-    signup_button_text : {
+    signin_button_text : {
         alignSelf : "center",
         color : 'white',
         fontSize : 17,
         padding : 10,
     },
 &nbsp;
-    signin_block : {
+    signup_block : {
         flexDirection : "row",
         justifyContent : "center",
         marginBottom : 20,
     },
 &nbsp;
-    signin_text : {
+    signup_text : {
         color : "#339EFF",
         fontWeight : 'bold'
-    }
-})
+    },
 &nbsp;
-export default RegisterStyle;</pre></td></tr></table></pre>
+    text_style : {
+        fontSize : 20,
+    }
+});
+&nbsp;
+export default LoginStyle</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Dec 15 2020 16:24:30 GMT+0530 (India Standard Time)
+                at Tue Dec 15 2020 14:15:29 GMT+0530 (India Standard Time)
             </div>
         </div>
-        <script src="../prettify.js"></script>
+        <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../sorter.js"></script>
-        <script src="../block-navigation.js"></script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
     </body>
 </html>
     
