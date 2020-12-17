@@ -190,9 +190,9 @@ export default class Register extends Component {
             this.state.emailValidation == true &&
             this.state.passwordValidation == true && 
             this.state.confirmPasswordValidation == true ) {
-                console.log('press');
                 UserServices.register(this.state.email, this.state.password)
                     .then(user => {
+                        alert('User Registered Successfully')
                         this.props.navigation.push("Login")
                     })
                     .catch(error => {
@@ -253,7 +253,7 @@ export default class Register extends Component {
                         </View>
                         <View>
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.firstNameEmpty) ? 'required..' : (this.state.firstNameValidation) ? null : 'Invalid First Name..'}
+                                {(this.state.firstNameEmpty) ? 'required..' : (this.state.firstNameValidation) ? null : 'Invalid First Name'}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>

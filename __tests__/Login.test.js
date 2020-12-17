@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import keyChainMock from '../__mocks__/react-native-keychain'
 import Login from '../src/components/Login'
+import UserServices from '../services/UserServices';
 
 describe('test Login', () => {
     it('test when render should match to snapshot', () => {
@@ -9,7 +9,7 @@ describe('test Login', () => {
         expect(component).toMatchSnapshot();
     })
 
-    it('test when email provided in textinput should update email state', () => {
+    it('test when email provided in textinput should update email state', async () => {
         const component = shallow(<Login/>)
         expect(component.instance().state.email).toBe('')
         component.instance().emailHandler('anik@gmail.com')
@@ -23,7 +23,7 @@ describe('test Login', () => {
         expect(component.instance().state.password).toBe('Anik#1998')
     })
 
-    it('test onPress event of eye icon of password textinput called it will change the secureTextPassword State', () => {
+    it('test onPress event of eye icon of password textinput called it will change the secureTextPassword State', async () => {
         const onPressEvent = jest.fn();
         const component = shallow(<Login onPress = {onPressEvent}/>)
         const instance = component.instance();
@@ -40,18 +40,17 @@ describe('test Login', () => {
         expect(instance.state.secureTextPassword).toBe(true);
     })
 
-    it('test onPress event of sign up button it will navigate to sign up screen', () => {
+    it('test onPress event of sign up button it will navigate to sign up screen', async () => {
         const navigation = { navigate : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation}/>)
         const instance = component.instance();
         instance.handleSignUpButton();
-
         expect(onPressEvent).toHaveBeenCalled();
         expect(navigation.navigate).toBeCalledWith("Register");
     })
 
-    it('test onPress event of forgot password button it will navigate forgot password screen', () => {
+    it('test onPress event of forgot password button it will navigate forgot password screen', async () => {
         const navigation = { navigate : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation}/>)
@@ -61,46 +60,6 @@ describe('test Login', () => {
         expect(navigation.navigate).toBeCalledWith("ForgotPassword");
     })
 
-    //Failing
-    it('test onPress event of sign in button when correct credential it will navigate dashboard screen', async () => {
-        const navigation = { navigate : jest.fn() }
-        const onPressEvent = jest.fn();
-        const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation} KeyChain = {keyChainMock}/>)
-        const instance = component.instance();
-        instance.emailHandler('anik@gmail.com')
-        instance.passwordHandler('Anik@1234')
-        await instance.handleSignInButton();
-        expect(onPressEvent).toHaveBeenCalled();
-        expect(keyChainMock.getGenericPassword).toHaveBeenCalled();
-        expect(navigation.navigate).toBeCalledWith("DashBoard");
-    })
-
-    // //Failing
-    // it('test onPress event of sign in button when email incorrect it will update invalid email state to true', async () => {
-    //     const navigation = { navigate : jest.fn() }
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation}/>)
-    //     const instance = component.instance();
-    //     instance.emailHandler('ani@gmail.com')
-    //     instance.passwordHandler('Anik@1234')
-    //     await instance.handleSignInButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(instance.state.invalidEmail).toBe(true);
-    // })
-
-    // //Failing
-    // it('test onPress event of sign in button when email correct but password incorrect it will update invalid password to be true', async () => {
-    //     const navigation = { navigate : jest.fn() }
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation}/>)
-    //     const instance = component.instance();
-    //     instance.emailHandler('anik@gmail.com')
-    //     instance.passwordHandler('Anik1234')
-    //     await instance.handleSignInButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(instance.state.invalidPassword).toBeCalledWith(true);
-    // })
-
     it('test onPress event of sign in button when all textinput empty it will update the stateEmpty state to true ', async () => {
         const onPressEvent = jest.fn();
         const component = shallow(<Login onPress = {onPressEvent}/>)
@@ -109,5 +68,41 @@ describe('test Login', () => {
         expect(onPressEvent).toHaveBeenCalled();
         expect(instance.state.emailEmpty).toBe(true)
         expect(instance.state.passwordEmpty).toBe(true)
+    })
+
+    it('test onPress event of sign in button when email and password is valid it will navigate to Dashboard Screen', async() => {
+        const navigation = { navigate : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation} />)
+        const instance = component.instance();
+        instance.emailHandler('anikchowdhury440@gmail.com')
+        instance.passwordHandler('Anik#1234')
+        await instance.handleSignInButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        return UserServices.login(instance.state.email, instance.state.password).then(() => expect(navigation.navigate).toBeCalledWith('Dashboard'))
+    })
+
+    it('test onPress event of sign in button when email is invalid then invalidEmail state should be true', async() => {
+        const navigation = { navigate : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation} />)
+        const instance = component.instance();
+        instance.emailHandler('anikchowdhury43@gmail.com')
+        instance.passwordHandler('Anik#1234')
+        await instance.handleSignInButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        return UserServices.login(instance.state.email, instance.state.password).catch(error => expect(instance.state.invalidEmail).toBe(true))
+    })
+
+    it('test onPress event of sign in button when email is valid but password invalid then invalidPassword state should be true', async() => {
+        const navigation = { navigate : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation} />)
+        const instance = component.instance();
+        instance.emailHandler('anikchowdhury440@gmail.com')
+        instance.passwordHandler('Anik#123456')
+        await instance.handleSignInButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        return UserServices.login(instance.state.email, instance.state.password).catch(error => expect(instance.state.invalidPassword).toBe(true))
     })
 })

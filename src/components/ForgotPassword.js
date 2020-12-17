@@ -26,7 +26,10 @@ export default class ForgotPassword extends Component {
         const {onPress} = this.props
         if(this.state.email != '') {
             UserServices.forgotPassword(this.state.email)
-                .then(user => this.props.navigation.navigate('Login'))
+                .then(user => {
+                    alert('Reset Password link is send in your mail')
+                    this.props.navigation.navigate('Login')
+                })
                 .catch(error => {
                     if(error == 'Email not Found') {
                         this.setState({

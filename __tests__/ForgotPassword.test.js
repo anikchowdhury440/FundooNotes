@@ -1,6 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import ForgotPassword from '../src/components/ForgotPassword';
+import UserServices from '../services/UserServices';
 
 describe('test ForgotPassword', () => {
     it('should match to snapshot', () => {
@@ -15,31 +16,6 @@ describe('test ForgotPassword', () => {
         expect(component.instance().state.email).toBe('anik@gmail.com')
     })
 
-    //Failing
-    // it('test onPress event of reset password button when correct credential it will navigate login screen', async () => {
-    //     const navigation = { push : jest.fn() }
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<ForgotPassword onPress = {onPressEvent} navigation = {navigation}/>)
-    //     const instance = component.instance();
-    //     instance.emailHandler('anik@gmail.com')
-    //     await instance.handleResetPasswordButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(navigation.push).toBeCalledWith("Login");
-    // })
-
-    // //Failing
-    // it('test onPress event of reset password button when incorrect email it will update the invalidEmail state to true', async () => {
-    //     const navigation = { push : jest.fn() }
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<ForgotPassword onPress = {onPressEvent} navigation = {navigation}/>)
-    //     const instance = component.instance();
-
-    //     instance.emailHandler('ani@gmail.com')
-    //     await instance.handleResetPasswordButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(instance.state.invalidEmail).toBe(true);
-    // })
-
     it('test onPress event of reset password button when all textinput empty it will update the stateEmpty state to true ', async () => {
         const onPressEvent = jest.fn();
         const component = shallow(<ForgotPassword onPress = {onPressEvent}/>)
@@ -47,5 +23,27 @@ describe('test ForgotPassword', () => {
         await instance.handleResetPasswordButton();
         expect(onPressEvent).toHaveBeenCalled();
         expect(instance.state.emailEmpty).toBe(true)
+    })
+
+    it('test onPress event of reset password button when email is valid it will navigate to Login Screen', async() => {
+        const navigation = { navigate : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<ForgotPassword onPress = {onPressEvent} navigation = {navigation} />)
+        const instance = component.instance();
+        instance.emailHandler('anikchowdhury440@gmail.com')
+        await instance.handleResetPasswordButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        return UserServices.forgotPassword(instance.state.email).then(() => expect(navigation.navigate).toBeCalledWith('Login'))
+    })
+
+    it('test onPress event of reset password button when email is invalid then invalidEmail state should be true', async() => {
+        const navigation = { navigate : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<ForgotPassword onPress = {onPressEvent} navigation = {navigation} />)
+        const instance = component.instance();
+        instance.emailHandler('anikchowdhury44@gmail.com')
+        await instance.handleResetPasswordButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        return UserServices.forgotPassword(instance.state.email).catch(error => expect(instance.state.invalidEmail).toBe(true))
     })
 })
