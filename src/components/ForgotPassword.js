@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {View, Text, ScrollView, TextInput, TouchableOpacity, Image} from 'react-native';
-import * as KeyChain from 'react-native-keychain'
-import auth from '@react-native-firebase/auth';
-
+import UserServices from '../../services/UserServices';
 import ForgotPasswordStyle from '../styles/ForgotPassword.styles'
 
 export default class ForgotPassword extends Component {
@@ -11,16 +9,8 @@ export default class ForgotPassword extends Component {
 
         this.state = {
             email : '',
-            password : '',
-            confirmPassword : '',
             invalidEmail : false,
-            passwordValidation : true,
-            confirmPasswordValidation : true,
-            secureTextPassword : true,
-            secureTextConfirmPassword : true,
             emailEmpty : false,
-            passwordEmpty : false,
-            confirmPasswordEmpty : false,
         }
     }
 
@@ -32,117 +22,23 @@ export default class ForgotPassword extends Component {
         })
     }
 
-    passwordHandler = async (password) => {
-        await this.setState({
-            password : password,
-            passwordEmpty : false,
-        })
-        this.validatePassword();
-        if(this.state.confirmPassword != '') {
-            this.validateConfirmPassword();
-        }
-    }
-
-    confirmPasswordHandler = async (confirmPassword) => {
-        await this.setState({
-            confirmPassword : confirmPassword,
-            confirmPasswordEmpty : false,
-        })
-        this.validateConfirmPassword();
-    }
-
-    validatePassword = () => {
-        const passwordRegex = new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[*.!@#$%^&(){}:'<>,.>/~`_+=|].).{8,}$");
-        if(passwordRegex.test(this.state.password)) {
-            this.setState({
-                passwordValidation: true
-            })
-        }
-        else {
-            this.setState({
-                passwordValidation: false
-            })
-        }
-    }
-
-    validateConfirmPassword = () => {
-        if(this.state.password == this.state.confirmPassword) {
-            this.setState({
-                confirmPasswordValidation : true
-            })
-        }
-        else {
-            this.setState({
-                confirmPasswordValidation : false
-            })
-        }
-    }
-
-    handleSecureTextPassword = () => {
-        const {onPress} = this.props
-        if(this.state.secureTextPassword == true) {
-            this.setState({
-                secureTextPassword : false
-            })
-        }
-        else {
-            this.setState({
-                secureTextPassword : true
-            })
-        }
-        (onPress == undefined) ? null : onPress();
-    }
-
-    handleSecureTextConfirmPassword = () => {
-        const {onPress} = this.props
-        if(this.state.secureTextConfirmPassword == true) {
-            this.setState({
-                secureTextConfirmPassword : false
-            })
-        }
-        else {
-            this.setState({
-                secureTextConfirmPassword : true
-            })
-        }
-        (onPress == undefined) ? null : onPress();
-    }
-
     handleResetPasswordButton = async () => {
         const {onPress} = this.props
-        if(this.state.email != '' && this.state.password != '' && this.state.confirmPassword != '') {
-            auth().sendPasswordResetEmail(this.state.email)
-
-            try{
-                const credential = await KeyChain.getGenericPassword();
-                if(credential.username == this.state.email) {
-                    await KeyChain.setGenericPassword(credential.username, this.state.password)
-                    this.props.navigation.push('Login');
-                }
-                else {
-                    this.setState({
-                        invalidEmail : true
-                    })
-                }
-            }
-            catch(error) {
-                console.log('Error', error);
-            }
+        if(this.state.email != '') {
+            UserServices.forgotPassword(this.state.email)
+                .then(user => this.props.navigation.navigate('Login'))
+                .catch(error => {
+                    if(error == 'Email not Found') {
+                        this.setState({
+                            invalidEmail : true
+                        })
+                    }
+                })
         }
         else {
             if(this.state.email == '') {
                 await this.setState({
                     emailEmpty : true
-                })
-            }
-            if(this.state.password == '') {
-                await this.setState({
-                    passwordEmpty : true
-                })
-            }
-            if(this.state.confirmPassword == '') {
-                await this.setState({
-                    confirmPasswordEmpty : true
                 })
             }
         }
@@ -171,61 +67,7 @@ export default class ForgotPassword extends Component {
                             <Text style = {ForgotPasswordStyle.text_error_style}>
                                 {(this.state.emailEmpty) ? 'required..' : (this.state.invalidEmail) ? 'Email not Found..' : null}
                             </Text>
-                        </View>
-                        <View style = {ForgotPasswordStyle.textinput_view_style}>
-                            <TextInput placeholder = {"New Password"} 
-                                style = {[ForgotPasswordStyle.textinput_style, ForgotPasswordStyle.password_textinput_style]}
-                                secureTextEntry = {this.state.secureTextPassword}
-                                maxLength = {20}
-                                onChangeText = {this.passwordHandler}/>
-
-                                {(this.state.secureTextPassword) ?
-                                    <TouchableOpacity 
-                                        style = {ForgotPasswordStyle.icon}
-                                        onPress = {this.handleSecureTextPassword}>
-                                            <Image style = {ForgotPasswordStyle.icon_style} source = {require('../assets/eye.png')}/>
-                                    </TouchableOpacity> 
-                                    : 
-                                    <TouchableOpacity 
-                                        style = {ForgotPasswordStyle.icon}
-                                        onPress = {this.handleSecureTextPassword}>
-                                            <Image style = {ForgotPasswordStyle.icon_style} source = {require('../assets/eye-off.png')}/>
-                                    </TouchableOpacity>  
-                                }
-                            
-                        </View>
-                        <View>    
-                            <Text style = {ForgotPasswordStyle.text_error_style}>
-                                {(this.state.passwordEmpty) ? 'required..' : (this.state.passwordValidation) ? null : 'Weak Password..'}
-                            </Text>
-                        </View>
-                        <View style = {ForgotPasswordStyle.textinput_view_style}>
-                            <TextInput placeholder = {"Confirm Password"} 
-                                style = {[ForgotPasswordStyle.textinput_style, ForgotPasswordStyle.password_textinput_style]}
-                                secureTextEntry = {this.state.secureTextConfirmPassword}
-                                maxLength = {20}
-                                onChangeText = {this.confirmPasswordHandler}/>
-
-                                {(this.state.secureTextConfirmPassword) ?
-                                    <TouchableOpacity 
-                                        style = {ForgotPasswordStyle.icon}
-                                        onPress = {this.handleSecureTextConfirmPassword}>
-                                            <Image style = {ForgotPasswordStyle.icon_style} source = {require('../assets/eye.png')}/>
-                                    </TouchableOpacity> 
-                                    : 
-                                    <TouchableOpacity 
-                                        style = {ForgotPasswordStyle.icon}
-                                        onPress = {this.handleSecureTextConfirmPassword}>
-                                            <Image style = {ForgotPasswordStyle.icon_style} source = {require('../assets/eye-off.png')}/>
-                                    </TouchableOpacity>  
-                                }
-                            
-                        </View>
-                        <View>    
-                            <Text style = {ForgotPasswordStyle.text_error_style}>
-                                {(this.state.confirmPasswordEmpty) ? 'required..' : (this.state.confirmPasswordValidation) ? null : 'Password does not matching'}
-                            </Text>
-                        </View>
+                        </View>                        
                         <View>
                             <TouchableOpacity 
                                 style = {ForgotPasswordStyle.resetPassword_button_styles}

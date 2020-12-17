@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const ForgotPasswordStyle = StyleSheet.create({
     image_view_style: {
         alignSelf : "center", 
-        marginTop : 20, 
+        marginTop : 100, 
         borderWidth : 2, 
         borderRadius : 70
     },
@@ -15,7 +15,7 @@ const ForgotPasswordStyle = StyleSheet.create({
     },
 
     container : {
-        marginTop : 30,
+        marginTop : 50,
         alignItems : "center",
         marginBottom : 100
     },
@@ -67,21 +67,6 @@ const ForgotPasswordStyle = StyleSheet.create({
         color : 'red'
     },
 
-    icon_style : {
-        height : 35,
-        width : 35,
-        marginTop : 5,
-        alignSelf : 'flex-end',
-    },
-
-    icon : {
-        width : '13%'
-    },
-
-    password_textinput_style : {
-        width : '85%'
-    },
-
     resetPassword_button_styles : {
         width : 200,
         marginBottom : 20,
@@ -97,23 +82,6 @@ const ForgotPasswordStyle = StyleSheet.create({
         padding : 10,
     },
 
-    backSignIn_button : {
-        alignSelf : "center",
-        color : '#696969',
-        fontWeight : 'bold',
-        marginBottom : 20
-    },
-    
-    signup_block : {
-        flexDirection : "row",
-        justifyContent : "center",
-        marginBottom : 20,
-    },
-
-    signup_text : {
-        color : "#339EFF",
-        fontWeight : 'bold'
-    },
 })
 
 export default ForgotPasswordStyle;

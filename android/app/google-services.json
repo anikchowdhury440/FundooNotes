@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "676718556890",
-    "project_id": "fundoonotes-39081",
-    "storage_bucket": "fundoonotes-39081.appspot.com"
+    "project_number": "674009456937",
+    "project_id": "fundoonotes-893f7",
+    "storage_bucket": "fundoonotes-893f7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:676718556890:android:00b99a2f762cf57721d7e3",
+        "mobilesdk_app_id": "1:674009456937:android:da7d282fc751f4e98c9738",
         "android_client_info": {
           "package_name": "com.fundoonotes"
         }
       },
       "oauth_client": [
         {
-          "client_id": "676718556890-fknfsk40unsrh1ej5ttsfa4f8n2485k4.apps.googleusercontent.com",
+          "client_id": "674009456937-ppe0r9mvpp3hsik56hvi4gv2rvg0rgcv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAWWwVKtlUupNDRDbHjeJYVCsviguKCNtc"
+          "current_key": "AIzaSyDpyIL5HC_Kwlo5ZRjtEABSXmOLgRGzlvc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "676718556890-fknfsk40unsrh1ej5ttsfa4f8n2485k4.apps.googleusercontent.com",
+              "client_id": "674009456937-ppe0r9mvpp3hsik56hvi4gv2rvg0rgcv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

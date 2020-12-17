@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import RegisterStyle from '../styles/Register.styles';
-import * as KeyChain from 'react-native-keychain'
-import auth from '@react-native-firebase/auth';
+import UserServices from '../../services/UserServices';
 
 export default class Register extends Component {
     constructor(props) {
@@ -191,23 +190,21 @@ export default class Register extends Component {
             this.state.emailValidation == true &&
             this.state.passwordValidation == true && 
             this.state.confirmPasswordValidation == true ) {
-                await KeyChain.setGenericPassword(this.state.email, this.state.password)
-                auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-                    .then(() => {
-                        this.props.navigation.push("Login");
+                console.log('press');
+                UserServices.register(this.state.email, this.state.password)
+                    .then(user => {
+                        this.props.navigation.push("Login")
                     })
                     .catch(error => {
-                        if (error.code === 'auth/email-already-in-use') {
+                        if(error == 'Email Already Exist') {
                             this.setState({
                                 emailPresent : true
                             })
                         }
-                      
-                        console.log(error);
                     })
         }
         else {
-            if(this.state.firstName == ''){
+            if(this.state.firstName == '') {
                 await this.setState({
                     firstNameEmpty : true
                 })

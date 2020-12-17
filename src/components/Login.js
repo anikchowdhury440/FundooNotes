@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Image} from 'react-native';
-import * as KeyChain from 'react-native-keychain'
-import auth from '@react-native-firebase/auth';
-
+import UserServices from '../../services/UserServices';
 import LoginStyle from '../styles/Login.styles'
 
 export default class Login extends Component {
@@ -63,46 +61,22 @@ export default class Login extends Component {
         const {onPress} = this.props
         if(this.state.email != '' && this.state.password != '')
         {
-            auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-                .then(() => this.props.navigation.navigate('Dashboard'))
+            UserServices.login(this.state.email, this.state.password)
+                .then(user => {
+                    this.props.navigation.navigate('Dashboard')
+                })
                 .catch(error => {
-                    if (error.code === 'auth/user-not-found') {
+                    if(error == 'Email not Found') {
                         this.setState({
                             invalidEmail : true
                         })
                     }
-                    if (error.code === 'auth/wrong-password') {
+                    if(error == 'Incorrect Password') {
                         this.setState({
                             invalidPassword : true
                         })
                     }
-                    console.log(error)
                 })
-            try{
-                const credential = await KeyChain.getGenericPassword();
-                if(credential.username == this.state.email) {
-                    if(credential.password == this.state.password) {
-                        this.props.navigation.navigate("Dashboard");
-                        await this.setState({
-                            email : '',
-                            password : '',
-                        })
-                    }
-                    else {
-                        await this.setState({
-                            invalidPassword : true
-                        })
-                    }
-                }
-                else {
-                    await this.setState({
-                        invalidEmail : true
-                    })
-                }
-            }
-            catch(error) {
-                console.log('Error', error);
-            }
         }
         else{
             if(this.state.email == '') {
