@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Image} from 'react-native';
 import UserServices from '../../services/UserServices';
 import LoginStyle from '../styles/Login.styles'
+import {LoginButton, AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk'
 
 export default class Login extends Component {
     constructor(props) {
@@ -14,7 +15,11 @@ export default class Login extends Component {
             invalidPassword : false,
             secureTextPassword : true,
             emailEmpty : false,
-            passwordEmpty : false
+            passwordEmpty : false,
+
+            user_name: '',
+            avatar_url: '',
+            avatar_show: false
         }
     }
 
@@ -99,6 +104,22 @@ export default class Login extends Component {
         //onPress();
     }
 
+    get_Response_Info = (error, result) => {
+        if (error) {
+          Alert.alert('Error fetching data: ' + error.toString());
+        } 
+        else {
+          this.setState({ user_name: 'Welcome' + ' ' + result.name });
+          this.setState({ avatar_url: result.picture.data.url });
+          this.setState({ avatar_show: true })
+          console.log(result);
+        }
+      }
+
+    onLogout = () => {
+        this.setState({ user_name: null, avatar_url: null, avatar_show: false });
+    }
+    
     render() {
         return(
             <ScrollView>
@@ -169,6 +190,36 @@ export default class Login extends Component {
                                 <Text style = {LoginStyle.signup_text}>SIGN UP</Text>
                             </TouchableOpacity>
                         </View>
+
+                        <View>
+                            <LoginButton
+                                readPermissions={['public_profile']}
+                                onLoginFinished={(error, result) => {
+                                    if (error) {
+                                        console.log(error.message);
+                                        console.log('login has error: ' + result.error);
+                                    } 
+                                    else if (result.isCancelled) {
+                                        console.log('login is cancelled.');
+                                    } 
+                                    else {
+                                        AccessToken.getCurrentAccessToken().then(data => {
+                                        console.log(data.accessToken.toString());
+                        
+                                        const processRequest = new GraphRequest(
+                                        '/me?fields=name,picture.type(large)',
+                                        null,
+                                        this.get_Response_Info
+                                        );
+                                        // Start the graph request.
+                                        new GraphRequestManager().addRequest(processRequest).start();
+                        
+                                        });
+                                    }
+                                }}
+                                onLogoutFinished={this.onLogout}
+                                />
+                        </View> 
                     </View>
                 </View>
             </ScrollView>
