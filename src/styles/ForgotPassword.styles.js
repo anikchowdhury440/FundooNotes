@@ -68,18 +68,19 @@ const ForgotPasswordStyle = StyleSheet.create({
     },
 
     resetPassword_button_styles : {
-        width : 200,
+        width : 230,
         marginBottom : 20,
         backgroundColor : "#339EFF",
         alignSelf : 'center',
-        borderRadius : 20
+        borderRadius : 20,
+        height : 40
     },
 
     resetPassword_button_text : {
         alignSelf : "center",
         color : 'white',
         fontSize : 17,
-        padding : 10,
+        padding : 8,
     },
 
 })

@@ -94,18 +94,19 @@ const LoginStyle = StyleSheet.create({
     },
 
     signin_button_styles : {
-        width : '50%',
-        marginBottom : 20,
+        width : 230,
+        marginBottom : 10,
         backgroundColor : "#339EFF",
         alignSelf : 'center',
-        borderRadius : 20
+        borderRadius : 20,
+        height : 40
     },
 
     signin_button_text : {
         alignSelf : "center",
         color : 'white',
         fontSize : 17,
-        padding : 10,
+        padding : 8,
     },
 
     signup_block : {
@@ -121,6 +122,23 @@ const LoginStyle = StyleSheet.create({
 
     text_style : {
         fontSize : 20,
+    },
+
+    facebook_button_container : {
+        width : 230,
+        alignSelf : 'center',
+        marginBottom : 20
+    },
+
+    facebook_button_style : {
+        backgroundColor : '#4267B2',
+        borderRadius : 20
+    },
+
+    or_text : {
+        alignSelf : 'center',
+        marginBottom : 10,
+        fontWeight : 'bold'
     }
 });
 

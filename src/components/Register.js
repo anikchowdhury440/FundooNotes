@@ -175,7 +175,7 @@ export default class Register extends Component {
     handleSignInButton = () => {
         const {onPress} = this.props;
         this.props.navigation.push('Login')
-        //onPress();
+        onPress();
     }
 
     handleSignUpButton = async () => {
@@ -190,9 +190,9 @@ export default class Register extends Component {
             this.state.emailValidation == true &&
             this.state.passwordValidation == true && 
             this.state.confirmPasswordValidation == true ) {
-                UserServices.register(this.state.email, this.state.password)
+                await UserServices.register(this.state.email, this.state.password)
                     .then(user => {
-                        alert('User Registered Successfully')
+                        //alert('You are Registered Successfully')
                         this.props.navigation.push("Login")
                     })
                     .catch(error => {
@@ -230,7 +230,7 @@ export default class Register extends Component {
                 })
             }
         }
-        //onPress();
+        onPress();
     }
 
     render() {

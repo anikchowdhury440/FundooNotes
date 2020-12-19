@@ -179,19 +179,19 @@ describe('test Register', () => {
         expect(instance.state.confirmPasswordEmpty).toBe(true)
     })
 
-    it('test onPress event of sign up button when all fields are valid it will navigate to Dashboard Screen', async() => {
+    it('test onPress event of sign up button when all fields are valid it will navigate to Login Screen', async() => {
         const navigation = { navigate : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<Register onPress = {onPressEvent} navigation = {navigation} />)
         const instance = component.instance();
         instance.firstNameHandler('Anik')
         instance.lastNameHandler('Chowdhury')
-        instance.emailHandler('anikchowdhury55@gmail.com')
+        instance.emailHandler('anikchowdhury10001@gmail.com')
         instance.passwordHandler('Anik#1234')
         instance.confirmPasswordHandler('Anik#1234')
         await instance.handleSignUpButton();
         expect(onPressEvent).toHaveBeenCalled();
-        return UserServices.register(instance.state.email, instance.state.password).then(() => expect(navigation.navigate).toBeCalledWith('Login'))
+        return UserServices.register(instance.state.email, instance.state.password).then(user => expect(navigation.navigate).toBeCalledWith('Login'))
     })
 
     it('test onPress event of sign up button when email is already present then emailPresent state should be true', async() => {
@@ -208,4 +208,5 @@ describe('test Register', () => {
         expect(onPressEvent).toHaveBeenCalled();
         return UserServices.register(instance.state.email, instance.state.password).catch(error => expect(instance.state.emailPresent).toBe(true))
     })
+
 })

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Image} from 'react-native';
 import UserServices from '../../services/UserServices';
 import LoginStyle from '../styles/Login.styles'
-import {LoginButton, AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk'
+import { Button } from 'react-native-paper';
+import SocialServices from '../../services/SocialServices';
 
 export default class Login extends Component {
     constructor(props) {
@@ -16,10 +17,6 @@ export default class Login extends Component {
             secureTextPassword : true,
             emailEmpty : false,
             passwordEmpty : false,
-
-            user_name: '',
-            avatar_url: '',
-            avatar_show: false
         }
     }
 
@@ -59,14 +56,14 @@ export default class Login extends Component {
     handleSignUpButton = async () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("Register")
-        //onPress();
+        onPress();
     }
 
     handleSignInButton = async () => {
         const {onPress} = this.props
         if(this.state.email != '' && this.state.password != '')
         {
-            UserServices.login(this.state.email, this.state.password)
+            await UserServices.login(this.state.email, this.state.password)
                 .then(user => {
                     this.props.navigation.navigate('Dashboard')
                 })
@@ -95,29 +92,23 @@ export default class Login extends Component {
                 })
             }
         }
-        //onPress();
+        onPress();
     }
 
     handleForgotPasswordButton = () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("ForgotPassword")
-        //onPress();
+        onPress();
     }
 
-    get_Response_Info = (error, result) => {
-        if (error) {
-          Alert.alert('Error fetching data: ' + error.toString());
-        } 
-        else {
-          this.setState({ user_name: 'Welcome' + ' ' + result.name });
-          this.setState({ avatar_url: result.picture.data.url });
-          this.setState({ avatar_show: true })
-          console.log(result);
-        }
-      }
-
-    onLogout = () => {
-        this.setState({ user_name: null, avatar_url: null, avatar_show: false });
+    handleFacebookLoginButton = async () => {
+        const {onPress} = this.props;
+        SocialServices.facebookLogin()
+            .then(UserCredential => this.props.navigation.navigate('Dashboard'))
+            .catch(error => {
+                console.log(error)
+            })
+        onPress();
     }
     
     render() {
@@ -184,6 +175,17 @@ export default class Login extends Component {
                                 <Text style = {LoginStyle.signin_button_text}>SIGN IN</Text>
                             </TouchableOpacity> 
                         </View>
+                        <View>
+                            <Text style = {LoginStyle.or_text}>Or</Text>
+                        </View>
+                        <View style = {LoginStyle.facebook_button_container}>
+                            <Button icon = "facebook" 
+                                style = {LoginStyle.facebook_button_style} 
+                                color = {'white'} 
+                                onPress={this.handleFacebookLoginButton}>
+                                    Login with Facebook
+                            </Button>
+                        </View>
                         <View style = {LoginStyle.signup_block}>
                             <Text>Don't have an account? </Text>
                             <TouchableOpacity onPress = {this.handleSignUpButton}>
@@ -191,35 +193,6 @@ export default class Login extends Component {
                             </TouchableOpacity>
                         </View>
 
-                        <View>
-                            <LoginButton
-                                readPermissions={['public_profile']}
-                                onLoginFinished={(error, result) => {
-                                    if (error) {
-                                        console.log(error.message);
-                                        console.log('login has error: ' + result.error);
-                                    } 
-                                    else if (result.isCancelled) {
-                                        console.log('login is cancelled.');
-                                    } 
-                                    else {
-                                        AccessToken.getCurrentAccessToken().then(data => {
-                                        console.log(data.accessToken.toString());
-                        
-                                        const processRequest = new GraphRequest(
-                                        '/me?fields=name,picture.type(large)',
-                                        null,
-                                        this.get_Response_Info
-                                        );
-                                        // Start the graph request.
-                                        new GraphRequestManager().addRequest(processRequest).start();
-                        
-                                        });
-                                    }
-                                }}
-                                onLogoutFinished={this.onLogout}
-                                />
-                        </View> 
                     </View>
                 </View>
             </ScrollView>

@@ -84,18 +84,19 @@ const RegisterStyle = StyleSheet.create({
     },
 
     signup_button_styles : {
-        width : '50%',
+        width : 230,
         marginBottom : 20,
         backgroundColor : "#339EFF",
         alignSelf : 'center',
-        borderRadius : 20
+        borderRadius : 20,
+        height : 40
     },
 
     signup_button_text : {
         alignSelf : "center",
         color : 'white',
         fontSize : 17,
-        padding : 10,
+        padding : 8,
     },
 
     signin_block : {
