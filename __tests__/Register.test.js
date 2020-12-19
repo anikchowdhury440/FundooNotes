@@ -184,14 +184,16 @@ describe('test Register', () => {
         const onPressEvent = jest.fn();
         const component = shallow(<Register onPress = {onPressEvent} navigation = {navigation} />)
         const instance = component.instance();
-        instance.firstNameHandler('Anik')
-        instance.lastNameHandler('Chowdhury')
-        instance.emailHandler('anikchowdhury10001@gmail.com')
+        instance.firstNameHandler('Pawan')
+        instance.lastNameHandler('Kumar')
+        instance.emailHandler('anikchowdhury10004@gmail.com')
         instance.passwordHandler('Anik#1234')
         instance.confirmPasswordHandler('Anik#1234')
         await instance.handleSignUpButton();
         expect(onPressEvent).toHaveBeenCalled();
-        return UserServices.register(instance.state.email, instance.state.password).then(user => expect(navigation.navigate).toBeCalledWith('Login'))
+        return UserServices.register(instance.state.email, instance.state.password)
+            .then(user => expect(navigation.navigate).toBeCalledWith('Login'))
+            .catch(error => console.log(error))
     })
 
     it('test onPress event of sign up button when email is already present then emailPresent state should be true', async() => {

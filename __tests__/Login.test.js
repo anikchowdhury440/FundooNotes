@@ -114,6 +114,6 @@ describe('test Login', () => {
         const instance = component.instance();
         await instance.handleFacebookLoginButton();
         expect(onPressEvent).toHaveBeenCalled();
-        return await SocialServices.facebookLogin().then(userCredential => expect(navigation.navigate).toBeCalledWith('Dashboard'))
+        return SocialServices.facebookLogin().then(userCredential => expect(navigation.navigate).toBeCalledWith('Dashboard'))
     })
 })

@@ -56,7 +56,7 @@ export default class Login extends Component {
     handleSignUpButton = async () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("Register")
-        onPress();
+        //onPress();
     }
 
     handleSignInButton = async () => {
@@ -64,7 +64,7 @@ export default class Login extends Component {
         if(this.state.email != '' && this.state.password != '')
         {
             await UserServices.login(this.state.email, this.state.password)
-                .then(user => {
+                .then(UserCredential => {
                     this.props.navigation.navigate('Dashboard')
                 })
                 .catch(error => {
@@ -92,23 +92,26 @@ export default class Login extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
 
     handleForgotPasswordButton = () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("ForgotPassword")
-        onPress();
+        //onPress();
     }
 
     handleFacebookLoginButton = async () => {
         const {onPress} = this.props;
         SocialServices.facebookLogin()
-            .then(UserCredential => this.props.navigation.navigate('Dashboard'))
+            .then(UserCredential => {
+                SocialServices.writeUserDataForFacebookLogin(UserCredential);
+                this.props.navigation.navigate('Dashboard')
+            })
             .catch(error => {
                 console.log(error)
             })
-        onPress();
+        //onPress();
     }
     
     render() {

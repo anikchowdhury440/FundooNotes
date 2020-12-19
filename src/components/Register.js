@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import RegisterStyle from '../styles/Register.styles';
 import UserServices from '../../services/UserServices';
+import Firebase from '../../config/Firebase'
 
 export default class Register extends Component {
     constructor(props) {
@@ -175,7 +176,7 @@ export default class Register extends Component {
     handleSignInButton = () => {
         const {onPress} = this.props;
         this.props.navigation.push('Login')
-        onPress();
+        //onPress();
     }
 
     handleSignUpButton = async () => {
@@ -190,9 +191,10 @@ export default class Register extends Component {
             this.state.emailValidation == true &&
             this.state.passwordValidation == true && 
             this.state.confirmPasswordValidation == true ) {
-                await UserServices.register(this.state.email, this.state.password)
-                    .then(user => {
-                        //alert('You are Registered Successfully')
+                UserServices.register(this.state.email, this.state.password)
+                    .then(userCredential => {
+                        alert('You are Registered Successfully')
+                        UserServices.writeUserDataForRegister(userCredential, this.state.firstName, this.state.lastName)
                         this.props.navigation.push("Login")
                     })
                     .catch(error => {
@@ -230,8 +232,16 @@ export default class Register extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
+
+    // writeUserData = (userCredential) => {
+    //     Firebase.database().ref('users/' + userCredential.user.uid).set({
+    //         displayName : this.state.firstName + ' ' + this.state.lastName,
+    //         email : userCredential.user.email,
+    //         photoURL : userCredential.user.photoURL
+    //     })
+    // }
 
     render() {
         return(

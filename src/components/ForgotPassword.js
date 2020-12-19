@@ -45,7 +45,7 @@ export default class ForgotPassword extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
 
     render() {
