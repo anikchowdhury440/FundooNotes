@@ -5,6 +5,7 @@ import LoginStyle from '../styles/Login.styles'
 import { Button } from 'react-native-paper';
 import SocialServices from '../../services/SocialServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Strings from '../Language/Strings'
 
 export default class Login extends Component {
     constructor(props) {
@@ -24,11 +25,9 @@ export default class Login extends Component {
 
     async componentDidMount(){
         try {
-            const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
-            console.log(isLoggedIn);
-            if(isLoggedIn == 'true') {
-              const userCredential = await AsyncStorage.getItem('userCredential')
-              console.log(userCredential);
+            const isLoggedIn = JSON.parse(await AsyncStorage.getItem('isLoggedIn'))
+            if(isLoggedIn) {
+              const UserCredential = JSON.parse(await AsyncStorage.getItem('userCredential'))
               this.props.navigation.navigate("Dashboard")
             }
           } 
@@ -154,11 +153,11 @@ export default class Login extends Component {
                 <View style = {LoginStyle.container} >
                     <View style = {LoginStyle.signin_container}>
                         <View>
-                            <Text style = {LoginStyle.signin_text}>Sign in</Text>
+                            <Text style = {LoginStyle.signin_text}>{Strings.signIn}</Text>
                         </View>
                         <View style = {LoginStyle.textinput_view_style}>
                             <TextInput 
-                                placeholder = {"Email"} 
+                                placeholder = {Strings.email} 
                                 maxLength = {30}
                                 style = {LoginStyle.textinput_style}
                                 onChangeText = {this.emailHandler}/>
@@ -169,7 +168,7 @@ export default class Login extends Component {
                             </Text>
                         </View>
                         <View style = {LoginStyle.textinput_view_style}>
-                            <TextInput placeholder = {"Password"} 
+                            <TextInput placeholder = {Strings.password} 
                                 style = {[LoginStyle.textinput_style, LoginStyle.password_textinput_style]}
                                 onChangeText = {this.passwordHandler}
                                 maxLength = {20}
@@ -199,31 +198,31 @@ export default class Login extends Component {
                             <TouchableOpacity 
                                 style = {LoginStyle.forgot_password_style}
                                 onPress = {this.handleForgotPasswordButton}>
-                                    <Text style = {LoginStyle.forgot_password_text_style}>Forgot Password ?</Text>
+                                    <Text style = {LoginStyle.forgot_password_text_style}>{Strings.forgotPassword} ?</Text>
                             </TouchableOpacity>
                         </View>
                         <View>
                             <TouchableOpacity 
                                 style = {LoginStyle.signin_button_styles}
                                 onPress = {this.handleSignInButton}>    
-                                <Text style = {LoginStyle.signin_button_text}>SIGN IN</Text>
+                                <Text style = {LoginStyle.signin_button_text}>{Strings.signInButton}</Text>
                             </TouchableOpacity> 
                         </View>
                         <View>
-                            <Text style = {LoginStyle.or_text}>Or</Text>
+                            <Text style = {LoginStyle.or_text}>{Strings.or}</Text>
                         </View>
                         <View style = {LoginStyle.facebook_button_container}>
                             <Button icon = "facebook" 
                                 style = {LoginStyle.facebook_button_style} 
                                 color = {'white'} 
                                 onPress={this.handleFacebookLoginButton}>
-                                    Login with Facebook
+                                    {Strings.loginFacebookButton}
                             </Button>
                         </View>
                         <View style = {LoginStyle.signup_block}>
-                            <Text>Don't have an account? </Text>
+                            <Text>{Strings.doNotHaveAccount}</Text>
                             <TouchableOpacity onPress = {this.handleSignUpButton}>
-                                <Text style = {LoginStyle.signup_text}>SIGN UP</Text>
+                                <Text style = {LoginStyle.signup_text}>{Strings.signupButton}</Text>
                             </TouchableOpacity>
                         </View>
 

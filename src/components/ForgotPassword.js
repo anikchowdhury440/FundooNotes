@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {View, Text, ScrollView, TextInput, TouchableOpacity, Image} from 'react-native';
 import UserServices from '../../services/UserServices';
 import ForgotPasswordStyle from '../styles/ForgotPassword.styles'
+import Strings from '../Language/Strings'
 
 export default class ForgotPassword extends Component {
     constructor(props) {
@@ -57,11 +58,11 @@ export default class ForgotPassword extends Component {
                 <View style = {ForgotPasswordStyle.container}>
                     <View style = {ForgotPasswordStyle.forgetPassword_container}>
                         <View>
-                            <Text style = {ForgotPasswordStyle.forgetPassword_text}>Forgot Password</Text>
+                            <Text style = {ForgotPasswordStyle.forgetPassword_text}>{Strings.forgotPassword}</Text>
                         </View>
                         <View style = {ForgotPasswordStyle.textinput_view_style}>
                             <TextInput 
-                                placeholder = {"Email"} 
+                                placeholder = {Strings.email} 
                                 maxLength = {30}
                                 style = {ForgotPasswordStyle.textinput_style}
                                 onChangeText = {this.emailHandler}/>
@@ -75,7 +76,7 @@ export default class ForgotPassword extends Component {
                             <TouchableOpacity 
                                 style = {ForgotPasswordStyle.resetPassword_button_styles}
                                 onPress = {this.handleResetPasswordButton}>    
-                                    <Text style = {ForgotPasswordStyle.resetPassword_button_text}>RESET PASSWORD</Text>
+                                    <Text style = {ForgotPasswordStyle.resetPassword_button_text}>{Strings.ResetPasswordButton}</Text>
                             </TouchableOpacity> 
                         </View>
                     </View>

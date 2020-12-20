@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import RegisterStyle from '../styles/Register.styles';
 import UserServices from '../../services/UserServices';
+import Strings from '../Language/Strings'
 
 export default class Register extends Component {
     constructor(props) {
@@ -234,14 +235,6 @@ export default class Register extends Component {
         //onPress();
     }
 
-    // writeUserData = (userCredential) => {
-    //     Firebase.database().ref('users/' + userCredential.user.uid).set({
-    //         displayName : this.state.firstName + ' ' + this.state.lastName,
-    //         email : userCredential.user.email,
-    //         photoURL : userCredential.user.photoURL
-    //     })
-    // }
-
     render() {
         return(
             <ScrollView>
@@ -251,11 +244,11 @@ export default class Register extends Component {
                 <View style = {RegisterStyle.container}>
                     <View style = {RegisterStyle.signup_container}>
                         <View>
-                            <Text style = {RegisterStyle.signup_text}>Sign Up</Text>
+                            <Text style = {RegisterStyle.signup_text}>{Strings.signUp}</Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
                             <TextInput 
-                                placeholder = {"First Name"} 
+                                placeholder = {Strings.firstName} 
                                 style = {RegisterStyle.textinput_style}
                                 maxLength = {20}
                                 onChangeText = {this.firstNameHandler}/>
@@ -267,7 +260,7 @@ export default class Register extends Component {
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
                             <TextInput 
-                                placeholder = {"Last Name"} 
+                                placeholder = {Strings.lastName} 
                                 style = {RegisterStyle.textinput_style}
                                 maxLength = {20}
                                 onChangeText = {this.lastNameHandler}/>
@@ -279,7 +272,7 @@ export default class Register extends Component {
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
                             <TextInput 
-                                placeholder = {"Email"}
+                                placeholder = {Strings.email}
                                 maxLength = {30} 
                                 style = {RegisterStyle.textinput_style}
                                 onChangeText = {this.emailHandler}/>
@@ -290,7 +283,7 @@ export default class Register extends Component {
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
-                            <TextInput placeholder = {"Password"} 
+                            <TextInput placeholder = {Strings.password} 
                                 style = {[RegisterStyle.textinput_style, RegisterStyle.password_textinput_style]}
                                 secureTextEntry = {this.state.secureTextPassword}
                                 maxLength = {25}
@@ -317,7 +310,7 @@ export default class Register extends Component {
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
-                            <TextInput placeholder = {"Confirm Password"} 
+                            <TextInput placeholder = {Strings.confirmPassword} 
                                 style = {[RegisterStyle.textinput_style, RegisterStyle.password_textinput_style]}
                                 secureTextEntry = {this.state.secureTextConfirmPassword}
                                 maxLength = {25}
@@ -346,13 +339,13 @@ export default class Register extends Component {
                             <TouchableOpacity 
                                 style = {RegisterStyle.signup_button_styles}
                                 onPress = {this.handleSignUpButton}>    
-                                    <Text style = {RegisterStyle.signup_button_text}>SIGN UP</Text>
+                                    <Text style = {RegisterStyle.signup_button_text}>{Strings.signupButton}</Text>
                             </TouchableOpacity> 
                         </View>
                         <View style = {RegisterStyle.signin_block}>
-                            <Text>Already have an account? </Text>
+                            <Text>{Strings.alreadyHaveAccount}</Text>
                             <TouchableOpacity onPress = {this.handleSignInButton}>
-                                <Text style = {RegisterStyle.signin_text}>SIGN IN</Text>
+                                <Text style = {RegisterStyle.signin_text}>{Strings.signInButton}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
