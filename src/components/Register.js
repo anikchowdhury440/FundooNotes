@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import RegisterStyle from '../styles/Register.styles';
 import UserServices from '../../services/UserServices';
-import Firebase from '../../config/Firebase'
 
 export default class Register extends Component {
     constructor(props) {
