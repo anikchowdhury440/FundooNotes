@@ -1,0 +1,31 @@
+const Bengali = {
+    signIn : "সাইন ইন",
+        signUp : "সাইন আপ",
+        forgotPassword : "পাসওয়ার্ড ভুলে গেছেন",
+        email : "ইমেল",
+        password : "পাসওয়ার্ড",
+        firstName : "প্রথম নাম",
+        lastName : "শেষ নাম",
+        confirmPassword : "পাসওয়ার্ড নিশ্চিত করুন",
+        signInButton : "সাইন ইন করুন",
+        signupButton : "সাইন আপ করুন",
+        ResetPasswordButton : "পাসওয়ার্ড রিসেট করুন",
+        or : "অথবা",
+        loginFacebookButton : "ফেসবুক লগইন করুন",
+        doNotHaveAccount : "কোন অ্যাকাউন্ট নেই? ",
+        alreadyHaveAccount : "আগেই একটা অ্যাকাউন্ট আছে? ",
+        requiredfield : "প্রয়োজনীয় ক্ষেত্র",
+        emailNotFound : "ইমেল পাওয়া যায় নি",
+        sendMailMessage : "পাসওয়ার্ড রিসেট লিঙ্কটি আপনার নিবন্ধিত ইমেলটিতে প্রেরণ করা হয়েছে",
+        ok : "ঠিক আছে",
+        wrongPassword : "ভুল পাসওয়ার্ড",
+        invalidFirstName : "অবৈধ প্রথম নাম",
+        invalidLastName : "অবৈধ শেষ নাম",
+        invalidEmail : "অবৈধ ইমেল",
+        invalidPassword : "দুর্বল পাসওয়ার্ড",
+        invalidConfirmPassword : "পাসওয়ার্ড মেলেনি",
+        emailExist : "ইমেল টি ইতিমধ্যেটই আছে",
+        registerSuccessMessage : "আপনি সফলভাবে নিবন্ধন করেছেন"
+}
+
+export default Bengali

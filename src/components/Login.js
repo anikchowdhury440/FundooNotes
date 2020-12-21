@@ -5,7 +5,7 @@ import LoginStyle from '../styles/Login.styles'
 import { Button } from 'react-native-paper';
 import SocialServices from '../../services/SocialServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Strings from '../Language/Strings'
+import {Strings} from '../Language/Strings'
 
 export default class Login extends Component {
     constructor(props) {
@@ -27,7 +27,6 @@ export default class Login extends Component {
         try {
             const isLoggedIn = JSON.parse(await AsyncStorage.getItem('isLoggedIn'))
             if(isLoggedIn) {
-              const UserCredential = JSON.parse(await AsyncStorage.getItem('userCredential'))
               this.props.navigation.navigate("Dashboard")
             }
           } 
@@ -79,9 +78,9 @@ export default class Login extends Component {
         const {onPress} = this.props
         if(this.state.email != '' && this.state.password != '')
         {
-            await UserServices.login(this.state.email, this.state.password)
-                .then((UserCredential) => {
-                    this.storeIteminAsyncStorage(UserCredential)
+            UserServices.login(this.state.email, this.state.password)
+                .then(async (UserCredential) => {
+                    this.storeIteminAsyncStorage()
                     this.props.navigation.navigate('Dashboard')
                 })
                 .catch(error => {
@@ -112,13 +111,12 @@ export default class Login extends Component {
         //onPress();
     }
 
-    storeIteminAsyncStorage = async (UserCredential) => {
+    storeIteminAsyncStorage = async () => {
         try {
             await this.setState({
                 isLoggedIn : true
             })
             await AsyncStorage.setItem('isLoggedIn', JSON.stringify(this.state.isLoggedIn));
-            await AsyncStorage.setItem('userCredential', JSON.stringify(UserCredential));
         } catch (e) {
             console.log(e);
         }
@@ -133,9 +131,9 @@ export default class Login extends Component {
     handleFacebookLoginButton = async () => {
         const {onPress} = this.props;
         SocialServices.facebookLogin()
-            .then(UserCredential => {
-                SocialServices.writeUserDataForFacebookLogin(UserCredential);
-                this.storeIteminAsyncStorage(UserCredential)
+            .then(async UserCredential => {
+                UserServices.writeUserDataInRealtimeDatabase(UserCredential.user.uid, UserCredential.additionalUserInfo.profile.first_name, UserCredential.additionalUserInfo.profile.last_name, UserCredential.additionalUserInfo.profile.email);
+                this.storeIteminAsyncStorage()
                 this.props.navigation.navigate('Dashboard')
             })
             .catch(error => {
@@ -164,7 +162,7 @@ export default class Login extends Component {
                         </View>
                         <View>
                             <Text style = {LoginStyle.text_error_style}>
-                                {(this.state.emailEmpty) ? 'required..' : (this.state.invalidEmail) ? 'Email not Found..' : null}
+                                {(this.state.emailEmpty) ? Strings.requiredfield : (this.state.invalidEmail) ? Strings.emailNotFound : null}
                             </Text>
                         </View>
                         <View style = {LoginStyle.textinput_view_style}>
@@ -191,7 +189,7 @@ export default class Login extends Component {
                         </View>
                         <View>
                             <Text style = {LoginStyle.text_error_style}>
-                                {(this.state.passwordEmpty) ? 'required..' : (this.state.invalidPassword) ? 'Invalid Password..' : null}
+                                {(this.state.passwordEmpty) ? Strings.requiredfield : (this.state.invalidPassword) ? Strings.wrongPassword : null}
                             </Text>
                         </View>
                         <View>

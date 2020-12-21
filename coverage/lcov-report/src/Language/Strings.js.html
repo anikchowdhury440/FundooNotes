@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/styles/ForgotPassword.styles.js</title>
+    <title>Code coverage report for src/Language/Strings.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/styles</a> ForgotPassword.styles.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/Language</a> Strings.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -30,16 +30,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
@@ -144,9 +144,12 @@
 <a name='L85'></a><a href='#L85'>85</a>
 <a name='L86'></a><a href='#L86'>86</a>
 <a name='L87'></a><a href='#L87'>87</a>
-<a name='L88'></a><a href='#L88'>88</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -231,94 +234,100 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">import { StyleSheet } from 'react-native';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import LocalizedStrings from 'react-native-localization'<span class="branch-0 cbranch-no" title="branch not covered" ></span>
 &nbsp;
-const ForgotPasswordStyle = StyleSheet.create({
-    image_view_style: {
-        alignSelf : "center", 
-        marginTop : 100, 
-        borderWidth : 2, 
-        borderRadius : 70
+export let Strings = new LocalizedStrings({
+    "en-US" :{
+        signIn : "Sign-In", 
+        signUp : "Sign-Up",
+        forgotPassword : "Forgot Password",
+        email : "Email",
+        password : "Password",
+        firstName : "First Name",
+        lastName : "Last Name",
+        confirmPassword : "Confirm Password", 
+        signInButton : "SIGN IN",
+        signupButton : "SIGN UP",
+        ResetPasswordButton : "RESET PASSWORD",
+        or : "Or",  
+        loginFacebookButton : "LOGIN WITH FACEBOOK",
+        doNotHaveAccount : "Don't have an account? ",
+        alreadyHaveAccount : "Already have an account? ",
+        requiredfield : "Required Fields",
+        emailNotFound : "Email Not Found",
+        sendMailMessage : "Password Reset Link has been sent to your Registered Email",
+        ok : "Ok",
+        wrongPassword : "Wrong Password",
+        invalidFirstName : "Invalid First Name",
+        invalidLastName : "Invalid Last Name",
+        invalidEmail : "Invalid Email",
+        invalidPassword : "Weak Password",
+        invalidConfirmPassword : "Password not Matching",
+        emailExist : "Email Already Exist", 
+        registerSuccessMessage : "You are registered successfully"
     },
-&nbsp;
-    image_style: {
-        width : 80, 
-        height : 80, 
-        margin : 20
+    "bn-IN" : {
+        signIn : "সাইন ইন",
+        signUp : "সাইন আপ",
+        forgotPassword : "পাসওয়ার্ড ভুলে গেছেন",
+        email : "ইমেল",
+        password : "পাসওয়ার্ড",
+        firstName : "প্রথম নাম",
+        lastName : "শেষ নাম",
+        confirmPassword : "পাসওয়ার্ড নিশ্চিত করুন",
+        signInButton : "সাইন ইন করুন",
+        signupButton : "সাইন আপ করুন",
+        ResetPasswordButton : "পাসওয়ার্ড রিসেট করুন",
+        or : "অথবা",
+        loginFacebookButton : "ফেসবুক লগইন করুন",
+        doNotHaveAccount : "কোন অ্যাকাউন্ট নেই? ",
+        alreadyHaveAccount : "আগেই একটা অ্যাকাউন্ট আছে? ",
+        requiredfield : "প্রয়োজনীয় ক্ষেত্র",
+        emailNotFound : "ইমেল পাওয়া যায় নি",
+        sendMailMessage : "পাসওয়ার্ড রিসেট লিঙ্কটি আপনার নিবন্ধিত ইমেলটিতে প্রেরণ করা হয়েছে",
+        ok : "ঠিক আছে",
+        wrongPassword : "ভুল পাসওয়ার্ড",
+        invalidFirstName : "অবৈধ প্রথম নাম",
+        invalidLastName : "অবৈধ শেষ নাম",
+        invalidEmail : "অবৈধ ইমেল",
+        invalidPassword : "দুর্বল পাসওয়ার্ড",
+        invalidConfirmPassword : "পাসওয়ার্ড মেলেনি",
+        emailExist : "ইমেল টি ইতিমধ্যেটই আছে",
+        registerSuccessMessage : "আপনি সফলভাবে নিবন্ধন করেছেনy"
     },
-&nbsp;
-    container : {
-        marginTop : 50,
-        alignItems : "center",
-        marginBottom : 100
-    },
-&nbsp;
-    forgetPassword_container : {
-        backgroundColor : 'white',
-        width : '80%',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.30,
-        shadowRadius: 4.65,
-        elevation: 8,
-        borderRadius : 10
-    },
-&nbsp;
-    forgetPassword_text : {
-        paddingTop : 20,
-        paddingBottom : 20,
-        alignSelf : 'center',
-        fontWeight : 'bold',
-        fontSize : 20
-    },
-&nbsp;
-    textinput_view_style : {
-        borderWidth : 1, 
-        borderColor : '#808080', 
-        borderRadius : 10,
-        alignSelf : "center",
-        width : '80%',
-        marginLeft : '10%',
-        marginRight : '10%',
-        flexDirection : 'row',
-    },
-&nbsp;
-    textinput_style : {
-        paddingLeft : '5%',
-        paddingRight : '5%',
-        width : '100%',
-        fontSize : 15
-    },
-&nbsp;
-    text_error_style : {
-        alignSelf : 'flex-end',
-        marginRight : '10%',
-        marginBottom : 10,
-        color : 'red'
-    },
-&nbsp;
-    resetPassword_button_styles : {
-        width : 230,
-        marginBottom : 20,
-        backgroundColor : "#339EFF",
-        alignSelf : 'center',
-        borderRadius : 20,
-        height : 40
-    },
-&nbsp;
-    resetPassword_button_text : {
-        alignSelf : "center",
-        color : 'white',
-        fontSize : 17,
-        padding : 8,
-    },
-&nbsp;
-})
-&nbsp;
-export default ForgotPasswordStyle;</pre></td></tr></table></pre>
+    hi : {
+        signIn : "साइन इन",
+        signUp : "साइन अप",
+        forgotPassword : "पासवर्ड भूल गए",
+        email : "ईमेल",
+        password : "पासवर्ड",
+        firstName : "पहला नाम",
+        lastName : "अंतिम नाम",
+        confirmPassword : "पासवर्ड की पुष्टि कीजिये",
+        signInButton : "साइन इन करें",
+        signupButton : "साइन अप करें",
+        ResetPasswordButton : "पासवर्ड रीसेट करें", 
+        or : "अथवा",
+        loginFacebookButton : "फेसबुक लॉगइन करें",
+        doNotHaveAccount : "अकाउंट नहीं है? ",
+        alreadyHaveAccount : "पहले से एक अकाउंट है? ",
+        requiredfield : "आवश्यक क्षेत्र",
+        emailNotFound : "ईमेल नहीं मिला",
+        sendMailMessage : "पासवर्ड रीसेट लिंक आपके पंजीकृत ईमेल पर भेज दिया गया है",
+        ok : "ठीक हे",
+        wrongPassword : "गलत पासवर्ड",
+        invalidFirstName : "अमान्य प्रथम नाम",
+        invalidLastName : "अमान्य अंतिम नाम",
+        invalidEmail : "अवैध ईमेल",
+        invalidPassword : "कमजोर पासवर्ड",
+        invalidConfirmPassword : "पासवर्ड मेल नहीं",
+        emailExist : "ईमेल पहले से मौजूद है",
+        registerSuccessMessage : "आपने सफलतापूर्वक पंजीकरण कर लिया है"
+    }
+})</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

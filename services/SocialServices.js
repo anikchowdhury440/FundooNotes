@@ -24,13 +24,6 @@ class SocialServices {
         })
     }
 
-    writeUserDataForFacebookLogin = (userCredential) => {
-        Firebase.database().ref('users/' + userCredential.user.uid).set({
-            firstName : userCredential.additionalUserInfo.profile.first_name,
-            lastName : userCredential.additionalUserInfo.profile.last_name,
-            email : userCredential.additionalUserInfo.profile.email,
-        })
-    }
 }
 
 export default new SocialServices();

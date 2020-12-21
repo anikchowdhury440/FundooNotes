@@ -3,15 +3,15 @@ import { StyleSheet } from 'react-native';
 const LoginStyle = StyleSheet.create({
     image_view_style: {
         alignSelf : "center", 
-        marginTop : 50, 
+        marginTop : 40, 
         borderWidth : 2, 
         borderRadius : 70
     },
 
     image_style: {
-        width : 80, 
-        height : 80, 
-        margin : 20
+        width : 100, 
+        height : 100, 
+        margin : 20,
     },
 
     container : {

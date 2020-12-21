@@ -1,0 +1,31 @@
+const Italian = {
+    signIn : "accesso", 
+    signUp : "Registrati",
+    forgotPassword : "Ha dimenticato la parola d'ordine",
+    email : "E-mail",
+    password : "Password",
+    firstName : "nome di battesimo",
+    lastName : "cognome",
+    confirmPassword : "conferma password", 
+    signInButton : "ACCESSO",
+    signupButton : "REGISTRATI",
+    ResetPasswordButton : "RESETTA LA PASSWORD",
+    or : "O",  
+    loginFacebookButton : "FAI IL LOGIN CON FACEBOOK",
+    doNotHaveAccount : "Don't have an account? ",
+    alreadyHaveAccount : "Non possiedi un account? ",
+    requiredfield : "Campi richiesti",
+    emailNotFound : "Email non trovata",
+    sendMailMessage : "Il link per la reimpostazione della password è stato inviato alla tua email registrata",
+    ok : "Ok",
+    wrongPassword : "Password errata",
+    invalidFirstName : "Nome non valido",
+    invalidLastName : "Cognome non valido",
+    invalidEmail : "E-mail non valido",
+    invalidPassword : "Weak Password",
+    invalidConfirmPassword : "Password Debole",
+    emailExist : "Email già esistente", 
+    registerSuccessMessage : "Ti sei registrato con successo"
+}
+
+export default Italian;

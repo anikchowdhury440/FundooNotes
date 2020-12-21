@@ -1,0 +1,31 @@
+const Hindi = {
+    signIn : "साइन इन",
+    signUp : "साइन अप",
+    forgotPassword : "पासवर्ड भूल गए",
+    email : "ईमेल",
+    password : "पासवर्ड",
+    firstName : "पहला नाम",
+    lastName : "अंतिम नाम",
+    confirmPassword : "पासवर्ड की पुष्टि कीजिये",
+    signInButton : "साइन इन करें",
+    signupButton : "साइन अप करें",
+    ResetPasswordButton : "पासवर्ड रीसेट करें", 
+    or : "अथवा",
+    loginFacebookButton : "फेसबुक लॉगइन करें",
+    doNotHaveAccount : "अकाउंट नहीं है? ",
+    alreadyHaveAccount : "पहले से एक अकाउंट है? ",
+    requiredfield : "आवश्यक क्षेत्र",
+    emailNotFound : "ईमेल नहीं मिला",
+    sendMailMessage : "पासवर्ड रीसेट लिंक आपके पंजीकृत ईमेल पर भेज दिया गया है",
+    ok : "ठीक हे",
+    wrongPassword : "गलत पासवर्ड",
+    invalidFirstName : "अमान्य प्रथम नाम",
+    invalidLastName : "अमान्य अंतिम नाम",
+    invalidEmail : "अवैध ईमेल",
+    invalidPassword : "कमजोर पासवर्ड",
+    invalidConfirmPassword : "पासवर्ड मेल नहीं",
+    emailExist : "ईमेल पहले से मौजूद है",
+    registerSuccessMessage : "आपने सफलतापूर्वक पंजीकरण कर लिया है"
+}
+
+export default Hindi;

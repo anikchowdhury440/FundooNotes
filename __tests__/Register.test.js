@@ -179,36 +179,51 @@ describe('test Register', () => {
         expect(instance.state.confirmPasswordEmpty).toBe(true)
     })
 
-    it('test onPress event of sign up button when all fields are valid it will navigate to Login Screen', async() => {
-        const navigation = { navigate : jest.fn() }
-        const onPressEvent = jest.fn();
-        const component = shallow(<Register onPress = {onPressEvent} navigation = {navigation} />)
+    // it('test onPress event of sign up button when all fields are valid it will set Dialog Visible state true', async() => {
+    //     const onPressEvent = jest.fn();
+    //     const component = shallow(<Register onPress = {onPressEvent}/>)
+    //     const instance = component.instance();
+    //     instance.firstNameHandler('Pawan')
+    //     instance.lastNameHandler('Kumar')
+    //     instance.emailHandler('anikchowdhury10004@gmail.com')
+    //     instance.passwordHandler('Anik#1234')
+    //     instance.confirmPasswordHandler('Anik#1234')
+    //     await instance.handleSignUpButton();
+    //     expect(onPressEvent).toHaveBeenCalled();
+    //     expect(instance.state.visible).toBe(true)
+    // })
+
+    // it('test onPress event of sign up button when email is already present then emailPresent state should be true', async() => {
+    //     const onPressEvent = jest.fn();
+    //     const component = shallow(<Register onPress = {onPressEvent}/>)
+    //     const instance = component.instance();
+    //     instance.firstNameHandler('Anik')
+    //     instance.lastNameHandler('Chowdhury')
+    //     instance.emailHandler('anikchowdhury440@gmail.com')
+    //     instance.passwordHandler('Anik#1234')
+    //     instance.confirmPasswordHandler('Anik#1234')
+    //     await instance.handleSignUpButton();
+    //     expect(onPressEvent).toHaveBeenCalled();
+    //     return UserServices.register(instance.state.email, instance.state.password).catch(error => expect(instance.state.emailPresent).toBe(true))
+    // })
+
+    it('test onDismiss event of dialog button it will set visible state for dialog should be false', async () => {
+        const onDismissEvent = jest.fn();
+        const component = shallow(<Register onDismiss = {onDismissEvent}/>)
         const instance = component.instance();
-        instance.firstNameHandler('Pawan')
-        instance.lastNameHandler('Kumar')
-        instance.emailHandler('anikchowdhury10004@gmail.com')
-        instance.passwordHandler('Anik#1234')
-        instance.confirmPasswordHandler('Anik#1234')
-        await instance.handleSignUpButton();
-        expect(onPressEvent).toHaveBeenCalled();
-        return UserServices.register(instance.state.email, instance.state.password)
-            .then(user => expect(navigation.navigate).toBeCalledWith('Login'))
-            .catch(error => console.log(error))
+        await instance.hideDialog();
+        expect(onDismissEvent).toHaveBeenCalled();
+        expect(instance.state.visible).toBe(false)
     })
 
-    it('test onPress event of sign up button when email is already present then emailPresent state should be true', async() => {
+    it('test onPress event of dialog action button it will navigate to Login Screen', async() => {
         const navigation = { navigate : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<Register onPress = {onPressEvent} navigation = {navigation} />)
         const instance = component.instance();
-        instance.firstNameHandler('Anik')
-        instance.lastNameHandler('Chowdhury')
-        instance.emailHandler('anikchowdhury440@gmail.com')
-        instance.passwordHandler('Anik#1234')
-        instance.confirmPasswordHandler('Anik#1234')
-        await instance.handleSignUpButton();
+        await instance.handleDialogButton();
         expect(onPressEvent).toHaveBeenCalled();
-        return UserServices.register(instance.state.email, instance.state.password).catch(error => expect(instance.state.emailPresent).toBe(true))
+        expect(navigation.navigate).toBeCalledWith('Login')
     })
 
 })

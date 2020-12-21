@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import RegisterStyle from '../styles/Register.styles';
 import UserServices from '../../services/UserServices';
-import Strings from '../Language/Strings'
+import {Strings} from '../Language/Strings'
+import { Dialog, Portal, Button, Provider, Paragraph } from 'react-native-paper';
 
 export default class Register extends Component {
     constructor(props) {
@@ -26,7 +27,8 @@ export default class Register extends Component {
             emailEmpty : false,
             passwordEmpty : false,
             confirmPasswordEmpty : false,
-            emailPresent : false
+            emailPresent : false,
+            visible : false,
         }
     }
 
@@ -192,10 +194,11 @@ export default class Register extends Component {
             this.state.passwordValidation == true && 
             this.state.confirmPasswordValidation == true ) {
                 UserServices.register(this.state.email, this.state.password)
-                    .then(userCredential => {
-                        alert('You are Registered Successfully')
-                        UserServices.writeUserDataForRegister(userCredential, this.state.firstName, this.state.lastName)
-                        this.props.navigation.push("Login")
+                    .then(async userCredential => {
+                        await this.setState({
+                            visible : true
+                        })
+                        UserServices.writeUserDataInRealtimeDatabase(userCredential.user.uid, this.state.firstName, this.state.lastName, userCredential.user.email)
                     })
                     .catch(error => {
                         if(error == 'Email Already Exist') {
@@ -235,8 +238,23 @@ export default class Register extends Component {
         //onPress();
     }
 
+    hideDialog = async  () => {
+        const {onDismiss} = this.props
+        await this.setState({
+            visible : false
+        })
+        //onDismiss()
+    }
+
+    handleDialogButton = () => {
+        const {onPress} = this.props
+        this.props.navigation.navigate('Login')
+        //onPress()
+    }
+
     render() {
         return(
+            <Provider>
             <ScrollView>
                 <View style = {RegisterStyle.image_view_style}>
                     <Image style = {RegisterStyle.image_style} source = {require('../assets/app-logo.png')}/>
@@ -255,7 +273,7 @@ export default class Register extends Component {
                         </View>
                         <View>
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.firstNameEmpty) ? 'required..' : (this.state.firstNameValidation) ? null : 'Invalid First Name'}
+                                {(this.state.firstNameEmpty) ? Strings.requiredfield : (this.state.firstNameValidation) ? null : Strings.invalidFirstName}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
@@ -267,7 +285,7 @@ export default class Register extends Component {
                         </View>
                         <View>
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.lastNameEmpty) ? 'required..' : (this.state.lastNameValidation) ? null : 'Invalid Last Name..'}
+                                {(this.state.lastNameEmpty) ? Strings.requiredfield : (this.state.lastNameValidation) ? null : Strings.invalidLastName}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
@@ -279,7 +297,7 @@ export default class Register extends Component {
                         </View>
                         <View>    
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.emailEmpty) ? 'required..' : (this.state.emailValidation) ? (this.state.emailPresent) ? 'Email Already Exist' : null : 'Invalid Email..'}
+                                {(this.state.emailEmpty) ? Strings.requiredfield : (this.state.emailValidation) ? (this.state.emailPresent) ? Strings.emailExist : null : Strings.invalidEmail}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
@@ -306,7 +324,7 @@ export default class Register extends Component {
                         </View>
                         <View>    
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.passwordEmpty) ? 'required..' : (this.state.passwordValidation) ? null : 'Invalid Password..'}
+                                {(this.state.passwordEmpty) ? Strings.requiredfield : (this.state.passwordValidation) ? null : Strings.invalidPassword}
                             </Text>
                         </View>
                         <View style = {RegisterStyle.textinput_view_style}>
@@ -332,7 +350,7 @@ export default class Register extends Component {
                         </View>
                         <View>    
                             <Text style = {RegisterStyle.text_error_style}>
-                                {(this.state.confirmPasswordEmpty) ? 'required..' : (this.state.confirmPasswordValidation) ? null : 'Password does not matching'}
+                                {(this.state.confirmPasswordEmpty) ? Strings.requiredfield : (this.state.confirmPasswordValidation) ? null : Strings.confirmPassword}
                             </Text>
                         </View>
                         <View>
@@ -348,9 +366,20 @@ export default class Register extends Component {
                                 <Text style = {RegisterStyle.signin_text}>{Strings.signInButton}</Text>
                             </TouchableOpacity>
                         </View>
+                        <Portal>
+                            <Dialog visible={this.state.visible} onDismiss={this.hideDialog}>
+                                <Dialog.Content>
+                                    <Paragraph style = {{fontSize : 20, paddingTop : 20}}>{Strings.registerSuccessMessage}</Paragraph>
+                                </Dialog.Content>
+                                <Dialog.Actions>
+                                    <Button onPress={this.handleDialogButton}>{Strings.ok}</Button>
+                                </Dialog.Actions>
+                            </Dialog>
+                        </Portal>
                     </View>
                 </View>
             </ScrollView>
+            </Provider>
         )
     }
 } 
