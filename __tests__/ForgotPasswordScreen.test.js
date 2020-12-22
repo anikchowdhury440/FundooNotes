@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import ForgotPasswordScreen from '../src/components/ForgotPasswordScreen';
+import ForgotPasswordScreen from '../src/components/pages/ForgotPasswordScreen';
 
 describe('test ForgotPasswordScreen', () => {
     it('should match to snapshot', () => {

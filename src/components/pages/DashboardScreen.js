@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text} from 'react-native';
-import DashBoard from './DashBoard'
+import DashBoard from '../dashboard/DashBoard'
 
 const DashboardScreen = ({navigation}) => {
     return (

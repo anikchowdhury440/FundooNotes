@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import LoginScreen from '../src/components/LoginScreen';
+import LoginScreen from '../src/components/pages/LoginScreen';
 
 describe('test LoginScreen', () => {
     it('should match to snapshot', () => {

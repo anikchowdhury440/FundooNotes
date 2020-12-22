@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import Register from '../src/components/Register';
+import Register from '../src/components/authentication/Register';
 import UserServices from '../services/UserServices';
 
 describe('test Register', () => {

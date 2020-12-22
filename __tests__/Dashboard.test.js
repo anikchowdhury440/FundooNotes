@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import Dashboard from '../src/components/DashBoard'
+import Dashboard from '../src/components/dashboard/DashBoard'
 
 describe('test Dashboard', () => {
     it('should match to snapshot', () => {

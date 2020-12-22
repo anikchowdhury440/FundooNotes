@@ -10,5 +10,5 @@ export let Strings = new LocalizedStrings({
     "bn-IN" : Bengali,
     hi : Hindi,
     it : Italian,
-    ko : African
+    af : African
 })

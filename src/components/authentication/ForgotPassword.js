@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {View, Text, ScrollView, TextInput, TouchableOpacity, Image} from 'react-native';
-import UserServices from '../../services/UserServices';
-import ForgotPasswordStyle from '../styles/ForgotPassword.styles'
-import {Strings} from '../Language/Strings';
+import UserServices from '../../../services/UserServices';
+import ForgotPasswordStyle from '../../styles/ForgotPassword.styles'
+import {Strings} from '../../Language/Strings';
 import { Dialog, Portal, Button, Provider, Paragraph } from 'react-native-paper';
 
 export default class ForgotPassword extends Component {
@@ -49,7 +49,7 @@ export default class ForgotPassword extends Component {
                 })
             }
         }
-        //onPress();
+        onPress();
     }
 
     hideDialog = async  () => {
@@ -57,13 +57,13 @@ export default class ForgotPassword extends Component {
         await this.setState({
             visible : false
         })
-        //onDismiss();
+        onDismiss();
     }
 
     handleDialogButton = () => {
         const {onPress} = this.props
         this.props.navigation.navigate('Login')
-        //onPress()
+        onPress()
     }
 
     render() {
@@ -71,7 +71,7 @@ export default class ForgotPassword extends Component {
             <Provider>
                 <ScrollView>
                     <View style = {ForgotPasswordStyle.image_view_style}>
-                        <Image style = {ForgotPasswordStyle.image_style} source = {require('../assets/app-logo.png')}/>
+                        <Image style = {ForgotPasswordStyle.image_style} source = {require('../../assets/app-logo.png')}/>
                     </View>
                     <View style = {ForgotPasswordStyle.container}>
                         <View style = {ForgotPasswordStyle.forgetPassword_container}>

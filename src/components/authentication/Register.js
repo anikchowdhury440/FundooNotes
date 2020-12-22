@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
-import RegisterStyle from '../styles/Register.styles';
-import UserServices from '../../services/UserServices';
-import {Strings} from '../Language/Strings'
+import RegisterStyle from '../../styles/Register.styles';
+import UserServices from '../../../services/UserServices';
+import {Strings} from '../../Language/Strings'
 import { Dialog, Portal, Button, Provider, Paragraph } from 'react-native-paper';
 
 export default class Register extends Component {
@@ -178,7 +178,7 @@ export default class Register extends Component {
     handleSignInButton = () => {
         const {onPress} = this.props;
         this.props.navigation.push('Login')
-        //onPress();
+        onPress();
     }
 
     handleSignUpButton = async () => {
@@ -235,7 +235,7 @@ export default class Register extends Component {
                 })
             }
         }
-        //onPress();
+        onPress();
     }
 
     hideDialog = async  () => {
@@ -243,13 +243,13 @@ export default class Register extends Component {
         await this.setState({
             visible : false
         })
-        //onDismiss()
+        onDismiss()
     }
 
     handleDialogButton = () => {
         const {onPress} = this.props
         this.props.navigation.navigate('Login')
-        //onPress()
+        onPress()
     }
 
     render() {
@@ -257,7 +257,7 @@ export default class Register extends Component {
             <Provider>
             <ScrollView>
                 <View style = {RegisterStyle.image_view_style}>
-                    <Image style = {RegisterStyle.image_style} source = {require('../assets/app-logo.png')}/>
+                    <Image style = {RegisterStyle.image_style} source = {require('../../assets/app-logo.png')}/>
                 </View>
                 <View style = {RegisterStyle.container}>
                     <View style = {RegisterStyle.signup_container}>
@@ -311,13 +311,13 @@ export default class Register extends Component {
                                     <TouchableOpacity 
                                         style = {RegisterStyle.icon}
                                         onPress = {this.handleSecureTextPassword}>
-                                            <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye.png')}/>
+                                            <Image style = {RegisterStyle.icon_style} source = {require('../../assets/eye.png')}/>
                                     </TouchableOpacity> 
                                     : 
                                     <TouchableOpacity 
                                         style = {RegisterStyle.icon}
                                         onPress = {this.handleSecureTextPassword}>
-                                            <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye-off.png')}/>
+                                            <Image style = {RegisterStyle.icon_style} source = {require('../../assets/eye-off.png')}/>
                                     </TouchableOpacity>  
                                 }
                             
@@ -338,13 +338,13 @@ export default class Register extends Component {
                                     <TouchableOpacity 
                                         style = {RegisterStyle.icon}
                                         onPress = {this.handleSecureTextConfirmPassword}>
-                                            <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye.png')}/>
+                                            <Image style = {RegisterStyle.icon_style} source = {require('../../assets/eye.png')}/>
                                     </TouchableOpacity> 
                                     : 
                                     <TouchableOpacity 
                                         style = {RegisterStyle.icon}
                                         onPress = {this.handleSecureTextConfirmPassword}>
-                                        <Image style = {RegisterStyle.icon_style} source = {require('../assets/eye-off.png')}/>
+                                        <Image style = {RegisterStyle.icon_style} source = {require('../../assets/eye-off.png')}/>
                                     </TouchableOpacity>  
                                 }
                         </View>

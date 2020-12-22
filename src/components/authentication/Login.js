@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Image} from 'react-native';
-import UserServices from '../../services/UserServices';
-import LoginStyle from '../styles/Login.styles'
+import UserServices from '../../../services/UserServices';
+import LoginStyle from '../../styles/Login.styles'
 import { Button } from 'react-native-paper';
-import SocialServices from '../../services/SocialServices';
+import SocialServices from '../../../services/SocialServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Strings} from '../Language/Strings'
+import {Strings} from '../../Language/Strings'
 import * as Keychain from 'react-native-keychain'
 
 export default class Login extends Component {
@@ -72,7 +72,7 @@ export default class Login extends Component {
     handleSignUpButton = async () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("Register")
-        //onPress();
+        onPress();
     }
 
     handleSignInButton = async () => {
@@ -110,7 +110,7 @@ export default class Login extends Component {
                 })
             }
         }
-        //onPress();
+        onPress();
     }
 
     storeIteminAsyncStorage = async () => {
@@ -127,7 +127,7 @@ export default class Login extends Component {
     handleForgotPasswordButton = () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("ForgotPassword")
-        //onPress();
+        onPress();
     }
 
     handleFacebookLoginButton = async () => {
@@ -141,14 +141,14 @@ export default class Login extends Component {
             .catch(error => {
                 console.log(error)
             })
-        //onPress();
+        onPress();
     }
     
     render() {
         return(
             <ScrollView>
                 <View style = {LoginStyle.image_view_style}>
-                    <Image style = {LoginStyle.image_style} source = {require('../assets/app-logo.png')}
+                    <Image style = {LoginStyle.image_style} source = {require('../../assets/app-logo.png')}
                         resizeMode = "stretch"/>
                 </View>
                 <View style = {LoginStyle.container} >
@@ -179,13 +179,13 @@ export default class Login extends Component {
                                 <TouchableOpacity 
                                     style = {LoginStyle.icon}
                                     onPress = {this.handleSecureTextPassword}>
-                                        <Image style = {LoginStyle.icon_style} source = {require('../assets/eye.png')}/>
+                                        <Image style = {LoginStyle.icon_style} source = {require('../../assets/eye.png')}/>
                                 </TouchableOpacity> 
                                 : 
                                  <TouchableOpacity 
                                     style = {LoginStyle.icon}
                                     onPress = {this.handleSecureTextPassword}>
-                                        <Image style = {LoginStyle.icon_style} source = {require('../assets/eye-off.png')}/>
+                                        <Image style = {LoginStyle.icon_style} source = {require('../../assets/eye-off.png')}/>
                                  </TouchableOpacity>  
                             }
                             

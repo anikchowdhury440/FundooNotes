@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Appbar, Button, Avatar} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DashBoardStyle from '../styles/DashBoard.styles';
+import DashBoardStyle from '../../styles/DashBoard.styles';
 
 export default class HeaderToolbar extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ export default class HeaderToolbar extends Component {
         await this.setState({
             listView : !this.state.listView
         })
-        //onPress()
+        onPress()
     }
 
     render() {
@@ -41,7 +41,7 @@ export default class HeaderToolbar extends Component {
                         <TouchableOpacity
                             style = {DashBoardStyle.avatar_style}
                             onPress = {() => console.log('Button Pressed')}>
-                            <Avatar.Image size={24} source={require('../assets/app-logo.png')} />
+                            <Avatar.Image size={24} source={require('../../assets/app-logo.png')} />
                         </TouchableOpacity>
                     </Appbar>
                 </View>
@@ -72,7 +72,8 @@ export default class HeaderToolbar extends Component {
                             onPress={() => console.log('Pressed button')}
                             />
                         <Appbar.Content/>
-                        <Appbar.Action   
+                        <Appbar.Action  
+                            style = {DashBoardStyle.plus_button_style} 
                             icon = 'plus'
                             onPress={() => console.log('Pressed button')}
                             />

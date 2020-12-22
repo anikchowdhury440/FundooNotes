@@ -18,7 +18,8 @@ const DashBoardStyle = StyleSheet.create({
     },
 
     appbar_content_style : {
-        fontSize: 18
+        fontSize: 18,
+        color : 'grey'
     },
 
     bottombar_view : {
@@ -37,6 +38,17 @@ const DashBoardStyle = StyleSheet.create({
     avatar_style : {
         marginRight : 15, 
         marginLeft : 5
+    }, 
+
+    plus_button_style : {
+        marginRight : '10%', 
+        borderWidth : 2, 
+        marginBottom : 60, 
+        height : 60, 
+        width : 60, 
+        backgroundColor : 'white', 
+        borderRadius : 30, 
+        borderColor : '#CACFD2',
     }
 })
 

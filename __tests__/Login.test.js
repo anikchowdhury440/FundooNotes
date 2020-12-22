@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import Login from '../src/components/Login'
+import Login from '../src/components/authentication/Login'
 import UserServices from '../services/UserServices';
 import SocialServices from '../services/SocialServices';
 
