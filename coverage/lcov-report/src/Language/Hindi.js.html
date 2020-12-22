@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for config/Firebase.js</title>
+    <title>Code coverage report for src/Language/Hindi.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../prettify.css" />
-    <link rel="stylesheet" href="../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">config</a> Firebase.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/Language</a> Hindi.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -83,7 +83,11 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -95,7 +99,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -106,36 +109,45 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import firebase from 'firebase'<span class="branch-1 cbranch-no" title="branch not covered" ></span>
-&nbsp;
-import {
-    API_KEY,
-    AUTH_DOMAIN,
-    DATABASE_URL,
-    PROJECT_ID,
-    STORAGE_BUCKET,
-    MESSAGE_SENDER_ID,
-    APP_ID
-} from '@env'
-&nbsp;
-const firebaseConfig = {
-    apiKey: API_KEY,
-    authDomain: AUTH_DOMAIN,
-    databaseURL: "https://fundoonotes-893f7-default-rtdb.firebaseio.com",
-    projectId: PROJECT_ID,
-    storageBucket: STORAGE_BUCKET,
-    messagingSenderId: MESSAGE_SENDER_ID,
-    appId: APP_ID
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span></td><td class="text"><pre class="prettyprint lang-js">const Hindi = {
+    signIn : "साइन इन",
+    signUp : "साइन अप",
+    forgotPassword : "पासवर्ड भूल गए",
+    email : "ईमेल",
+    password : "पासवर्ड",
+    firstName : "पहला नाम",
+    lastName : "अंतिम नाम",
+    confirmPassword : "पासवर्ड की पुष्टि कीजिये",
+    signInButton : "साइन इन करें",
+    signupButton : "साइन अप करें",
+    ResetPasswordButton : "पासवर्ड रीसेट करें", 
+    or : "अथवा",
+    loginFacebookButton : "फेसबुक लॉगइन करें",
+    doNotHaveAccount : "अकाउंट नहीं है? ",
+    alreadyHaveAccount : "पहले से एक अकाउंट है? ",
+    requiredfield : "आवश्यक क्षेत्र",
+    emailNotFound : "ईमेल नहीं मिला",
+    sendMailMessage : "पासवर्ड रीसेट लिंक आपके पंजीकृत ईमेल पर भेज दिया गया है",
+    ok : "ठीक हे",
+    wrongPassword : "गलत पासवर्ड",
+    invalidFirstName : "अमान्य प्रथम नाम",
+    invalidLastName : "अमान्य अंतिम नाम",
+    invalidEmail : "अवैध ईमेल",
+    invalidPassword : "कमजोर पासवर्ड",
+    invalidConfirmPassword : "पासवर्ड मेल नहीं",
+    emailExist : "ईमेल पहले से मौजूद है",
+    registerSuccessMessage : "आपने सफलतापूर्वक पंजीकरण कर लिया है"
 }
 &nbsp;
-// Initilize Firebase
-const Firebase = firebase.initializeApp(firebaseConfig);
-&nbsp;
-export default Firebase;
-&nbsp;</pre></td></tr></table></pre>
+export default Hindi;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
@@ -145,14 +157,14 @@ export default Firebase;
                 at Tue Dec 22 2020 09:01:13 GMT+0530 (India Standard Time)
             </div>
         </div>
-        <script src="../prettify.js"></script>
+        <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../sorter.js"></script>
-        <script src="../block-navigation.js"></script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
     </body>
 </html>
     

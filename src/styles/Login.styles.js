@@ -5,12 +5,10 @@ const LoginStyle = StyleSheet.create({
         alignSelf : "center", 
         marginTop : 40, 
         borderWidth : 2, 
-        borderRadius : 70
+        borderRadius : 70,
     },
 
     image_style: {
-        width : 100, 
-        height : 100, 
         margin : 20,
     },
 

@@ -6,6 +6,7 @@ import { Button } from 'react-native-paper';
 import SocialServices from '../../services/SocialServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Strings} from '../Language/Strings'
+import * as Keychain from 'react-native-keychain'
 
 export default class Login extends Component {
     constructor(props) {
@@ -81,6 +82,7 @@ export default class Login extends Component {
             UserServices.login(this.state.email, this.state.password)
                 .then(async (UserCredential) => {
                     this.storeIteminAsyncStorage()
+                    //await Keychain.setGenericPassword('UserCredential', UserCredential);
                     this.props.navigation.navigate('Dashboard')
                 })
                 .catch(error => {
@@ -146,7 +148,8 @@ export default class Login extends Component {
         return(
             <ScrollView>
                 <View style = {LoginStyle.image_view_style}>
-                    <Image style = {LoginStyle.image_style} source = {require('../assets/app-logo.png')}/>
+                    <Image style = {LoginStyle.image_style} source = {require('../assets/app-logo.png')}
+                        resizeMode = "stretch"/>
                 </View>
                 <View style = {LoginStyle.container} >
                     <View style = {LoginStyle.signin_container}>

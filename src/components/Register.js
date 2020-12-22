@@ -195,7 +195,7 @@ export default class Register extends Component {
             this.state.confirmPasswordValidation == true ) {
                 UserServices.register(this.state.email, this.state.password)
                     .then(async userCredential => {
-                        await this.setState({
+                        this.setState({
                             visible : true
                         })
                         UserServices.writeUserDataInRealtimeDatabase(userCredential.user.uid, this.state.firstName, this.state.lastName, userCredential.user.email)
