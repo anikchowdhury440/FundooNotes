@@ -1,0 +1,33 @@
+const Japaneese = {
+    signIn : "サインイン", 
+    signUp : "サインアップ",
+    forgotPassword : "パスワードをお忘れですか",
+    email : "Eメール",
+    password : "パスワード",
+    firstName : "ファーストネーム",
+    lastName : "苗字",
+    confirmPassword : "パスワードを認証する", 
+    signInButton : "サインイン",
+    signupButton : "サインアップ",
+    ResetPasswordButton : "パスワードを再設定する",
+    or : "または",  
+    loginFacebookButton : "Facebookのログイン",
+    doNotHaveAccount : "アカウントをお持ちではありませんか？ ",
+    alreadyHaveAccount : "すでにアカウントをお持ちですか？ ",
+    requiredfield : "必須フィールド",
+    emailNotFound : "メールが見つかりません",
+    sendMailMessage : "パスワードリセットリンクが登録済みメールに送信されました",
+    ok : "OK",
+    wrongPassword : "間違ったパスワード",
+    invalidFirstName : "無効な名",
+    invalidLastName : "姓が無効です",
+    invalidEmail : "無効なメール",
+    invalidPassword : "弱いパスワード",
+    invalidConfirmPassword : "パスワードが一致しません",
+    emailExist : "メールはすでに存在します", 
+    registerSuccessMessage : "正常に登録されました",
+    searchYourNotes : "メモを検索する",
+    logout : "ログアウト"
+}
+
+export default Japaneese

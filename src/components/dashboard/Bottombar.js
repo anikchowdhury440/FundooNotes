@@ -1,0 +1,40 @@
+import React, {Component} from 'react';
+import {View} from 'react-native';
+import {Appbar} from 'react-native-paper';
+import BottomBarStyle from '../../styles/BottomBar.styles';
+
+export default class BottomBar extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <View style = {BottomBarStyle.bottombar_view}>
+                <Appbar style = {BottomBarStyle.bottombar}>
+                    <Appbar.Action
+                        style = {BottomBar.bottom_bar_action_style}
+                        icon = 'check-box-outline'
+                        />
+                    <Appbar.Action
+                        style = {BottomBar.bottom_bar_action_style}
+                        icon = 'draw'
+                        />
+                    <Appbar.Action
+                        style = {BottomBar.bottom_bar_action_style}
+                        icon = 'microphone-outline'
+                        />
+                    <Appbar.Action
+                        style = {BottomBar.bottom_bar_action_style}
+                        icon = 'panorama'
+                        />
+                    <Appbar.Content/>
+                    <Appbar.Action  
+                        style = {BottomBarStyle.plus_button_style} 
+                        icon = 'plus'
+                        />
+                </Appbar>
+            </View>
+        )
+    }
+}

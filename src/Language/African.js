@@ -25,7 +25,9 @@ const African = {
     invalidPassword : "swak wagwoord",
     invalidConfirmPassword : "Wagwoord stem nie ooreen nie",
     emailExist : "E-pos bestaan ​​reeds", 
-    registerSuccessMessage : "U is suksesvol geregistreer"
+    registerSuccessMessage : "U is suksesvol geregistreer",
+    searchYourNotes : "Soek in u aantekeninge",
+    logout : "Teken uit"
 }
 
 export default African;

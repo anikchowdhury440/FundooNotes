@@ -33,7 +33,7 @@ class UserServices {
     forgotPassword = (email) => {
         return new Promise((resolve, reject) => {
             Firebase.auth().sendPasswordResetEmail(email)
-                .then(user => resolve(user))
+                .then(() => resolve('success') )
                 .catch(error => {
                     if (error.code === 'auth/user-not-found') {
                         reject('Email not Found')

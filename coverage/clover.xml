@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1608621759388" clover="3.2.0">
-  <project timestamp="1608621759388" name="All files">
-    <metrics statements="300" coveredstatements="230" conditionals="542" coveredconditionals="346" methods="185" coveredmethods="123" elements="1027" coveredelements="699" complexity="0" loc="300" ncloc="300" packages="8" files="23" classes="23"/>
+<coverage generated="1608646547434" clover="3.2.0">
+  <project timestamp="1608646547435" name="All files">
+    <metrics statements="339" coveredstatements="265" conditionals="835" coveredconditionals="484" methods="254" coveredmethods="171" elements="1428" coveredelements="920" complexity="0" loc="339" ncloc="339" packages="8" files="30" classes="30"/>
     <package name="config">
       <metrics statements="4" coveredstatements="4" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
       <file name="Firebase.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\config\Firebase.js">
@@ -64,7 +64,7 @@
       </file>
     </package>
     <package name="src.Language">
-      <metrics statements="18" coveredstatements="18" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
+      <metrics statements="21" coveredstatements="21" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
       <file name="African.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\Language\African.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
@@ -90,16 +90,22 @@
         <line num="1" count="6" type="stmt"/>
         <line num="31" count="6" type="stmt"/>
       </file>
+      <file name="Japanese.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\Language\Japanese.js">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="6" type="stmt"/>
+        <line num="31" count="6" type="stmt"/>
+      </file>
       <file name="Strings.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\Language\Strings.js">
-        <metrics statements="8" coveredstatements="8" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
+        <metrics statements="9" coveredstatements="9" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
         <line num="4" count="6" type="stmt"/>
         <line num="5" count="6" type="stmt"/>
-        <line num="6" count="36" type="cond" truecount="4" falsecount="0"/>
-        <line num="8" count="6" type="stmt"/>
-        <line num="13" count="6" type="stmt"/>
+        <line num="6" count="6" type="stmt"/>
+        <line num="7" count="42" type="cond" truecount="4" falsecount="0"/>
+        <line num="9" count="6" type="stmt"/>
+        <line num="15" count="6" type="stmt"/>
       </file>
     </package>
     <package name="src.assets">
@@ -118,9 +124,9 @@
       </file>
     </package>
     <package name="src.components.authentication">
-      <metrics statements="182" coveredstatements="153" conditionals="410" coveredconditionals="268" methods="120" coveredmethods="91"/>
+      <metrics statements="183" coveredstatements="146" conditionals="416" coveredconditionals="256" methods="122" coveredmethods="89"/>
       <file name="ForgotPassword.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\components\authentication\ForgotPassword.js">
-        <metrics statements="30" coveredstatements="26" conditionals="95" coveredconditionals="61" methods="30" coveredmethods="23"/>
+        <metrics statements="31" coveredstatements="26" conditionals="101" coveredconditionals="61" methods="32" coveredmethods="23"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
@@ -136,10 +142,11 @@
         <line num="29" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="30" count="1" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
-        <line num="38" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="43" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="32" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="37" count="0" type="cond" truecount="0" falsecount="5"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="40" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="46" count="1" type="stmt"/>
         <line num="52" count="5" type="stmt"/>
         <line num="55" count="2" type="cond" truecount="4" falsecount="0"/>
@@ -153,7 +160,7 @@
         <line num="117" count="2" type="stmt"/>
       </file>
       <file name="Login.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\components\authentication\Login.js">
-        <metrics statements="61" coveredstatements="42" conditionals="136" coveredconditionals="80" methods="43" coveredmethods="29"/>
+        <metrics statements="61" coveredstatements="35" conditionals="136" coveredconditionals="68" methods="43" coveredmethods="27"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
@@ -164,25 +171,25 @@
         <line num="8" count="2" type="stmt"/>
         <line num="9" count="68" type="cond" truecount="45" falsecount="28"/>
         <line num="11" count="2" type="stmt"/>
-        <line num="12" count="7" type="stmt"/>
-        <line num="13" count="7" type="stmt"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="13" count="6" type="stmt"/>
         <line num="39" count="2" type="cond" truecount="3" falsecount="0"/>
-        <line num="44" count="7" type="stmt"/>
+        <line num="44" count="6" type="stmt"/>
         <line num="48" count="2" type="cond" truecount="3" falsecount="0"/>
-        <line num="53" count="7" type="stmt"/>
+        <line num="53" count="6" type="stmt"/>
         <line num="58" count="2" type="stmt"/>
         <line num="59" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="60" count="1" type="stmt"/>
         <line num="65" count="1" type="stmt"/>
         <line num="69" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="70" count="7" type="stmt"/>
+        <line num="70" count="6" type="stmt"/>
         <line num="72" count="1" type="cond" truecount="3" falsecount="0"/>
         <line num="73" count="1" type="stmt"/>
         <line num="74" count="1" type="stmt"/>
-        <line num="75" count="7" type="stmt"/>
-        <line num="78" count="4" type="cond" truecount="6" falsecount="0"/>
-        <line num="79" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="80" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="75" count="6" type="stmt"/>
+        <line num="78" count="0" type="cond" truecount="0" falsecount="6"/>
+        <line num="79" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="80" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="82" count="0" type="stmt"/>
         <line num="83" count="0" type="cond" truecount="0" falsecount="3"/>
         <line num="84" count="0" type="stmt"/>
@@ -191,19 +198,19 @@
         <line num="90" count="0" type="stmt"/>
         <line num="94" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="95" count="0" type="stmt"/>
-        <line num="99" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="102" count="1" type="stmt"/>
-        <line num="104" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="107" count="1" type="stmt"/>
-        <line num="113" count="7" type="stmt"/>
+        <line num="99" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="102" count="0" type="stmt"/>
+        <line num="104" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="107" count="0" type="stmt"/>
+        <line num="113" count="6" type="stmt"/>
         <line num="116" count="0" type="cond" truecount="0" falsecount="6"/>
         <line num="119" count="0" type="stmt"/>
         <line num="121" count="0" type="stmt"/>
-        <line num="123" count="7" type="stmt"/>
+        <line num="123" count="6" type="stmt"/>
         <line num="128" count="1" type="stmt"/>
         <line num="129" count="1" type="stmt"/>
         <line num="130" count="1" type="stmt"/>
-        <line num="131" count="7" type="stmt"/>
+        <line num="131" count="6" type="stmt"/>
         <line num="133" count="0" type="cond" truecount="0" falsecount="3"/>
         <line num="134" count="0" type="stmt"/>
         <line num="135" count="0" type="stmt"/>
@@ -212,8 +219,8 @@
         <line num="138" count="0" type="stmt"/>
         <line num="139" count="0" type="stmt"/>
         <line num="142" count="0" type="stmt"/>
-        <line num="144" count="21" type="cond" truecount="5" falsecount="2"/>
-        <line num="148" count="13" type="stmt"/>
+        <line num="144" count="18" type="cond" truecount="5" falsecount="2"/>
+        <line num="148" count="10" type="stmt"/>
         <line num="234" count="2" type="stmt"/>
       </file>
       <file name="Register.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\components\authentication\Register.js">
@@ -312,33 +319,74 @@
       </file>
     </package>
     <package name="src.components.dashboard">
-      <metrics statements="24" coveredstatements="14" conditionals="83" coveredconditionals="51" methods="33" coveredmethods="18"/>
+      <metrics statements="53" coveredstatements="47" conditionals="370" coveredconditionals="201" methods="100" coveredmethods="68"/>
+      <file name="Bottombar.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\components\dashboard\Bottombar.js">
+        <metrics statements="9" coveredstatements="9" conditionals="73" coveredconditionals="44" methods="21" coveredmethods="16"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="56" type="cond" truecount="44" falsecount="29"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+      </file>
       <file name="DashBoard.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\components\dashboard\DashBoard.js">
-        <metrics statements="24" coveredstatements="14" conditionals="83" coveredconditionals="51" methods="33" coveredmethods="18"/>
+        <metrics statements="12" coveredstatements="12" conditionals="73" coveredconditionals="44" methods="21" coveredmethods="16"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="5" count="28" type="cond" truecount="45" falsecount="28"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="28" type="cond" truecount="44" falsecount="29"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+      </file>
+      <file name="DrawerContent.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\components\dashboard\DrawerContent.js">
+        <metrics statements="8" coveredstatements="4" conditionals="68" coveredconditionals="19" methods="12" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="28" type="cond" truecount="19" falsecount="49"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+      </file>
+      <file name="MainView.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\components\dashboard\MainView.js">
+        <metrics statements="12" coveredstatements="10" conditionals="77" coveredconditionals="44" methods="23" coveredmethods="16"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="56" type="cond" truecount="44" falsecount="29"/>
+        <line num="6" count="2" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
-        <line num="8" count="2" type="stmt"/>
         <line num="9" count="2" type="stmt"/>
-        <line num="15" count="4" type="cond" truecount="4" falsecount="0"/>
-        <line num="16" count="2" type="stmt"/>
-        <line num="20" count="2" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="15" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+      </file>
+      <file name="TopBar.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\components\dashboard\TopBar.js">
+        <metrics statements="12" coveredstatements="12" conditionals="79" coveredconditionals="50" methods="23" coveredmethods="18"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="56" type="cond" truecount="44" falsecount="29"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="14" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
         <line num="23" count="4" type="stmt"/>
-        <line num="24" count="4" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="50" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="52" count="0" type="stmt"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="72" count="0" type="stmt"/>
-        <line num="78" count="0" type="stmt"/>
-        <line num="84" count="1" type="stmt"/>
+        <line num="44" count="2" type="stmt"/>
       </file>
     </package>
     <package name="src.components.pages">
@@ -369,12 +417,18 @@
       </file>
     </package>
     <package name="src.styles">
-      <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="18" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="BottomBar.styles.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\styles\BottomBar.styles.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="30" count="2" type="stmt"/>
+      </file>
       <file name="DashBoard.styles.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\styles\DashBoard.styles.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
       </file>
       <file name="ForgotPassword.styles.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\styles\ForgotPassword.styles.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -393,6 +447,12 @@
         <line num="1" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
         <line num="114" count="2" type="stmt"/>
+      </file>
+      <file name="TopBar.style.js" path="C:\Users\Anik Chowdhury\Desktop\ReactNativeProject\FundooNotes\src\styles\TopBar.style.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
       </file>
     </package>
   </project>

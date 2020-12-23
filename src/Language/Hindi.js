@@ -25,7 +25,9 @@ const Hindi = {
     invalidPassword : "कमजोर पासवर्ड",
     invalidConfirmPassword : "पासवर्ड मेल नहीं",
     emailExist : "ईमेल पहले से मौजूद है",
-    registerSuccessMessage : "आपने सफलतापूर्वक पंजीकरण कर लिया है"
+    registerSuccessMessage : "आपने सफलतापूर्वक पंजीकरण कर लिया है",
+    searchYourNotes : "अपने नोट्स खोजें",
+    logout : "लॉग आउट"
 }
 
 export default Hindi;

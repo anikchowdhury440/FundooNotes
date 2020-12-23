@@ -25,7 +25,9 @@ const English = {
     invalidPassword : "Weak Password",
     invalidConfirmPassword : "Password not Matching",
     emailExist : "Email Already Exist", 
-    registerSuccessMessage : "You are registered successfully"
+    registerSuccessMessage : "You are registered successfully",
+    searchYourNotes : "Search Your Notes",
+    logout : "Logout"
 }
 
 export default English

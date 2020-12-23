@@ -4,6 +4,7 @@ import ForgotPassword from '../src/components/authentication/ForgotPassword';
 import UserServices from '../services/UserServices';
 
 describe('test ForgotPassword', () => {
+    
     it('should match to snapshot', () => {
         const component = shallow(<ForgotPassword/>)
         expect(component).toMatchSnapshot();
@@ -27,12 +28,15 @@ describe('test ForgotPassword', () => {
 
     // it('test onPress event of reset password button when email is invalid then invalidEmail state should be true', async () => {
     //     const onPressEvent = jest.fn();
-    //     const component = shallow(<ForgotPassword onPress = {onPressEvent} />)
+    //     const component = shallow(<ForgotPassword onPress = {onPressEvent}/>)
     //     const instance = component.instance();
-    //     instance.emailHandler('anikchowdhury1010@gmail.com')
+    //     instance.emailHandler('anikchowdhury10101@gmail.com')
     //     await instance.handleResetPasswordButton();
     //     expect(onPressEvent).toHaveBeenCalled();
-    //     return UserServices.forgotPassword(instance.state.email).catch(error => expect(instance.state.invalidEmail).toBe(true))
+    //     return UserServices.forgotPassword(instance.state.email).catch(error => {
+    //         expect(error).toBe('Email not Found')
+    //         expect(instance.state.invalidEmail).toBe(true)
+    //     })
     // })
 
     // it('test onPress event of reset password button when email is valid it will set visible state for dialog should be true', async () => {
@@ -42,7 +46,7 @@ describe('test ForgotPassword', () => {
     //     instance.emailHandler('anikchowdhury440@gmail.com')
     //     await instance.handleResetPasswordButton();
     //     expect(onPressEvent).toHaveBeenCalled();
-    //     return UserServices.forgotPassword(instance.state.email).then(user => expect(instance.state.visible).toBe(true))
+    //     return UserServices.forgotPassword(instance.state.email).then(() => expect(instance.state.visible).toBe(true))
     // })
 
     it('test onDismiss event of dialog button it will set visible state for dialog should be false', async () => {

@@ -5,6 +5,10 @@ import UserServices from '../services/UserServices';
 import SocialServices from '../services/SocialServices';
 
 describe('test Login', () => {
+    // beforeEach(() => {
+    //     jest.setTimeout(30000);
+    // });
+
     it('test when render should match to snapshot', () => {
         const component = shallow(<Login/>)
         expect(component).toMatchSnapshot();
@@ -61,15 +65,15 @@ describe('test Login', () => {
         expect(navigation.navigate).toBeCalledWith("ForgotPassword");
     })
 
-    it('test onPress event of sign in button when all textinput empty it will update the stateEmpty state to true ', async () => {
-        const onPressEvent = jest.fn();
-        const component = shallow(<Login onPress = {onPressEvent}/>)
-        const instance = component.instance();
-        await instance.handleSignInButton();
-        expect(onPressEvent).toHaveBeenCalled();
-        expect(instance.state.emailEmpty).toBe(true)
-        expect(instance.state.passwordEmpty).toBe(true)
-    })
+    // it('test onPress event of sign in button when all textinput empty it will update the stateEmpty state to true ', async () => {
+    //     const onPressEvent = jest.fn();
+    //     const component = shallow(<Login onPress = {onPressEvent}/>)
+    //     const instance = component.instance();
+    //     await instance.handleSignInButton();
+    //     expect(onPressEvent).toHaveBeenCalled();
+    //     expect(instance.state.emailEmpty).toBe(true)
+    //     expect(instance.state.passwordEmpty).toBe(true)
+    // })
 
     // it('test onPress event of sign in button when email is valid but password invalid then invalidPassword state should be true', async() => {
     //     const onPressEvent = jest.fn();
@@ -80,7 +84,7 @@ describe('test Login', () => {
     //     await instance.handleSignInButton();
     //     expect(onPressEvent).toHaveBeenCalled();
     //     return UserServices.login(instance.state.email, instance.state.password).catch(error => expect(instance.state.invalidPassword).toBe(true))
-    // }, 10000)
+    // })
 
     // it('test onPress event of sign in button when email is invalid then invalidEmail state should be true', async() => {
     //     const onPressEvent = jest.fn();
@@ -91,7 +95,7 @@ describe('test Login', () => {
     //     await instance.handleSignInButton();
     //     expect(onPressEvent).toHaveBeenCalled();
     //     return UserServices.login(instance.state.email, instance.state.password).catch(error => expect(instance.state.invalidEmail).toBe(true))
-    // }, 10000)
+    // })
 
     // it('test onPress event of sign in button when email and password is valid it will navigate to Dashboard Screen', async () => {
     //     const navigation = { navigate : jest.fn() }
@@ -113,5 +117,5 @@ describe('test Login', () => {
     //     await instance.handleFacebookLoginButton();
     //     expect(onPressEvent).toHaveBeenCalled();
     //     return SocialServices.facebookLogin().then(userCredential => expect(navigation.navigate).toBeCalledWith('Dashboard'))
-    // }, 10000)
+    // })
 })

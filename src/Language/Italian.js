@@ -25,7 +25,9 @@ const Italian = {
     invalidPassword : "Weak Password",
     invalidConfirmPassword : "Password Debole",
     emailExist : "Email già esistente", 
-    registerSuccessMessage : "Ti sei registrato con successo"
+    registerSuccessMessage : "Ti sei registrato con successo",
+    searchYourNotes : "cerca nelle tue note",
+    logout : "disconnettersi"
 }
 
 export default Italian;

@@ -178,7 +178,7 @@ export default class Register extends Component {
     handleSignInButton = () => {
         const {onPress} = this.props;
         this.props.navigation.push('Login')
-        onPress();
+        //onPress();
     }
 
     handleSignUpButton = async () => {
@@ -235,7 +235,7 @@ export default class Register extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
 
     hideDialog = async  () => {
@@ -243,13 +243,13 @@ export default class Register extends Component {
         await this.setState({
             visible : false
         })
-        onDismiss()
+        //onDismiss()
     }
 
     handleDialogButton = () => {
         const {onPress} = this.props
         this.props.navigation.navigate('Login')
-        onPress()
+        //onPress()
     }
 
     render() {

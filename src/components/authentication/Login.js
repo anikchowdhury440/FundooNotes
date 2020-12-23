@@ -72,7 +72,7 @@ export default class Login extends Component {
     handleSignUpButton = async () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("Register")
-        onPress();
+        //onPress();
     }
 
     handleSignInButton = async () => {
@@ -110,7 +110,7 @@ export default class Login extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
 
     storeIteminAsyncStorage = async () => {
@@ -127,7 +127,7 @@ export default class Login extends Component {
     handleForgotPasswordButton = () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("ForgotPassword")
-        onPress();
+        //onPress();
     }
 
     handleFacebookLoginButton = async () => {
@@ -141,7 +141,7 @@ export default class Login extends Component {
             .catch(error => {
                 console.log(error)
             })
-        onPress();
+        //onPress();
     }
     
     render() {

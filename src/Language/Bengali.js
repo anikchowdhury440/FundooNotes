@@ -25,7 +25,9 @@ const Bengali = {
         invalidPassword : "দুর্বল পাসওয়ার্ড",
         invalidConfirmPassword : "পাসওয়ার্ড মেলেনি",
         emailExist : "ইমেল টি ইতিমধ্যেটই আছে",
-        registerSuccessMessage : "আপনি সফলভাবে নিবন্ধন করেছেন"
+        registerSuccessMessage : "আপনি সফলভাবে নিবন্ধন করেছেন",
+        searchYourNotes : "আপনার নোট অনুসন্ধান করুন",
+        logout : "প্রস্থান"
 }
 
 export default Bengali

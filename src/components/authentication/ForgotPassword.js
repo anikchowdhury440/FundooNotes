@@ -29,14 +29,14 @@ export default class ForgotPassword extends Component {
         const {onPress} = this.props
         if(this.state.email != '') {
             UserServices.forgotPassword(this.state.email)
-                .then(user => {
-                    this.setState({
+                .then(async () => {
+                    await this.setState({
                         visible : true
                     })
                 })
-                .catch(error => {
+                .catch(async error => {
                     if(error == 'Email not Found') {
-                        this.setState({
+                        await this.setState({
                             invalidEmail : true
                         })
                     }
@@ -49,7 +49,7 @@ export default class ForgotPassword extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
 
     hideDialog = async  () => {
@@ -57,13 +57,13 @@ export default class ForgotPassword extends Component {
         await this.setState({
             visible : false
         })
-        onDismiss();
+        //onDismiss();
     }
 
     handleDialogButton = () => {
         const {onPress} = this.props
         this.props.navigation.navigate('Login')
-        onPress()
+        //onPress()
     }
 
     render() {
