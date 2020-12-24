@@ -1,5 +1,5 @@
 import React from 'react'
-import ForgotPassword from '../authentication/ForgotPassword'
+import ForgotPassword from './ForgotPassword'
 
 const ForgotPasswordScreen = ({navigation}) => {
     return (

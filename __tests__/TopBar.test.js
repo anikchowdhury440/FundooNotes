@@ -1,6 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import TopBar from '../src/components/dashboard/TopBar';
+import { Appbar, Avatar } from 'react-native-paper';
 
 describe('test TopBar', () => {
     it('should match to snapshot', () => {
@@ -21,5 +22,12 @@ describe('test TopBar', () => {
         expect(onPressEvent).toHaveBeenCalled();
         expect(onPressEvent).toHaveBeenCalledTimes(2);
         expect(instance.state.listView).toBe(true);
+    })
+
+    it('test component in top bar component', () => {
+        const component = shallow(<TopBar />)
+        expect(component.find(Appbar.Action)).toHaveLength(2)
+        expect(component.find(Appbar.Content)).toHaveLength(1)
+        expect(component.find(Avatar.Image)).toHaveLength(1)
     })
 })

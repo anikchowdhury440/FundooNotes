@@ -1,11 +1,14 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import ForgotPassword from '../src/components/authentication/ForgotPassword';
+import ForgotPassword from '../src/components/pages/ForgotPassword';
 import UserServices from '../services/UserServices';
 
-describe('test ForgotPassword', () => {
+describe('test ForgotPassword',() => {
+    // beforeEach(() => {
+    //     jest.setTimeout(30000);
+    // });
     
-    it('should match to snapshot', () => {
+    it('should match to snapshot', async () => {
         const component = shallow(<ForgotPassword/>)
         expect(component).toMatchSnapshot();
     })
@@ -26,18 +29,18 @@ describe('test ForgotPassword', () => {
         expect(instance.state.emailEmpty).toBe(true)
     })
 
-    // it('test onPress event of reset password button when email is invalid then invalidEmail state should be true', async () => {
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<ForgotPassword onPress = {onPressEvent}/>)
-    //     const instance = component.instance();
-    //     instance.emailHandler('anikchowdhury10101@gmail.com')
-    //     await instance.handleResetPasswordButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     return UserServices.forgotPassword(instance.state.email).catch(error => {
-    //         expect(error).toBe('Email not Found')
-    //         expect(instance.state.invalidEmail).toBe(true)
-    //     })
-    // })
+    it('test onPress event of reset password button when email is invalid then invalidEmail state should be true', async () => {
+        const onPressEvent = jest.fn();
+        const component = shallow(<ForgotPassword onPress = {onPressEvent}/>)
+        const instance = component.instance();
+        instance.emailHandler('anikchowdhury10101@gmail.com')
+        await instance.handleResetPasswordButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        return UserServices.forgotPassword(instance.state.email).catch(error => {
+            expect(error).toBe('Email not Found')
+            expect(instance.state.invalidEmail).toBe(true)
+        })
+    }, 10000)
 
     // it('test onPress event of reset password button when email is valid it will set visible state for dialog should be true', async () => {
     //     const onPressEvent = jest.fn();
@@ -47,7 +50,7 @@ describe('test ForgotPassword', () => {
     //     await instance.handleResetPasswordButton();
     //     expect(onPressEvent).toHaveBeenCalled();
     //     return UserServices.forgotPassword(instance.state.email).then(() => expect(instance.state.visible).toBe(true))
-    // })
+    // }, 15000)
 
     it('test onDismiss event of dialog button it will set visible state for dialog should be false', async () => {
         const onDismissEvent = jest.fn();

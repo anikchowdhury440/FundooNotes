@@ -14,10 +14,9 @@ export default class DashBoard extends Component {
     render() {
         return(
             <View style = {DashBoardStyle.mainContainer}>
-
                 <TopBar navigation = {this.props.navigation}/>
                 <MainView navigation = {this.props.navigation}/>
-                <BottomBar/>    
+                <BottomBar/> 
             </View>
         )
     }

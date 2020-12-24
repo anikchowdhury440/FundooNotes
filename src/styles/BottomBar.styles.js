@@ -26,7 +26,7 @@ const BottomBarStyle = StyleSheet.create({
     },
 
     bottom_bar_action_style : {
-        marginRight : 10
+        marginRight : 10,
     }
     
 })

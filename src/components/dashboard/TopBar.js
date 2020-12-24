@@ -26,7 +26,7 @@ export default class TopBar extends Component {
                 <Appbar style = {TopBarStyle.container}>
                     <Appbar.Action
                         icon = 'menu'
-                        // onPress = {() => this.props.navigation.openDrawer()}
+                        onPress = {() => console.log(this.props.navigation)}
                         />
                     <Appbar.Content
                         titleStyle = {TopBarStyle.appbar_content_style}

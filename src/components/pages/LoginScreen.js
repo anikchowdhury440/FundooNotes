@@ -1,5 +1,5 @@
 import React from 'react';
-import Login from '../authentication/Login';
+import Login from './Login';
 
 const LoginScreen = ({navigation}) => {
     return (

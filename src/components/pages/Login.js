@@ -79,7 +79,7 @@ export default class Login extends Component {
         const {onPress} = this.props
         if(this.state.email != '' && this.state.password != '')
         {
-            UserServices.login(this.state.email, this.state.password)
+            await UserServices.login(this.state.email, this.state.password)
                 .then(async (UserCredential) => {
                     this.storeIteminAsyncStorage()
                     //await Keychain.setGenericPassword('UserCredential', UserCredential);

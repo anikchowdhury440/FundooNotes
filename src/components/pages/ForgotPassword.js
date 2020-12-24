@@ -28,7 +28,7 @@ export default class ForgotPassword extends Component {
     handleResetPasswordButton = async () => {
         const {onPress} = this.props
         if(this.state.email != '') {
-            UserServices.forgotPassword(this.state.email)
+            await UserServices.forgotPassword(this.state.email)
                 .then(async () => {
                     await this.setState({
                         visible : true

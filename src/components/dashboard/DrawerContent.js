@@ -14,7 +14,7 @@ export default class DrawerContent extends Component {
   render() {
     return (
       <View>
-        <DrawerContentScrollView>
+        <DrawerContentScrollView {...props}>
             <Text style = {DrawerContentStyle.app_name}>Fundoo Notes</Text>
             <Drawer.Section style = {DrawerContentStyle.drawer_section_style}>
               <Drawer.Item

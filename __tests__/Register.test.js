@@ -1,10 +1,14 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import Register from '../src/components/authentication/Register';
+import Register from '../src/components/pages/Register';
 import UserServices from '../services/UserServices';
 
 describe('test Register', () => {
-    it('should match to snapshot', () => {
+    // beforeEach(() => {
+    //     jest.setTimeout(30000);
+    // });
+
+    it('should match to snapshot', async () => {
         const component = shallow(<Register/>)
         expect(component).toMatchSnapshot();
     })
@@ -65,7 +69,7 @@ describe('test Register', () => {
         expect(component.instance().state.lastNameValidation).toBe(true)
     })
 
-    it('test when provided lastName is invalid lastName validation state will be false', () => {
+    it('test when provided lastName is invalid lastName validation state will be false', async () => {
         const component = shallow(<Register/>)
         component.instance().setState({ lastName : 'chowdhury'})
         component.instance().validateLastName()
@@ -185,27 +189,27 @@ describe('test Register', () => {
     //     const instance = component.instance();
     //     instance.firstNameHandler('Pawan')
     //     instance.lastNameHandler('Kumar')
-    //     instance.emailHandler('anikchowdhury10004@gmail.com')
+    //     instance.emailHandler('anikchowdhury1110@gmail.com')
     //     instance.passwordHandler('Anik#1234')
     //     instance.confirmPasswordHandler('Anik#1234')
     //     await instance.handleSignUpButton();
     //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(instance.state.visible).toBe(true)
-    // })
+    //     return UserServices.register(instance.state.email, instance.state.password).then(user => expect(instance.state.visible).toBe(true))
+    // }, 10000)
 
-    // it('test onPress event of sign up button when email is already present then emailPresent state should be true', async() => {
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<Register onPress = {onPressEvent}/>)
-    //     const instance = component.instance();
-    //     instance.firstNameHandler('Anik')
-    //     instance.lastNameHandler('Chowdhury')
-    //     instance.emailHandler('anikchowdhury440@gmail.com')
-    //     instance.passwordHandler('Anik#1234')
-    //     instance.confirmPasswordHandler('Anik#1234')
-    //     await instance.handleSignUpButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     return UserServices.register(instance.state.email, instance.state.password).catch(error => expect(instance.state.emailPresent).toBe(true))
-    // })
+    it('test onPress event of sign up button when email is already present then emailPresent state should be true', async() => {
+        const onPressEvent = jest.fn();
+        const component = shallow(<Register onPress = {onPressEvent}/>)
+        const instance = component.instance();
+        instance.firstNameHandler('Anik')
+        instance.lastNameHandler('Chowdhury')
+        instance.emailHandler('anikchowdhury440@gmail.com')
+        instance.passwordHandler('Anik#1234')
+        instance.confirmPasswordHandler('Anik#1234')
+        await instance.handleSignUpButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        return UserServices.register(instance.state.email, instance.state.password).catch(error => expect(instance.state.emailPresent).toBe(true))
+    }, 10000)
 
     it('test onDismiss event of dialog button it will set visible state for dialog should be false', async () => {
         const onDismissEvent = jest.fn();

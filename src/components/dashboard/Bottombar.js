@@ -13,19 +13,19 @@ export default class BottomBar extends Component {
             <View style = {BottomBarStyle.bottombar_view}>
                 <Appbar style = {BottomBarStyle.bottombar}>
                     <Appbar.Action
-                        style = {BottomBar.bottom_bar_action_style}
+                        style = {BottomBarStyle.bottom_bar_action_style}
                         icon = 'check-box-outline'
                         />
                     <Appbar.Action
-                        style = {BottomBar.bottom_bar_action_style}
+                        style = {BottomBarStyle.bottom_bar_action_style}
                         icon = 'draw'
                         />
                     <Appbar.Action
-                        style = {BottomBar.bottom_bar_action_style}
+                        style = {BottomBarStyle.bottom_bar_action_style}
                         icon = 'microphone-outline'
                         />
                     <Appbar.Action
-                        style = {BottomBar.bottom_bar_action_style}
+                        style = {BottomBarStyle.bottom_bar_action_style}
                         icon = 'panorama'
                         />
                     <Appbar.Content/>
