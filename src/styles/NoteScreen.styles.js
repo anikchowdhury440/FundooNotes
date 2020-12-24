@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const DashBoardStyle = StyleSheet.create({
+const NoteScreenStyle = StyleSheet.create({
     mainContainer : {
         flex : 1,
         backgroundColor : 'white'
@@ -8,4 +8,4 @@ const DashBoardStyle = StyleSheet.create({
 
 })
 
-export default DashBoardStyle;
+export default NoteScreenStyle;

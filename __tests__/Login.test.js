@@ -106,7 +106,7 @@ describe('test Login', () => {
     //     instance.passwordHandler('Anik@1234')
     //     instance.handleSignInButton();
     //     expect(onPressEvent).toHaveBeenCalled();
-    //     return UserServices.login(instance.state.email, instance.state.password).then(user => expect(navigation.navigate).toBeCalledWith('Dashboard'))
+    //     return UserServices.login(instance.state.email, instance.state.password).then(user => expect(navigation.navigate).toBeCalledWith('Home'))
     // })
 
     // it('test onPress event of facebook sign in button it will navigate to Dashboard Screen', async() => {
@@ -116,6 +116,6 @@ describe('test Login', () => {
     //     const instance = component.instance();
     //     await instance.handleFacebookLoginButton();
     //     expect(onPressEvent).toHaveBeenCalled();
-    //     return SocialServices.facebookLogin().then(userCredential => expect(navigation.navigate).toBeCalledWith('Dashboard'))
+    //     return SocialServices.facebookLogin().then(userCredential => expect(navigation.navigate).toBeCalledWith('Home'))
     // })
 })

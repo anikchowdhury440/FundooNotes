@@ -10,18 +10,20 @@ const DrawerContent = ({props}) => {
 
     return (
       <View style = {{flex : 1}}>
-        <DrawerContentScrollView {...props}>
+        <DrawerContentScrollView>
             <Text style = {DrawerContentStyle.app_name}>Fundoo Notes</Text>
             <Drawer.Section style = {DrawerContentStyle.drawer_section_style}>
               <Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'lightbulb-outline'
                 label = "Notes"
+                onPress = {() => props.navigation.navigate('Home', { screen: 'Notes' })}
               />
               <Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'bell-outline'
                 label = "Reminders"
+                onPress = {() => props.navigation.navigate('Home', { screen : 'Reminders'})}
               />
             </Drawer.Section>
 

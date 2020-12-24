@@ -28,7 +28,7 @@ export default class Login extends Component {
         try {
             const isLoggedIn = JSON.parse(await AsyncStorage.getItem('isLoggedIn'))
             if(isLoggedIn) {
-              this.props.navigation.navigate("Dashboard")
+              this.props.navigation.navigate("Home")
             }
           } 
           catch(e) {

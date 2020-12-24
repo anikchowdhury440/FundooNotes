@@ -1,11 +1,10 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import DashBoard from '../src/components/dashboard/DashBoard';
-
+import NoteScreen from '../src/components/dashboard/NoteScreen';
 
 describe('test Dashboard', () => {
     it('should match to snapshot', () => {
-        const component = shallow(<DashBoard/>)
+        const component = shallow(<NoteScreen/>)
         expect(component).toMatchSnapshot();
     })
 
