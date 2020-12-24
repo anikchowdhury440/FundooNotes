@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">69.16% </span>
+                <span class="strong">67.89% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>148/214</span>
+                <span class='fraction'>148/218</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.77% </span>
+                <span class="strong">61.87% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>86/137</span>
+                <span class='fraction'>86/139</span>
             </div>
         
             
@@ -291,7 +291,8 @@
 <a name='L232'></a><a href='#L232'>232</a>
 <a name='L233'></a><a href='#L233'>233</a>
 <a name='L234'></a><a href='#L234'>234</a>
-<a name='L235'></a><a href='#L235'>235</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L235'></a><a href='#L235'>235</a>
+<a name='L236'></a><a href='#L236'>236</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -429,6 +430,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -555,7 +557,7 @@ export default class Login extends Component {
         try {
             const isLoggedIn = JSON.parse(await AsyncStorage.getItem('isLoggedIn'))
             if(isLoggedIn) {
-              this.props.navigation.navigate("Dashboard")
+              this.props.navigation.navigate("Home")
             }
           } 
           catch(e) {
@@ -608,9 +610,9 @@ export default class Login extends Component {
         {
             await UserServices.login(this.state.email, this.state.password)
                 .then(async <span class="fstat-no" title="function not covered" >(UserCred</span>ential) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
-                    this<span class="cstat-no" title="statement not covered" >.storeIteminAsyncStorage()</span>
-                    //await Keychain.setGenericPassword('UserCredential', UserCredential);
-                    this<span class="cstat-no" title="statement not covered" >.props.navigation.navigate('Dashboard')<span class="cstat-no" title="statement not covered" ></span></span>
+                    this<span class="cstat-no" title="statement not covered" >.storeIteminAsyncStorage()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+                    await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
+                    this<span class="cstat-no" title="statement not covered" >.props.navigation.navigate('Home')<span class="cstat-no" title="statement not covered" ></span></span>
                 })
                 .catch(error =&gt; {
                 <span class="missing-if-branch" title="else path not taken" >E</span>    if(error == 'Email not Found') {
@@ -662,8 +664,9 @@ export default class Login extends Component {
         Social<span class="cstat-no" title="statement not covered" >Services.facebookLogin()</span>
             .then(async User<span class="fstat-no" title="function not covered" >Credentia</span>l =&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
                 UserServ<span class="cstat-no" title="statement not covered" >ices.writeUserDataInRealtimeDatabase(UserCredential.user.uid, UserCredential.additionalUserInfo.profile.first_name, UserCredential.additionalUserInfo.profile.last_name, UserCredential.additionalUserInfo.profile.email);</span>
-                this.sto<span class="cstat-no" title="statement not covered" >reIteminAsyncStorage()</span>
-                this.pro<span class="cstat-no" title="statement not covered" >ps.navigation.navigate('Dashboard')<span class="cstat-no" title="statement not covered" ></span></span>
+                this.sto<span class="cstat-no" title="statement not covered" >reIteminAsyncStorage()<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+                await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
+                this.pro<span class="cstat-no" title="statement not covered" >ps.navigation.navigate('Home')<span class="cstat-no" title="statement not covered" ></span></span>
             })
             .catch(e<span class="fstat-no" title="function not covered" >rr</span>or =&gt; {
 <span class="cstat-no" title="statement not covered" >                console.log(error)</span>
@@ -766,7 +769,7 @@ export default class Login extends Component {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Dec 23 2020 21:32:36 GMT+0530 (India Standard Time)
+                at Thu Dec 24 2020 22:01:55 GMT+0530 (India Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

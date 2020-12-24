@@ -3,7 +3,6 @@ import {ScrollView} from 'react-native';
 import {Button} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Strings } from '../../Language/Strings';
-import DrawerContent from './DrawerContent';
 
 export default class MainView extends Component {
     constructor(props) {
@@ -19,7 +18,7 @@ export default class MainView extends Component {
                         this.props.navigation.push('Login')
                     }}>
                         {Strings.logout}
-                    </Button>           
+                    </Button>         
             </ScrollView>
         )
     }

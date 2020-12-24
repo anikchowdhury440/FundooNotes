@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/Language/English.js</title>
+    <title>Code coverage report for src/styles/AddNoteScreen.styles.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/Language</a> English.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/styles</a> AddNoteScreen.styles.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
@@ -89,7 +89,17 @@
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">9x</span>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -121,39 +131,53 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span></td><td class="text"><pre class="prettyprint lang-js">const English = {
-    signIn : "Sign-In", 
-    signUp : "Sign-Up",
-    forgotPassword : "Forgot Password",
-    email : "Email",
-    password : "Password",
-    firstName : "First Name",
-    lastName : "Last Name",
-    confirmPassword : "Confirm Password", 
-    signInButton : "SIGN IN",
-    signupButton : "SIGN UP",
-    ResetPasswordButton : "RESET PASSWORD",
-    or : "Or",  
-    loginFacebookButton : "LOGIN WITH FACEBOOK",
-    doNotHaveAccount : "Don't have an account? ",
-    alreadyHaveAccount : "Already have an account? ",
-    requiredfield : "Required Fields",
-    emailNotFound : "Email Not Found",
-    sendMailMessage : "Password Reset Link has been sent to your Registered Email",
-    ok : "Ok",
-    wrongPassword : "Wrong Password",
-    invalidFirstName : "Invalid First Name",
-    invalidLastName : "Invalid Last Name",
-    invalidEmail : "Invalid Email",
-    invalidPassword : "Weak Password",
-    invalidConfirmPassword : "Password not Matching",
-    emailExist : "Email Already Exist", 
-    registerSuccessMessage : "You are registered successfully",
-    searchYourNotes : "Search Your Notes",
-    logout : "Logout"
-}
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { StyleSheet } from 'react-native';
 &nbsp;
-export default English</pre></td></tr></table></pre>
+const AddNoteScreenStyle = StyleSheet.create({
+    mainContainer : {
+        flex : 1,
+        backgroundColor : 'white'
+    },
+&nbsp;
+    header_style : {
+        backgroundColor : 'transparent'
+    },
+&nbsp;
+    header_icon_style : {
+        marginRight : 10
+    },
+&nbsp;
+    title_style : {
+        marginLeft : 20,
+        marginRight : 20,
+        marginTop : 20,
+        fontSize : 22,
+    },
+&nbsp;
+    note_style : {
+        marginLeft : 20,
+        marginRight : 20,
+        fontSize : 18,
+    },
+&nbsp;
+    bottom_view : {
+        width: '100%',
+        position: 'absolute',
+        bottom : 0,
+    },
+&nbsp;
+    bottom_appbar_style : {
+        backgroundColor : 'white'
+    }
+})
+&nbsp;
+export default AddNoteScreenStyle;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

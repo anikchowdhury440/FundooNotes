@@ -82,7 +82,7 @@ export default class Login extends Component {
             await UserServices.login(this.state.email, this.state.password)
                 .then(async (UserCredential) => {
                     this.storeIteminAsyncStorage()
-                    //await Keychain.setGenericPassword('UserCredential', UserCredential);
+                    await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
                     this.props.navigation.navigate('Home')
                 })
                 .catch(error => {
@@ -136,6 +136,7 @@ export default class Login extends Component {
             .then(async UserCredential => {
                 UserServices.writeUserDataInRealtimeDatabase(UserCredential.user.uid, UserCredential.additionalUserInfo.profile.first_name, UserCredential.additionalUserInfo.profile.last_name, UserCredential.additionalUserInfo.profile.email);
                 this.storeIteminAsyncStorage()
+                await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
                 this.props.navigation.navigate('Home')
             })
             .catch(error => {

@@ -23,7 +23,7 @@ const DrawerContent = ({props}) => {
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'bell-outline'
                 label = "Reminders"
-                onPress = {() => props.navigation.navigate('Home', { screen : 'Reminders'})}
+                onPress = {() => props.navigation.navigate('Home', { screen : 'Reminder'})}
               />
             </Drawer.Section>
 

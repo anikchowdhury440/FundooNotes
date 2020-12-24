@@ -30,4 +30,14 @@ describe('test TopBar', () => {
         expect(component.find(Appbar.Content)).toHaveLength(1)
         expect(component.find(Avatar.Image)).toHaveLength(1)
     })
+
+    it('test onPress of Menu icon button it will open the Navigation Drawer', async () => {
+        const navigation = { openDrawer : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<TopBar onPress = {onPressEvent} navigation = {navigation}/>)
+        const instance = component.instance();
+        await instance.handleMenuButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(navigation.openDrawer).toHaveBeenCalled()
+    })
 })

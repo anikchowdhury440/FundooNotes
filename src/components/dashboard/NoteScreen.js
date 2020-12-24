@@ -6,7 +6,7 @@ import BottomBar from './Bottombar';
 import MainView from './MainView';
 
 export default class NoteScreen extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
     }
 

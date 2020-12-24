@@ -193,7 +193,7 @@ export default class Register extends Component {
             this.state.emailValidation == true &&
             this.state.passwordValidation == true && 
             this.state.confirmPasswordValidation == true ) {
-                UserServices.register(this.state.email, this.state.password)
+                await UserServices.register(this.state.email, this.state.password)
                     .then(async userCredential => {
                         await this.setState({
                             visible : true

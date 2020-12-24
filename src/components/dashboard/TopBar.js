@@ -20,13 +20,19 @@ export default class TopBar extends Component {
         //onPress()
     }
 
+    handleMenuButton = async () => {
+        const {onPress} = this.props
+        this.props.navigation.openDrawer();
+        //onPress();
+    }
+
     render() {
         return (
             <View>
                 <Appbar style = {TopBarStyle.container}>
                     <Appbar.Action
                         icon = 'menu'
-                        onPress = {() => this.props.navigation.openDrawer()}
+                        onPress = {this.handleMenuButton}
                         />
                     <Appbar.Content
                         titleStyle = {TopBarStyle.appbar_content_style}

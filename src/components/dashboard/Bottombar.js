@@ -8,6 +8,12 @@ export default class BottomBar extends Component {
         super(props);
     }
 
+    handlePlusIconButton = () => {
+        const {onPress} = this.props;
+        this.props.navigation.navigate('AddNote')
+        //onPress();
+    }
+
     render() {
         return (
             <View style = {BottomBarStyle.bottombar_view}>
@@ -32,7 +38,7 @@ export default class BottomBar extends Component {
                     <Appbar.Action  
                         style = {BottomBarStyle.plus_button_style} 
                         icon = 'plus'
-                        onPress = {() => this.props.navigation.navigate('AddNote')}
+                        onPress = {this.handlePlusIconButton}
                         />
                 </Appbar>
             </View>

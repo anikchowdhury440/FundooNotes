@@ -209,7 +209,7 @@ describe('test Register', () => {
         await instance.handleSignUpButton();
         expect(onPressEvent).toHaveBeenCalled();
         return UserServices.register(instance.state.email, instance.state.password).catch(error => expect(instance.state.emailPresent).toBe(true))
-    }, 10000)
+    })
 
     it('test onDismiss event of dialog button it will set visible state for dialog should be false', async () => {
         const onDismissEvent = jest.fn();
