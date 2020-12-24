@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import LoginScreen from '../components/pages/LoginScreen';
 import RegisterScreen from '../components/pages/RegisterScreen';
 import ForgotPasswordScreen from '../components/pages/ForgotPasswordScreen';
-import DashBoard from '../components/dashboard/DashBoard';
+import DrawerNavigator from './DrawerNavigationStack';
 
 const Stack = createStackNavigator();
 
@@ -18,7 +18,7 @@ function ApplicationStack() {
                 <Stack.Screen name = "Login" component = {LoginScreen}/>
                 <Stack.Screen name = "Register" component = {RegisterScreen}/>
                 <Stack.Screen name = "ForgotPassword" component = {ForgotPasswordScreen}/>
-                <Stack.Screen name = "Dashboard" component = {DashBoard}/>
+                <Stack.Screen name = "Home" component = {DrawerNavigator}/>
             </Stack.Navigator>
         </NavigationContainer>
     )

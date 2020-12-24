@@ -18,7 +18,7 @@ export default class BottomBar extends Component {
                         />
                     <Appbar.Action
                         style = {BottomBarStyle.bottom_bar_action_style}
-                        icon = 'draw'
+                        icon = 'brush'
                         />
                     <Appbar.Action
                         style = {BottomBarStyle.bottom_bar_action_style}

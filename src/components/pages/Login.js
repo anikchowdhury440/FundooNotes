@@ -83,7 +83,7 @@ export default class Login extends Component {
                 .then(async (UserCredential) => {
                     this.storeIteminAsyncStorage()
                     //await Keychain.setGenericPassword('UserCredential', UserCredential);
-                    this.props.navigation.navigate('Dashboard')
+                    this.props.navigation.navigate('Home')
                 })
                 .catch(error => {
                     if(error == 'Email not Found') {
@@ -136,7 +136,7 @@ export default class Login extends Component {
             .then(async UserCredential => {
                 UserServices.writeUserDataInRealtimeDatabase(UserCredential.user.uid, UserCredential.additionalUserInfo.profile.first_name, UserCredential.additionalUserInfo.profile.last_name, UserCredential.additionalUserInfo.profile.email);
                 this.storeIteminAsyncStorage()
-                this.props.navigation.navigate('Dashboard')
+                this.props.navigation.navigate('Home')
             })
             .catch(error => {
                 console.log(error)

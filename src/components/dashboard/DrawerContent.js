@@ -6,14 +6,10 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 
-export default class DrawerContent extends Component {
-  constructor(props) {
-    super(props)
-  }
+const DrawerContent = ({props}) => {
 
-  render() {
     return (
-      <View>
+      <View style = {{flex : 1}}>
         <DrawerContentScrollView {...props}>
             <Text style = {DrawerContentStyle.app_name}>Fundoo Notes</Text>
             <Drawer.Section style = {DrawerContentStyle.drawer_section_style}>
@@ -67,6 +63,8 @@ export default class DrawerContent extends Component {
         </DrawerContentScrollView> 
       </View>       
     );
-  }
+  
 }
+
+export default DrawerContent
   

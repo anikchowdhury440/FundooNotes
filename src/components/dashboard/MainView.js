@@ -15,9 +15,11 @@ export default class MainView extends Component {
             <ScrollView style = {{marginBottom : 60}}>
                 <Button 
                     onPress = { async () => {
-                    await AsyncStorage.setItem('isLoggedIn', JSON.stringify(false));
-                    this.props.navigation.push('Login')
-                    }}>{Strings.logout}</Button>           
+                        await AsyncStorage.setItem('isLoggedIn', JSON.stringify(false));
+                        this.props.navigation.push('Login')
+                    }}>
+                        {Strings.logout}
+                    </Button>           
             </ScrollView>
         )
     }
