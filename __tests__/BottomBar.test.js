@@ -19,14 +19,14 @@ describe('test BottomBar', () => {
         expect(component.find(Appbar.Action).at(4).props().icon).toEqual('plus')
     })
 
-    it('test onPress event of plus icon it will navigate to add note screen' , () => {
-        const navigation = { navigate : jest.fn() }
+    it('test onPress event of plus icon it will navigate to add note screen' , async () => {
+        const navigation = { push : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<BottomBar onPress = {onPressEvent} navigation = {navigation}/>)
         const instance = component.instance();
-        instance.handlePlusIconButton();
+        await instance.handlePlusIconButton();
         expect(onPressEvent).toHaveBeenCalled();
-        expect(navigation.navigate).toBeCalledWith("AddNote");
+        expect(navigation.push).toBeCalledWith("AddNote");
     })
 
 })

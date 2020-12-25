@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80.95% </span>
+                <span class="strong">81.4% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>34/42</span>
+                <span class='fraction'>35/43</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">81.82% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/10</span>
+                <span class='fraction'>9/11</span>
             </div>
         
             
@@ -129,13 +129,15 @@
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
 <a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -205,28 +207,29 @@
 import {View, Text} from 'react-native';
 import { Drawer } from 'react-native-paper';
 import DrawerContentStyle from '../../styles/DrawerContent.styles';
-import {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="missing-if-branch" title="else path not taken" >E</span><span class="missing-if-branch" title="if path not taken" >I</span><span class="branch-1 cbranch-no" title="branch not covered" ><span class="missing-if-branch" title="else path not taken" >E</span><span class="missing-if-branch" title="if path not taken" >I</span><span class="branch-2 cbranch-no" title="branch not covered" ><span class="missing-if-branch" title="if path not taken" >I</span><span class="missing-if-branch" title="if path not taken" >I</span><span class="missing-if-branch" title="if path not taken" >I</span><span class="branch-1 cbranch-no" title="branch not covered" ></span></span></span></span></span></span></span></span></span></span>
+import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
+import { Strings } from '../../Language/Strings';<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="missing-if-branch" title="else path not taken" >E</span><span class="missing-if-branch" title="if path not taken" >I</span><span class="branch-1 cbranch-no" title="branch not covered" ><span class="missing-if-branch" title="else path not taken" >E</span><span class="missing-if-branch" title="if path not taken" >I</span><span class="branch-2 cbranch-no" title="branch not covered" ><span class="missing-if-branch" title="if path not taken" >I</span><span class="missing-if-branch" title="if path not taken" >I</span><span class="missing-if-branch" title="if path not taken" >I</span><span class="branch-1 cbranch-no" title="branch not covered" ></span></span></span></span></span></span></span></span></span></span>
 &nbsp;
 const DrawerContent = ({props}) =&gt; {
-&nbsp;
+    
     return (
       &lt;View style = {{flex : 1}}&gt;
         &lt;DrawerContentScrollView&gt;
-            &lt;Text style = {DrawerContentStyle.app_name}&gt;Fundoo Notes&lt;/Text&gt;
+            &lt;Text style = {DrawerContentStyle.app_name}&gt;{Strings.FundooNotes}&lt;/Text&gt;
             &lt;Drawer.Section style = {DrawerContentStyle.drawer_section_style}&gt;
               &lt;Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'lightbulb-outline'
-                label = "Notes"
+                label = {Strings.notes}
                 onPress <span class="fstat-no" title="function not covered" >= {() =&gt;</span> pr<span class="cstat-no" title="statement not covered" >ops.navigation.navigate('Home', { screen: 'Notes' })}</span>
               /&gt;
               &lt;Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'bell-outline'
-                label = "Reminders"
-                onPress <span class="fstat-no" title="function not covered" >= {() =&gt;</span> pr<span class="cstat-no" title="statement not covered" >ops.navigation.navigate('Home', { screen : 'Reminders'})}</span>
+                label = {Strings.reminder}
+                onPress <span class="fstat-no" title="function not covered" >= {() =&gt;</span> pr<span class="cstat-no" title="statement not covered" >ops.navigation.navigate('Home', { screen : 'Reminder'})}</span>
               /&gt;
             &lt;/Drawer.Section&gt;
 &nbsp;
@@ -234,7 +237,7 @@ const DrawerContent = ({props}) =&gt; {
               &lt;Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'plus'
-                label = "Create New Label"
+                label = {Strings.createNewLabel}
               /&gt;
             &lt;/Drawer.Section&gt;
 &nbsp;
@@ -242,13 +245,13 @@ const DrawerContent = ({props}) =&gt; {
               &lt;Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'archive-arrow-down-outline'
-                label = "Archieve"
+                label = {Strings.archieve}
               /&gt;
 &nbsp;
               &lt;Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'delete'
-                label = "Deleted"
+                label = {Strings.deleted}
               /&gt;
             &lt;/Drawer.Section&gt;
 &nbsp;
@@ -256,13 +259,13 @@ const DrawerContent = ({props}) =&gt; {
               &lt;Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'cog-outline'
-                label = "Setting"
+                label = {Strings.settings}
               /&gt;
 &nbsp;
               &lt;Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'help'
-                label = "Help &amp; feedback"
+                label = {Strings.help}
               /&gt;
             &lt;/Drawer.Section&gt;
         &lt;/DrawerContentScrollView&gt; 
@@ -280,7 +283,7 @@ export default DrawerContent
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Dec 24 2020 22:01:55 GMT+0530 (India Standard Time)
+                at Fri Dec 25 2020 21:34:23 GMT+0530 (India Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

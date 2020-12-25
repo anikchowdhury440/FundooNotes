@@ -198,7 +198,11 @@ export default class Register extends Component {
                         await this.setState({
                             visible : true
                         })
-                        UserServices.writeUserDataInRealtimeDatabase(userCredential.user.uid, this.state.firstName, this.state.lastName, userCredential.user.email)
+                        UserServices.writeUserDataInRealtimeDatabase(
+                            userCredential.user.uid, 
+                            this.state.firstName, 
+                            this.state.lastName, 
+                            userCredential.user.email)
                     })
                     .catch(error => {
                         if(error == 'Email Already Exist') {

@@ -9,7 +9,7 @@ class UserServices {
                     if (error.code === 'auth/email-already-in-use') {
                         reject('Email Already Exist')
                     }
-                    //console.log(error);
+                    console.log(error);
                 })
         })
     }
@@ -25,7 +25,7 @@ class UserServices {
                     if (error.code === 'auth/wrong-password') {
                         reject('Incorrect Password')
                     }
-                    //console.log(error)
+                    console.log(error)
                 })
         })
     }
@@ -38,7 +38,7 @@ class UserServices {
                     if (error.code === 'auth/user-not-found') {
                         reject('Email not Found')
                     }
-                    //console.log(error);
+                    console.log(error);
                 })
         })
     }

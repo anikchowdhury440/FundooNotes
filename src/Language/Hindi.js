@@ -27,7 +27,17 @@ const Hindi = {
     emailExist : "ईमेल पहले से मौजूद है",
     registerSuccessMessage : "आपने सफलतापूर्वक पंजीकरण कर लिया है",
     searchYourNotes : "अपने नोट्स खोजें",
-    logout : "लॉग आउट"
+    logout : "लॉग आउट",
+    FundooNotes : "फुन्दू नोट्स",
+    notes : "नोट्स",
+    reminder : "अनुस्मारक",
+    createNewLabel : "नया लेबल बनाएं",
+    archieve : "पुरालेख",
+    deleted : "हटाए गए",
+    settings : "समायोजन",
+    help : "सहायता और प्रतिक्रिया",
+    title : "शीर्षक",
+    note : "नोट",
 }
 
 export default Hindi;

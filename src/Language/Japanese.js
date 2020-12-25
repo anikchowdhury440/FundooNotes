@@ -27,7 +27,17 @@ const Japaneese = {
     emailExist : "メールはすでに存在します", 
     registerSuccessMessage : "正常に登録されました",
     searchYourNotes : "メモを検索する",
-    logout : "ログアウト"
+    logout : "ログアウト",
+    FundooNotes : "Fundooノート",
+    notes : "ノート",
+    reminder : "リマインダー",
+    createNewLabel : "新しいラベルを作成する",
+    archieve : "アーカイブ",
+    deleted : "削除",
+    settings : "設定",
+    help : "ヘルプとフィードバック",
+    title : "題名",
+    note : "注意",
 }
 
 export default Japaneese

@@ -27,7 +27,17 @@ const Italian = {
     emailExist : "Email già esistente", 
     registerSuccessMessage : "Ti sei registrato con successo",
     searchYourNotes : "cerca nelle tue note",
-    logout : "disconnettersi"
+    logout : "disconnettersi",
+    FundooNotes : "Note di Fundoo",
+    notes : "Appunti",
+    reminder : "Promemoria",
+    createNewLabel : "Crea nuova etichetta",
+    archieve : "Archivio",
+    deleted : "Eliminato",
+    settings : "impostazioni",
+    help : "Guida e feedback",
+    title : "Titolo",
+    note : "Nota",
 }
 
 export default Italian;

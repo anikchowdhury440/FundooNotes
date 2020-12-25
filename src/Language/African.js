@@ -27,7 +27,17 @@ const African = {
     emailExist : "E-pos bestaan ​​reeds", 
     registerSuccessMessage : "U is suksesvol geregistreer",
     searchYourNotes : "Soek in u aantekeninge",
-    logout : "Teken uit"
+    logout : "Teken uit",
+    FundooNotes : "Fundoo Notas",
+    notes : "Aantekeninge",
+    reminder : "Onthounota",
+    createNewLabel : "Skep 'n nuwe etiket",
+    archieve : "Argief",
+    deleted : "Uitgevee",
+    settings : "Instellings",
+    help : "Hulp en terugvoer",
+    title : "Titel",
+    note : "Let wel",
 }
 
 export default African;

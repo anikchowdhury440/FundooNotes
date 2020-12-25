@@ -97,8 +97,8 @@ describe('test Login', () => {
         return UserServices.login(instance.state.email, instance.state.password).catch(error => expect(instance.state.invalidEmail).toBe(true))
     }, 10000)
 
-    // it('test onPress event of sign in button when email and password is valid it will navigate to Dashboard Screen', async () => {
-    //     const navigation = { navigate : jest.fn() }
+    // it('test onPress event of sign in button when email and password is valid it will navigate to Notes Screen', async () => {
+    //     const navigation = { push : jest.fn() }
     //     const onPressEvent = jest.fn();
     //     const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation} />)
     //     const instance = component.instance();
@@ -106,10 +106,10 @@ describe('test Login', () => {
     //     instance.passwordHandler('Anik@1234')
     //     instance.handleSignInButton();
     //     expect(onPressEvent).toHaveBeenCalled();
-    //     return UserServices.login(instance.state.email, instance.state.password).then(user => expect(navigation.navigate).toBeCalledWith('Home'))
+    //     return UserServices.login(instance.state.email, instance.state.password).then(user => expect(navigation.push).toBeCalledWith('Home'))
     // })
 
-    // it('test onPress event of facebook sign in button it will navigate to Dashboard Screen', async() => {
+    // it('test onPress event of facebook sign in button it will navigate to Note Screen', async() => {
     //     const navigation = { navigate : jest.fn() }
     //     const onPressEvent = jest.fn();
     //     const component = shallow(<Login onPress = {onPressEvent} navigation = {navigation} />)

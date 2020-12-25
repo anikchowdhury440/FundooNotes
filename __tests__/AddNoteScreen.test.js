@@ -23,17 +23,17 @@ describe('test BottomBar', () => {
     })
 
     it('test onPress event of back icon button when title and notes empty it will navigate to notes screen', async () => {
-        const navigation = { navigate : jest.fn() }
+        const navigation = { push : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<AddNoteScreen onPress = {onPressEvent} navigation = {navigation}/>)
         const instance = component.instance();
-        instance.handleBackIconButton();
+        await instance.handleBackIconButton();
         expect(onPressEvent).toHaveBeenCalled();
-        expect(navigation.navigate).toBeCalledWith("Home");
+        expect(navigation.push).toBeCalledWith("Home");
     })
 
     it('test onPress event of back icon button when title and notes are not empty it will navigate to notes screen', async () => {
-        const navigation = { navigate : jest.fn() }
+        const navigation = { push : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<AddNoteScreen onPress = {onPressEvent} navigation = {navigation}/>)
         const instance = component.instance();
@@ -41,6 +41,6 @@ describe('test BottomBar', () => {
         instance.handleTitle('Good Morning')
         instance.handleNote('Good Morning')
         expect(onPressEvent).toHaveBeenCalled();
-        expect(navigation.navigate).toBeCalledWith("Home");
+        expect(navigation.push).toBeCalledWith("Home");
     })
 })

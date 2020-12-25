@@ -4,6 +4,7 @@ import { Appbar } from 'react-native-paper'
 import AddNoteScreenStyle from '../../styles/AddNoteScreen.styles'
 import * as Keychain from 'react-native-keychain'
 import Firebase from '../../../config/Firebase'
+import { Strings } from '../../Language/Strings';
 
 export default class AddNoteScreen extends Component {
     constructor(props) {
@@ -18,14 +19,12 @@ export default class AddNoteScreen extends Component {
         await this.setState({
             title : title
         })
-        console.log(this.state.title);
     }
 
     handleNote = async (note) => {
         await this.setState({
             note : note
         })
-        console.log(this.state.note);
     }
 
     handleBackIconButton = async () => {
@@ -36,9 +35,11 @@ export default class AddNoteScreen extends Component {
             Firebase.database().ref('notes/' + UserCredential.user.uid).push({
                 title : this.state.title,
                 note : this.state.note
-            })   
+            })
+            .then(() => console.log('Note Added')) 
+            .catch((error) => console.log(error))  
         }
-        this.props.navigation.navigate('Home')
+        this.props.navigation.push('Home')
         //onPress();  
     }
 
@@ -66,14 +67,14 @@ export default class AddNoteScreen extends Component {
                     <TextInput
                         style = {AddNoteScreenStyle.title_style}
                         multiline = {true} 
-                        placeholder = 'Title'
+                        placeholder = {Strings.title}
                         onChangeText = {this.handleTitle}
                         value = {this.state.title}
                     />
                     <TextInput
                         style = {AddNoteScreenStyle.note_style}
                         multiline = {true} 
-                        placeholder = 'Note'
+                        placeholder = {Strings.note}
                         onChangeText = {this.handleNote}
                         value = {this.state.note}
                     />

@@ -27,7 +27,17 @@ const English = {
     emailExist : "Email Already Exist", 
     registerSuccessMessage : "You are registered successfully",
     searchYourNotes : "Search Your Notes",
-    logout : "Logout"
+    logout : "Logout",
+    FundooNotes : "Fundoo Notes",
+    notes : "Notes",
+    reminder : "Reminder",
+    createNewLabel : "Create New Label",
+    archieve : "Archieve",
+    deleted : "Deleted",
+    settings : "Settings",
+    help : "Help & Feedback",
+    title : "Title",
+    note : "Note",
 }
 
 export default English

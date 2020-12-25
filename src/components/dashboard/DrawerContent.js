@@ -5,24 +5,25 @@ import DrawerContentStyle from '../../styles/DrawerContent.styles';
 import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
+import { Strings } from '../../Language/Strings';
 
 const DrawerContent = ({props}) => {
-
+    
     return (
       <View style = {{flex : 1}}>
         <DrawerContentScrollView>
-            <Text style = {DrawerContentStyle.app_name}>Fundoo Notes</Text>
+            <Text style = {DrawerContentStyle.app_name}>{Strings.FundooNotes}</Text>
             <Drawer.Section style = {DrawerContentStyle.drawer_section_style}>
               <Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'lightbulb-outline'
-                label = "Notes"
+                label = {Strings.notes}
                 onPress = {() => props.navigation.navigate('Home', { screen: 'Notes' })}
               />
               <Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'bell-outline'
-                label = "Reminders"
+                label = {Strings.reminder}
                 onPress = {() => props.navigation.navigate('Home', { screen : 'Reminder'})}
               />
             </Drawer.Section>
@@ -31,7 +32,7 @@ const DrawerContent = ({props}) => {
               <Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'plus'
-                label = "Create New Label"
+                label = {Strings.createNewLabel}
               />
             </Drawer.Section>
 
@@ -39,13 +40,13 @@ const DrawerContent = ({props}) => {
               <Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'archive-arrow-down-outline'
-                label = "Archieve"
+                label = {Strings.archieve}
               />
 
               <Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'delete'
-                label = "Deleted"
+                label = {Strings.deleted}
               />
             </Drawer.Section>
 
@@ -53,13 +54,13 @@ const DrawerContent = ({props}) => {
               <Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'cog-outline'
-                label = "Setting"
+                label = {Strings.settings}
               />
 
               <Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'help'
-                label = "Help & feedback"
+                label = {Strings.help}
               />
             </Drawer.Section>
         </DrawerContentScrollView> 

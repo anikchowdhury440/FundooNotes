@@ -7,17 +7,6 @@ import TopBarStyle from '../../styles/TopBar.style';
 export default class TopBar extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            listView : true
-        }
-    }
-
-    selectView = async () => {
-        const {onPress} = this.props
-        await this.setState({
-            listView : !this.state.listView
-        })
-        //onPress()
     }
 
     handleMenuButton = async () => {
@@ -40,8 +29,8 @@ export default class TopBar extends Component {
                         />
                     <Appbar.Action
                         style = {{marginRight : 10}}
-                        icon = {this.state.listView ? 'view-grid-outline' : 'view-agenda-outline'}
-                        onPress={this.selectView}
+                        icon = {(this.props.listView) ? 'view-grid-outline' : 'view-agenda-outline'}
+                        onPress={this.props.onPress}
                         />
                     <TouchableOpacity
                         style = {TopBarStyle.avatar_style}>

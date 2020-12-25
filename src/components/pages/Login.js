@@ -28,7 +28,7 @@ export default class Login extends Component {
         try {
             const isLoggedIn = JSON.parse(await AsyncStorage.getItem('isLoggedIn'))
             if(isLoggedIn) {
-              this.props.navigation.navigate("Home")
+              this.props.navigation.push("Home")
             }
           } 
           catch(e) {
@@ -83,7 +83,7 @@ export default class Login extends Component {
                 .then(async (UserCredential) => {
                     this.storeIteminAsyncStorage()
                     await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
-                    this.props.navigation.navigate('Home')
+                    this.props.navigation.push('Home')
                 })
                 .catch(error => {
                     if(error == 'Email not Found') {
@@ -134,10 +134,14 @@ export default class Login extends Component {
         const {onPress} = this.props;
         SocialServices.facebookLogin()
             .then(async UserCredential => {
-                UserServices.writeUserDataInRealtimeDatabase(UserCredential.user.uid, UserCredential.additionalUserInfo.profile.first_name, UserCredential.additionalUserInfo.profile.last_name, UserCredential.additionalUserInfo.profile.email);
+                UserServices.writeUserDataInRealtimeDatabase(
+                    UserCredential.user.uid, 
+                    UserCredential.additionalUserInfo.profile.first_name, 
+                    UserCredential.additionalUserInfo.profile.last_name, 
+                    UserCredential.additionalUserInfo.profile.email);
                 this.storeIteminAsyncStorage()
                 await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
-                this.props.navigation.navigate('Home')
+                this.props.navigation.push('Home')
             })
             .catch(error => {
                 console.log(error)

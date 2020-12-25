@@ -13,7 +13,7 @@ const DrawerContentStyle = StyleSheet.create({
         paddingLeft : 10,
         height : 50,
         justifyContent : 'center',
-        color : 'red'
+        color : 'red',
     },
 
     drawer_section_style : {

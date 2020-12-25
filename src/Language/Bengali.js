@@ -27,7 +27,17 @@ const Bengali = {
         emailExist : "ইমেল টি ইতিমধ্যেটই আছে",
         registerSuccessMessage : "আপনি সফলভাবে নিবন্ধন করেছেন",
         searchYourNotes : "আপনার নোট অনুসন্ধান করুন",
-        logout : "প্রস্থান"
+        logout : "প্রস্থান",
+        FundooNotes : "ফান্ডও নোটস",
+        notes : "নোটস",
+        reminder : "অনুস্মারক",
+        createNewLabel : "নতুন লেবেল তৈরি করুন",
+        archieve : "সংরক্ষণাগার",
+        deleted : "মোছা হয়েছে",
+        settings : "সেটিংস",
+        help : "সহায়তা এবং প্রতিক্রিয়া",
+        title : "শিরোনাম",
+        note : "নোট",
 }
 
 export default Bengali
