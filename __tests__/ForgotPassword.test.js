@@ -42,15 +42,15 @@ describe('test ForgotPassword',() => {
         })
     }, 10000)
 
-    // it('test onPress event of reset password button when email is valid it will set visible state for dialog should be true', async () => {
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<ForgotPassword onPress = {onPressEvent}/>)
-    //     const instance = component.instance();
-    //     instance.emailHandler('anikchowdhury440@gmail.com')
-    //     await instance.handleResetPasswordButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     return UserServices.forgotPassword(instance.state.email).then(() => expect(instance.state.visible).toBe(true))
-    // }, 15000)
+    it('test onPress event of reset password button when email is valid it will set visible state for dialog should be true', async () => {
+        const onPressEvent = jest.fn();
+        const component = shallow(<ForgotPassword onPress = {onPressEvent}/>)
+        const instance = component.instance();
+        instance.emailHandler('anikchowdhury440@gmail.com')
+        await instance.handleResetPasswordButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        return UserServices.forgotPassword(instance.state.email).then(() => expect(instance.state.visible).toBe(true))
+    })
 
     it('test onDismiss event of dialog button it will set visible state for dialog should be false', async () => {
         const onDismissEvent = jest.fn();

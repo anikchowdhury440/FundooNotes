@@ -7,7 +7,17 @@ import {
 } from '@react-navigation/drawer';
 import { Strings } from '../../Language/Strings';
 
+
+
 const DrawerContent = ({props}) => {
+
+    const handleNoteIconButton = () => {
+      props.navigation.navigate('Home', { screen : 'Notes'})
+    }
+
+    const handleReminderIconButton = () => {
+      props.navigation.navigate('Home', { screen : 'Reminder'})
+    }
     
     return (
       <View style = {{flex : 1}}>
@@ -18,13 +28,13 @@ const DrawerContent = ({props}) => {
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'lightbulb-outline'
                 label = {Strings.notes}
-                onPress = {() => props.navigation.navigate('Home', { screen: 'Notes' })}
+                onPress = {handleNoteIconButton}
               />
               <Drawer.Item
                 style = {DrawerContentStyle.drawer_item_style}
                 icon = 'bell-outline'
                 label = {Strings.reminder}
-                onPress = {() => props.navigation.navigate('Home', { screen : 'Reminder'})}
+                onPress = {handleReminderIconButton}
               />
             </Drawer.Section>
 

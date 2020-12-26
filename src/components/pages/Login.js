@@ -28,7 +28,7 @@ export default class Login extends Component {
         try {
             const isLoggedIn = JSON.parse(await AsyncStorage.getItem('isLoggedIn'))
             if(isLoggedIn) {
-              this.props.navigation.push("Home")
+              this.props.navigation.push('Home', { screen: 'Notes' })
             }
           } 
           catch(e) {
@@ -83,7 +83,7 @@ export default class Login extends Component {
                 .then(async (UserCredential) => {
                     this.storeIteminAsyncStorage()
                     await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
-                    this.props.navigation.push('Home')
+                    this.props.navigation.push('Home', { screen: 'Notes' })
                 })
                 .catch(error => {
                     if(error == 'Email not Found') {
@@ -141,7 +141,7 @@ export default class Login extends Component {
                     UserCredential.additionalUserInfo.profile.email);
                 this.storeIteminAsyncStorage()
                 await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
-                this.props.navigation.push('Home')
+                this.props.navigation.push('Home', { screen: 'Notes' })
             })
             .catch(error => {
                 console.log(error)

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { View} from 'react-native';
+import {Snackbar} from 'react-native-paper'
 import NoteScreenStyle from '../../styles/NoteScreen.styles';
 import TopBar from './TopBar';
 import BottomBar from './Bottombar';
@@ -9,7 +10,12 @@ export default class NoteScreen extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            listView : true
+            listView : true,
+            showEmptyNoteSnackbar : this.props.route.params == undefined 
+                                        ? false 
+                                        : (this.props.route.params.isEmptyNote  == undefined 
+                                            ? false 
+                                            : this.props.route.params.isEmptyNote)
         }
     }
 
@@ -21,12 +27,26 @@ export default class NoteScreen extends Component {
         //onPress()
     }
 
+    emptyNoteSnackbarHandler = async () => {
+        await this.setState({ 
+            showEmptyNoteSnackbar : false
+        })
+        this.props.navigation.setParams({isEmptyNote : false})
+    }
+
     render() {
         return(
             <View style = {NoteScreenStyle.mainContainer}>
                 <TopBar navigation = {this.props.navigation} onPress = {this.selectView} listView = {this.state.listView}/>
                 <NoteView navigation = {this.props.navigation} listView = {this.state.listView}/>
                 <BottomBar navigation = {this.props.navigation}/> 
+                <Snackbar
+                    style = {{marginBottom : 100}}
+                    visible={this.state.showEmptyNoteSnackbar}
+                    onDismiss={this.emptyNoteSnackbarHandler}
+                    duration = {10000}>
+                    Empty Note Discarded
+                </Snackbar>
             </View>
         )
     }

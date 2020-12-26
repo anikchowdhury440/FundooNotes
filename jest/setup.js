@@ -26,4 +26,4 @@ jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 jest.mock('react-native-localization', () => RNLocalization)
 
-//jest.setTimeout(30000);
+jest.setTimeout(50000);

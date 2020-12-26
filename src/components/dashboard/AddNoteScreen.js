@@ -1,17 +1,29 @@
 import React, {Component} from 'react'
 import {View, ScrollView, TextInput} from 'react-native'
-import { Appbar } from 'react-native-paper'
+import { Appbar, Snackbar } from 'react-native-paper'
 import AddNoteScreenStyle from '../../styles/AddNoteScreen.styles'
 import * as Keychain from 'react-native-keychain'
-import Firebase from '../../../config/Firebase'
 import { Strings } from '../../Language/Strings';
+import UserNoteServices from '../../../services/UserNoteServices'
+import Firebase from '../../../config/Firebase'
 
 export default class AddNoteScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            noteKey : '',
             title : '',
-            note : '' 
+            note : '', 
+        }
+    }
+
+    componentDidMount = async () => {
+        if(this.props.route.params != undefined) {
+            await this.setState({
+                noteKey : this.props.route.params.noteKey,
+                title : this.props.route.params.notes.title,
+                note : this.props.route.params.notes.note
+            })
         }
     }
 
@@ -29,17 +41,30 @@ export default class AddNoteScreen extends Component {
 
     handleBackIconButton = async () => {
         const {onPress} = this.props
+        const credential = await Keychain.getGenericPassword();
+        const UserCredential = JSON.parse(credential.password);
         if(this.state.title != '' || this.state.note != '') {
-            const credential = await Keychain.getGenericPassword();
-            const UserCredential = JSON.parse(credential.password);
-            Firebase.database().ref('notes/' + UserCredential.user.uid).push({
-                title : this.state.title,
-                note : this.state.note
-            })
-            .then(() => console.log('Note Added')) 
-            .catch((error) => console.log(error))  
+            if(this.props.route.params == undefined) {
+                UserNoteServices.storeNoteinDatabase(UserCredential.user.uid, this.state.title, this.state.note)
+                    .then(() => this.props.navigation.push('Home'))
+                    .catch(error => console.log(error)) 
+            } 
+            else {
+                UserNoteServices.updateNoteInFirebase(UserCredential.user.uid, this.state.noteKey, this.state.title, this.state.note)
+                    .then(() => this.props.navigation.push('Home'))
+                    .catch(error => console.log(error))
+            }
         }
-        this.props.navigation.push('Home')
+        else{
+            if(this.props.route.params == undefined) {
+                this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
+            } 
+            else {
+                UserNoteServices.updateNoteInFirebase(UserCredential.user.uid, this.state.noteKey, this.state.title, this.state.note)
+                    .then(() => this.props.navigation.push('Home'))
+                    .catch(error => console.log(error))
+            }
+        }
         //onPress();  
     }
 
