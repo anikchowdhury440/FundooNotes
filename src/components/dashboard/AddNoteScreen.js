@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
 import {View, ScrollView, TextInput} from 'react-native'
-import { Appbar, Snackbar } from 'react-native-paper'
+import { Appbar, Menu, Snackbar} from 'react-native-paper'
 import AddNoteScreenStyle from '../../styles/AddNoteScreen.styles'
 import * as Keychain from 'react-native-keychain'
 import { Strings } from '../../Language/Strings';
 import UserNoteServices from '../../../services/UserNoteServices'
-import Firebase from '../../../config/Firebase'
+import RBSheet from 'react-native-raw-bottom-sheet'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export default class AddNoteScreen extends Component {
     constructor(props) {
@@ -13,11 +14,18 @@ export default class AddNoteScreen extends Component {
         this.state = {
             noteKey : '',
             title : '',
-            note : '', 
+            note : '',
+            userId : '',
+            isNoteNotAddedDeleted : false 
         }
     }
 
     componentDidMount = async () => {
+        const credential = await Keychain.getGenericPassword();
+        const UserCredential = JSON.parse(credential.password);
+        await this.setState({
+            userId : UserCredential.user.uid
+        })
         if(this.props.route.params != undefined) {
             await this.setState({
                 noteKey : this.props.route.params.noteKey,
@@ -39,19 +47,23 @@ export default class AddNoteScreen extends Component {
         })
     }
 
+    handleDotIconButton = async() => {
+        const {onPress} = this.props
+        this.RBSheet.open()
+        onPress()
+    }
+
     handleBackIconButton = async () => {
         const {onPress} = this.props
-        const credential = await Keychain.getGenericPassword();
-        const UserCredential = JSON.parse(credential.password);
         if(this.state.title != '' || this.state.note != '') {
             if(this.props.route.params == undefined) {
-                UserNoteServices.storeNoteinDatabase(UserCredential.user.uid, this.state.title, this.state.note)
-                    .then(() => this.props.navigation.push('Home'))
+                UserNoteServices.storeNoteinDatabase(this.state.userId, this.state.title, this.state.note)
+                    .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
                     .catch(error => console.log(error)) 
             } 
             else {
-                UserNoteServices.updateNoteInFirebase(UserCredential.user.uid, this.state.noteKey, this.state.title, this.state.note)
-                    .then(() => this.props.navigation.push('Home'))
+                UserNoteServices.updateNoteInFirebase(this.state.userId, this.state.noteKey, this.state.title, this.state.note)
+                    .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
                     .catch(error => console.log(error))
             }
         }
@@ -60,12 +72,37 @@ export default class AddNoteScreen extends Component {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
             } 
             else {
-                UserNoteServices.updateNoteInFirebase(UserCredential.user.uid, this.state.noteKey, this.state.title, this.state.note)
-                    .then(() => this.props.navigation.push('Home'))
+                UserNoteServices.updateNoteInFirebase(this.state.userId, this.state.noteKey, this.state.title, this.state.note)
+                    .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
                     .catch(error => console.log(error))
             }
         }
-        //onPress();  
+        onPress();  
+    }
+
+    handleDeleteButton = async() => {
+        this.RBSheet.close()
+        if(this.props.route.params == undefined){
+            await this.setState({
+                isNoteNotAddedDeleted : true
+            })
+        }
+        else {
+            UserNoteServices.deleteNoteInFirebase(this.state.userId, this.state.noteKey, this.state.title, this.state.note)
+                    .then(() => this.props.navigation.push('Home', { screen : 'Notes', 
+                                                                    params : {isNoteDeleted : true, 
+                                                                            noteKey : this.state.noteKey,
+                                                                            title : this.state.title,
+                                                                            note : this.state.note,
+                                                                            userId : this.state.userId}}))
+                    .catch(error => console.log(error))
+        }
+    }
+
+    isNotAddedNoteDeletedSnackbarHandler = async () => {
+        await this.setState({ 
+            isNoteNotAddedDeleted : false
+        })
     }
 
     render() {
@@ -115,9 +152,44 @@ export default class AddNoteScreen extends Component {
                             icon = 'redo-variant'/>
                         <Appbar.Content/>
                         <Appbar.Action 
-                            icon = 'dots-vertical'/>
+                            icon = 'dots-vertical'
+                            onPress = {this.handleDotIconButton}/>
                     </Appbar>
                 </View>
+                <RBSheet
+                    ref = {ref => {this.RBSheet = ref}}
+                    height = {250}
+                    customStyles = {{
+                        container : {
+                            marginBottom : 50,
+                            borderTopWidth : 1,
+                            borderColor : "#d3d3d3",
+                            
+                        },
+                        wrapper: {
+                            backgroundColor: "transparent",
+                        },
+                    }}>
+                        <View>
+                            <Menu.Item icon="delete-outline" onPress={this.handleDeleteButton} title="Delete" />
+                            <Menu.Item icon="content-copy" title="Make a copy" />
+                            <Menu.Item icon="share-variant" title="Send" />
+                            <Menu.Item 
+                                icon={({ size, color }) => (
+                                    <Icon name="person-add-outline" size={size} color={color} />
+                                    )} 
+                                title="Collaborator"/>
+                            <Menu.Item icon="label-outline" title="Labels" />
+                        
+                        </View>
+                </RBSheet>
+                <Snackbar
+                    style = {{marginBottom : 100}}
+                    visible={this.state.isNoteNotAddedDeleted}
+                    onDismiss={this.isNotAddedNoteDeletedSnackbarHandler}
+                    duration = {10000}>
+                    Notes not added can't be deleted
+                </Snackbar>
             </View>
         )
     }

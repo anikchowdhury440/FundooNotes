@@ -6,6 +6,7 @@ import { Strings } from '../../Language/Strings';
 import * as Keychain from 'react-native-keychain';
 import NoteViewStyle from '../../styles/NoteView.style';
 import UserNoteServices from '../../../services/UserNoteServices';
+import NoteCard from './NoteCard';
 
 export default class MainView extends Component {
     constructor(props) {
@@ -27,32 +28,19 @@ export default class MainView extends Component {
             })
     }
 
-    selectNote = (noteKey) => {
-        this.props.navigation.push('AddNote', { noteKey : noteKey, notes : this.state.userNotes[noteKey].notes})
-    }
-
     render() {
         let noteID = Object.keys(this.state.userNotes);
         return (
-            <ScrollView style = {{marginBottom : 60}}>
-                <View style = {{flexDirection: 'row', flexWrap: 'wrap'}}>
+            <ScrollView style = {NoteViewStyle.container}>
+                <View style = {NoteViewStyle.list_conatiner}>
                     { noteID.length > 0 ?
-                        noteID.reverse().map(key => (
-                            <Card
-                                key = {key}
-                                style = {(this.props.listView) ? NoteViewStyle.list_item_style :  NoteViewStyle.list_item_grid_style }
-                                onPress = {() => this.selectNote(key)} >
-                                <Card.Content>
-                                    <Title 
-                                        style = {(this.state.userNotes[key].notes.note == '') ? NoteViewStyle.list_title_note_empty_style : NoteViewStyle.list_title_style}>
-                                            {this.state.userNotes[key].notes.title}
-                                    </Title>
-                                    <Paragraph
-                                        style = {(this.state.userNotes[key].notes.title == '') ? NoteViewStyle.list_note_title_empty_style : NoteViewStyle.note_description_style}>
-                                            {this.state.userNotes[key].notes.note}
-                                    </Paragraph>
-                                </Card.Content>  
-                            </Card>
+                        noteID.reverse().map(key => ( 
+                            <React.Fragment key = {key}>
+                                {!this.state.userNotes[key].notes.isDeleted ? (
+                                    <NoteCard listView = {this.props.listView} notes = {this.state.userNotes[key].notes} noteKey = {key} navigation = {this.props.navigation}/>)
+                                : null}
+                                
+                            </React.Fragment>
                         )) 
                         :
                         null

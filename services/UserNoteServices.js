@@ -5,7 +5,8 @@ class UserNoteServices {
         return new Promise((resolve, reject) => {
             const notes = {
                 title : title,
-                note : note
+                note : note,
+                isDeleted : false
             }
             Firebase.database().ref('UserNotes/' + userid).push({
                 notes : notes
@@ -27,7 +28,38 @@ class UserNoteServices {
         return new Promise((resolve, reject) => {
             const notes = {
                 title : title,
-                note : note
+                note : note,
+                isDeleted : false
+            }
+            Firebase.database().ref('UserNotes/' + userid  + '/' + notekey).set({
+                notes : notes
+            })
+            .then(() => resolve('success'))
+            .catch(error => reject(error))
+        })
+    }
+
+    deleteNoteInFirebase = (userid, notekey, title, note) => {
+        return new Promise((resolve, reject) => {
+            const notes = {
+                title : title,
+                note : note,
+                isDeleted : true
+            }
+            Firebase.database().ref('UserNotes/' + userid  + '/' + notekey).set({
+                notes : notes
+            })
+            .then(() => resolve('success'))
+            .catch(error => reject(error))
+        })
+    }
+
+    restoreNoteInFirebase = (userid, notekey, title, note) => {
+        return new Promise((resolve, reject) => {
+            const notes = {
+                title : title,
+                note : note,
+                isDeleted : false
             }
             Firebase.database().ref('UserNotes/' + userid  + '/' + notekey).set({
                 notes : notes

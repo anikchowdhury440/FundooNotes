@@ -22,4 +22,29 @@ describe('test NoteScreen', () => {
         expect(onPressEvent).toHaveBeenCalledTimes(2);
         expect(instance.state.listView).toBe(true);
     })
+
+    // it('test onDismiss event of snackbar for empty note it will change the showEmptyNoteSnackbar State to be false', async () => {
+    //     const onDismissEvent = jest.fn();
+    //     const component = shallow(<NoteScreen onDismiss = {onDismissEvent}/>)
+    //     const instance = component.instance();
+    //     await instance.emptyNoteSnackbarHandler();
+    //     expect(instance.state.showEmptyNoteSnackbar).toBe(false);
+    // })
+
+    // it('test onDismiss event of snackbar for delete note it will change the showDeletedNoteSnackbar State to be false', async () => {
+    //     const onDismissEvent = jest.fn();
+    //     const component = shallow(<NoteScreen onDismiss = {onDismissEvent}/>)
+    //     const instance = component.instance();
+    //     await instance.deletedNoteSnackbarHandler();
+    //     expect(instance.state.showDeletedNoteSnackbar).toBe(false);
+    // })
+
+    // it('test onPress method action button Undo in Snackbar it will call the UserNotesServices restoreNoteInFirebase method', async () => {
+    //     const onPressEvent = jest.fn();
+    //     const UserNotesServices = {restoreNoteInFirebase : jest.fn()}
+    //     const component = shallow(<NoteScreen onPress= {onPressEvent} UserNotesServices = {UserNotesServices}/>)
+    //     const instance = component.instance();
+    //     await instance.restoreNotes();
+        
+    // })
 })

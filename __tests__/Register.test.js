@@ -183,33 +183,33 @@ describe('test Register', () => {
         expect(instance.state.confirmPasswordEmpty).toBe(true)
     })
 
-    it('test onPress event of sign up button when all fields are valid it will set Dialog Visible state true', async() => {
-        const onPressEvent = jest.fn();
-        const component = shallow(<Register onPress = {onPressEvent}/>)
-        const instance = component.instance();
-        instance.firstNameHandler('Pawan')
-        instance.lastNameHandler('Kumar')
-        instance.emailHandler('anikchowdhury1110@gmail.com')
-        instance.passwordHandler('Anik#1234')
-        instance.confirmPasswordHandler('Anik#1234')
-        await instance.handleSignUpButton();
-        expect(onPressEvent).toHaveBeenCalled();
-        return UserServices.register(instance.state.email, instance.state.password).then(user => expect(instance.state.visible).toBe(true))
-    })
+    // it('test onPress event of sign up button when all fields are valid it will set Dialog Visible state true', async() => {
+    //     const onPressEvent = jest.fn();
+    //     const component = shallow(<Register onPress = {onPressEvent}/>)
+    //     const instance = component.instance();
+    //     instance.firstNameHandler('Pawan')
+    //     instance.lastNameHandler('Kumar')
+    //     instance.emailHandler('anikchowdhury1110@gmail.com')
+    //     instance.passwordHandler('Anik#1234')
+    //     instance.confirmPasswordHandler('Anik#1234')
+    //     await instance.handleSignUpButton();
+    //     expect(onPressEvent).toHaveBeenCalled();
+    //     return UserServices.register(instance.state.email, instance.state.password).then(user => expect(instance.state.visible).toBe(true))
+    // })
 
-    it('test onPress event of sign up button when email is already present then emailPresent state should be true', async() => {
-        const onPressEvent = jest.fn();
-        const component = shallow(<Register onPress = {onPressEvent}/>)
-        const instance = component.instance();
-        instance.firstNameHandler('Anik')
-        instance.lastNameHandler('Chowdhury')
-        instance.emailHandler('anikchowdhury440@gmail.com')
-        instance.passwordHandler('Anik#1234')
-        instance.confirmPasswordHandler('Anik#1234')
-        await instance.handleSignUpButton();
-        expect(onPressEvent).toHaveBeenCalled();
-        return UserServices.register(instance.state.email, instance.state.password).catch(error => expect(instance.state.emailPresent).toBe(true))
-    })
+    // it('test onPress event of sign up button when email is already present then emailPresent state should be true', async() => {
+    //     const onPressEvent = jest.fn();
+    //     const component = shallow(<Register onPress = {onPressEvent}/>)
+    //     const instance = component.instance();
+    //     instance.firstNameHandler('Anik')
+    //     instance.lastNameHandler('Chowdhury')
+    //     instance.emailHandler('anikchowdhury440@gmail.com')
+    //     instance.passwordHandler('Anik#1234')
+    //     instance.confirmPasswordHandler('Anik#1234')
+    //     await instance.handleSignUpButton();
+    //     expect(onPressEvent).toHaveBeenCalled();
+    //     return UserServices.register(instance.state.email, instance.state.password).catch(error => expect(instance.state.emailPresent).toBe(true))
+    // })
 
     it('test onDismiss event of dialog button it will set visible state for dialog should be false', async () => {
         const onDismissEvent = jest.fn();
