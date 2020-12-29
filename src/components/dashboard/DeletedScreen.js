@@ -28,7 +28,7 @@ export default class DeletedScreen extends Component {
     handleMenuButton = async () => {
         const {onPress} = this.props
         this.props.navigation.openDrawer();
-        onPress();
+        //onPress();
     }
 
     render() {
@@ -56,10 +56,10 @@ export default class DeletedScreen extends Component {
                                     (<Card style = {DeletedScreenStyle.list_item_style}>
                                         <Card.Content>
                                             <Title>
-                                                    {this.state.userNotes[key].notes.title}
+                                                {this.state.userNotes[key].notes.title}
                                             </Title>
                                             <Paragraph>
-                                                    {this.state.userNotes[key].notes.note}
+                                                {this.state.userNotes[key].notes.note}
                                             </Paragraph>
                                         </Card.Content>  
                                     </Card>)

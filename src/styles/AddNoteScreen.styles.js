@@ -35,7 +35,8 @@ const AddNoteScreenStyle = StyleSheet.create({
 
     bottom_appbar_style : {
         backgroundColor : 'white'
-    }
+    },
+
 })
 
 export default AddNoteScreenStyle;

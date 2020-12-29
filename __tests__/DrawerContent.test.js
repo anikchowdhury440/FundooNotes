@@ -21,24 +21,24 @@ describe('test DrawerContent', () => {
     })
 
     // it('test onPress event of notes icon button it will navigate to notes screen', async () => {
-    //     const navigation = { navigate : jest.fn() }
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<DrawerContent onPress = {onPressEvent} navigation = {navigation}/>)
+    //     const navigation = { push : jest.fn() }
+    //     //const onPressEvent = jest.fn();
+    //     const component = shallow(<DrawerContent navigation = {navigation}/>)
     //     const instance = component.instance();
     //     await instance.handleNoteIconButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(instance.state.listView).toBe(false);
-    //     expect(navigation.push).toBeCalledWith('Home')
+    //     //expect(onPressEvent).toHaveBeenCalled();
+    //     expect(navigation.push).toBeCalledWith('Home', { screen : 'Notes'})
     // })
 
     // it('test onPress event of deleted icon button it will navigate to deleted screen', async () => {
-    //     const navigation = { navigate : jest.fn() }
+    //     const navigation = { push : jest.fn() }
     //     const onPressEvent = jest.fn();
     //     const component = shallow(<DrawerContent onPress = {onPressEvent} navigation = {navigation}/>)
     //     const instance = component.instance();
     //     await instance.handleDeletedIconButton();
     //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(instance.state.listView).toBe(false);
     //     expect(navigation.push).toBeCalledWith('Home')
     // })
+
+    
 })

@@ -8,7 +8,9 @@ export default class NoteCard extends Component {
     }
 
     selectNote = (noteKey) => {
+        const {onPress} = this.props
         this.props.navigation.push('AddNote', { noteKey : noteKey, notes : this.props.notes})
+        //onPress();
     }
 
     render() {

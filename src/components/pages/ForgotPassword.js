@@ -49,7 +49,7 @@ export default class ForgotPassword extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
 
     hideDialog = async  () => {
@@ -57,13 +57,13 @@ export default class ForgotPassword extends Component {
         await this.setState({
             visible : false
         })
-        onDismiss();
+        //onDismiss();
     }
 
     handleDialogButton = () => {
         const {onPress} = this.props
         this.props.navigation.navigate('Login')
-        onPress()
+        //onPress()
     }
 
     render() {

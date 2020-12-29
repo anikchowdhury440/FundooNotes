@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">64.68% </span>
+                <span class="strong">64.49% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>141/218</span>
+                <span class='fraction'>138/214</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.55% </span>
+                <span class="strong">57.25% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>80/139</span>
+                <span class='fraction'>79/138</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70% </span>
+                <span class="strong">68.97% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>42/60</span>
+                <span class='fraction'>40/58</span>
             </div>
         
             
@@ -369,8 +369,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
@@ -404,11 +404,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -425,7 +425,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -443,8 +443,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -609,7 +609,7 @@ export default class Login extends Component {
     handleSignUpButton = async () =&gt; {
         const {onPress} = this.props;
         this.props.navigation.navigate("Register")
-        onPress();
+        //onPress();
     }
 &nbsp;
     handleSignInButton = async () =&gt; {
@@ -647,7 +647,7 @@ export default class Login extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
 &nbsp;
     storeIteminAsyncStorage = async () <span class="fstat-no" title="function not covered" >=&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span></span></span></span></span>
@@ -664,7 +664,7 @@ export default class Login extends Component {
     handleForgotPasswordButton = () =&gt; {
         const {onPress} = this.props;
         this.props.navigation.navigate("ForgotPassword")
-        onPress();
+        //onPress();
     }
 &nbsp;
     handleFacebookLoginButton = async () <span class="fstat-no" title="function not covered" >=&gt; {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span></span>
@@ -682,8 +682,8 @@ export default class Login extends Component {
             })
             .catch(e<span class="fstat-no" title="function not covered" >rr</span>or =&gt; {
 <span class="cstat-no" title="statement not covered" >                console.log(error)</span>
-            })
-        onPres<span class="cstat-no" title="statement not covered" >s();<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span><span class="branch-2 cbranch-no" title="branch not covered" ></span></span></span></span></span></span></span>
+            })<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span><span class="branch-2 cbranch-no" title="branch not covered" ></span></span></span></span></span></span>
+        //onPress();
     }
     
     render() {
@@ -781,7 +781,7 @@ export default class Login extends Component {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Dec 27 2020 17:15:21 GMT+0530 (India Standard Time)
+                at Mon Dec 28 2020 21:49:56 GMT+0530 (India Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

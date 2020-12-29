@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import {View, ScrollView, TextInput} from 'react-native'
-import { Appbar, Menu, Snackbar} from 'react-native-paper'
+import { Appbar, Snackbar} from 'react-native-paper'
 import AddNoteScreenStyle from '../../styles/AddNoteScreen.styles'
 import * as Keychain from 'react-native-keychain'
 import { Strings } from '../../Language/Strings';
 import UserNoteServices from '../../../services/UserNoteServices'
 import RBSheet from 'react-native-raw-bottom-sheet'
-import Icon from 'react-native-vector-icons/Ionicons'
+import DotsVerticalRBSheetMenu from './DotsVerticalRBSheetMenu'
 
 export default class AddNoteScreen extends Component {
     constructor(props) {
@@ -50,13 +50,14 @@ export default class AddNoteScreen extends Component {
     handleDotIconButton = async() => {
         const {onPress} = this.props
         this.RBSheet.open()
-        onPress()
+        //onPress()
     }
 
     handleBackIconButton = async () => {
-        const {onPress} = this.props
+        // const {onPress} = this.props
         if(this.state.title != '' || this.state.note != '') {
             if(this.props.route.params == undefined) {
+                console.log(this.state.title)
                 UserNoteServices.storeNoteinDatabase(this.state.userId, this.state.title, this.state.note)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
                     .catch(error => console.log(error)) 
@@ -72,12 +73,12 @@ export default class AddNoteScreen extends Component {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
             } 
             else {
-                UserNoteServices.updateNoteInFirebase(this.state.userId, this.state.noteKey, this.state.title, this.state.note)
-                    .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
+                UserNoteServices.removeNoteInFirebase(this.state.userId, this.state.noteKey)
+                    .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isEmptyNote : true}}))
                     .catch(error => console.log(error))
             }
         }
-        onPress();  
+        // onPress();  
     }
 
     handleDeleteButton = async() => {
@@ -100,9 +101,11 @@ export default class AddNoteScreen extends Component {
     }
 
     isNotAddedNoteDeletedSnackbarHandler = async () => {
+        const {onDismiss} = this.props
         await this.setState({ 
             isNoteNotAddedDeleted : false
         })
+        //onDismiss();
     }
 
     render() {
@@ -163,25 +166,13 @@ export default class AddNoteScreen extends Component {
                         container : {
                             marginBottom : 50,
                             borderTopWidth : 1,
-                            borderColor : "#d3d3d3",
-                            
+                            borderColor : "#d3d3d3", 
                         },
                         wrapper: {
                             backgroundColor: "transparent",
                         },
                     }}>
-                        <View>
-                            <Menu.Item icon="delete-outline" onPress={this.handleDeleteButton} title="Delete" />
-                            <Menu.Item icon="content-copy" title="Make a copy" />
-                            <Menu.Item icon="share-variant" title="Send" />
-                            <Menu.Item 
-                                icon={({ size, color }) => (
-                                    <Icon name="person-add-outline" size={size} color={color} />
-                                    )} 
-                                title="Collaborator"/>
-                            <Menu.Item icon="label-outline" title="Labels" />
-                        
-                        </View>
+                        <DotsVerticalRBSheetMenu delete = {this.handleDeleteButton}/>
                 </RBSheet>
                 <Snackbar
                     style = {{marginBottom : 100}}

@@ -6,6 +6,12 @@ const NoteScreenStyle = StyleSheet.create({
         backgroundColor : 'white'
     },
 
+    modal_container_style : {
+        backgroundColor: 'white', 
+        padding: 20,
+        width : 300,
+        alignSelf : 'center'
+    }
 })
 
 export default NoteScreenStyle;

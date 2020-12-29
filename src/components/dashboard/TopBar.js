@@ -12,7 +12,7 @@ export default class TopBar extends Component {
     handleMenuButton = async () => {
         const {onPress} = this.props
         this.props.navigation.openDrawer();
-        onPress();
+        //onPress();
     }
 
     render() {
@@ -30,11 +30,13 @@ export default class TopBar extends Component {
                     <Appbar.Action
                         style = {{marginRight : 10}}
                         icon = {(this.props.listView) ? 'view-grid-outline' : 'view-agenda-outline'}
-                        onPress={this.props.onPress}
+                        onPress={this.props.onPressView}
                         />
                     <TouchableOpacity
-                        style = {TopBarStyle.avatar_style}>
-                        <Avatar.Image size={24} source={require('../../assets/app-logo.png')} />
+                        style = {TopBarStyle.avatar_style}
+                        onPress = {this.props.onPressProfile}>
+                        <Avatar.Image size={24} 
+                            source = {require('../../assets/blank-profile.png')} />
                     </TouchableOpacity>
                 </Appbar>
             </View>

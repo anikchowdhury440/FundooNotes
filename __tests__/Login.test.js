@@ -106,7 +106,7 @@ describe('test Login', () => {
     //     instance.passwordHandler('Anik@1234')
     //     await instance.handleSignInButton();
     //     expect(onPressEvent).toHaveBeenCalled();
-    //     return UserServices.login(instance.state.email, instance.state.password).then(user => expect(navigation.push).toBeCalledWith('Home'))
+    //     return UserServices.login(instance.state.email, instance.state.password).then(user => expect(navigation.push).toBeCalledWith('Home', {'screen': 'Notes'}))
     // })
 
     // it('test onPress event of facebook sign in button it will navigate to Note Screen', async() => {

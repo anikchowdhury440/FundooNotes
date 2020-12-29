@@ -4,6 +4,7 @@ import keyChainMock from '../__mocks__/react-native-keychain'
 import 'react-native-gesture-handler/jestSetup';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import RNLocalization from '../__mocks__/react-native-localization';
+import RBSheetMock from '../__mocks__/react-native-raw-bottom-sheet';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -26,4 +27,7 @@ jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 jest.mock('react-native-localization', () => RNLocalization)
 
+jest.mock('react-native-raw-bottom-sheet', () => RBSheetMock)
+
 jest.setTimeout(50000);
+

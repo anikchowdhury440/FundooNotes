@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
 import {ScrollView, View} from 'react-native';
-import {Button, Card, Title, Paragraph} from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Strings } from '../../Language/Strings';
 import * as Keychain from 'react-native-keychain';
 import NoteViewStyle from '../../styles/NoteView.style';
 import UserNoteServices from '../../../services/UserNoteServices';
 import NoteCard from './NoteCard';
 
-export default class MainView extends Component {
+export default class NoteView extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -45,14 +42,7 @@ export default class MainView extends Component {
                         :
                         null
                     }
-                </View>
-                <Button 
-                    onPress = { async () => {
-                        await AsyncStorage.setItem('isLoggedIn', JSON.stringify(false));
-                        this.props.navigation.push('Login')
-                    }}>
-                        {Strings.logout}
-                    </Button>      
+                </View>     
             </ScrollView>
         )
     }

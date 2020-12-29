@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import { View} from 'react-native';
-import {Snackbar} from 'react-native-paper'
+import { View, Text} from 'react-native';
+import {Snackbar, Provider, Modal, Portal} from 'react-native-paper'
 import NoteScreenStyle from '../../styles/NoteScreen.styles';
 import TopBar from './TopBar';
 import BottomBar from './Bottombar';
 import NoteView from './NoteView';
 import UserNoteServices from '../../../services/UserNoteServices';
+import Profile from './Profile';
 
 export default class NoteScreen extends Component {
     constructor (props) {
@@ -13,7 +14,8 @@ export default class NoteScreen extends Component {
         this.state = {
             listView : true,
             showEmptyNoteSnackbar : false,
-            showDeletedNoteSnackbar : false
+            showDeletedNoteSnackbar : false,
+            showProfileModal : false,
         }
     }
 
@@ -37,7 +39,7 @@ export default class NoteScreen extends Component {
         await this.setState({
             listView : !this.state.listView
         })
-        onPress()
+        //onPress()
     }
 
     emptyNoteSnackbarHandler = async () => {
@@ -46,7 +48,7 @@ export default class NoteScreen extends Component {
             showEmptyNoteSnackbar : false
         })
         this.props.navigation.setParams({isEmptyNote : false})
-        onDismiss()
+        //onDismiss()
     }
 
     deletedNoteSnackbarHandler = async () => {
@@ -55,7 +57,7 @@ export default class NoteScreen extends Component {
             showDeletedNoteSnackbar : false
         })
         this.props.navigation.setParams({isNoteDeleted : false})
-        onDismiss()
+        //onDismiss()
     }
 
     restoreNotes = async() => {
@@ -63,13 +65,30 @@ export default class NoteScreen extends Component {
         UserNoteServices.restoreNoteInFirebase(this.props.route.params.userId, this.props.route.params.noteKey, this.props.route.params.title, this.props.route.params.note)
             .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             .catch(error => console.log(error))
-        onPress()
+        //onPress()
+    }
+
+    showModal = async() => {
+        const {onPress} = this.props
+        await this.setState({
+            showProfileModal : true
+        })
+        //onPress();
+    }
+
+    hideModal = async() => {
+        const {onDismiss} = this.props
+        await this.setState({
+            showProfileModal : false
+        })
+        //onDismiss();
     }
 
     render() {
         return(
+            <Provider>
             <View style = {NoteScreenStyle.mainContainer}>
-                <TopBar navigation = {this.props.navigation} onPress = {this.selectView} listView = {this.state.listView}/>
+                <TopBar navigation = {this.props.navigation} onPressView = {this.selectView} listView = {this.state.listView} onPressProfile = {this.showModal}/>
                 <NoteView navigation = {this.props.navigation} listView = {this.state.listView}/>
                 <BottomBar navigation = {this.props.navigation}/> 
                 <Snackbar
@@ -90,7 +109,16 @@ export default class NoteScreen extends Component {
                     }}>
                     Note Moved to Bin
                 </Snackbar>
+                <Portal>
+                    <Modal 
+                        visible={this.state.showProfileModal} 
+                        onDismiss={this.hideModal} 
+                        contentContainerStyle={NoteScreenStyle.modal_container_style}>
+                            <Profile navigation = {this.props.navigation}/>
+                    </Modal>
+                </Portal>
             </View>
+            </Provider>
         )
     }
 }
