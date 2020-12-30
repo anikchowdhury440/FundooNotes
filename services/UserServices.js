@@ -64,7 +64,18 @@ class UserServices {
         return new Promise((resolve, reject) => {
             Firebase.database().ref('users/' + userid).once('value')
                 .then(snapshot => resolve(snapshot.val()))
-                .catch(error => reject(error))
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    }
+
+    addImageUrlToUser = (userid, firstName, lastName, email, photo) => {
+        Firebase.database().ref('users/' + userid).set({
+            firstName : firstName,
+            lastName : lastName,
+            email : email,
+            photo : photo
         })
     }
 }

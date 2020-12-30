@@ -7,6 +7,7 @@ import BottomBar from './Bottombar';
 import NoteView from './NoteView';
 import UserNoteServices from '../../../services/UserNoteServices';
 import Profile from './Profile';
+import UserServices from '../../../services/UserServices'
 import Firebase from '../../../config/Firebase'
 import * as Keychain from 'react-native-keychain'
 
@@ -41,27 +42,17 @@ export default class NoteScreen extends Component {
                 })
             }
         }
-        this.readImage()
-    }
-
-    async componentDidUpdate() {
-        this.readImage()
+        await this.readImage()
     }
 
     readImage = async () => {
-        await Firebase.storage().ref('/' + this.state.userId).getDownloadURL()
-            .then(async url => {
-                await this.setState({
-                    photo : url
-                })
-            }).
-            catch( async error => {
-                if(error.code == 'storage/object-not-found') {
+        await UserServices.readUserDataFromRealtimeDatabase(this.state.userId)
+            .then(async data => {
+                if(data.photo != undefined){
                     await this.setState({
-                        photo : ''
+                        photo : data.photo
                     })
                 }
-                console.log(error)
             })
     }
 
@@ -113,6 +104,13 @@ export default class NoteScreen extends Component {
             showProfileModal : false
         })
         //onDismiss();
+    }
+
+    changeImage = async () => {
+        this.readImage()
+        await this.setState({
+            showProfileModal : false
+        })
     }
 
     render() {

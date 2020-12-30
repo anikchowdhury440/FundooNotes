@@ -110,7 +110,7 @@ export default class Login extends Component {
                 })
             }
         }
-        onPress();
+        //onPress();
     }
 
     storeIteminAsyncStorage = async () => {
@@ -127,18 +127,24 @@ export default class Login extends Component {
     handleForgotPasswordButton = () => {
         const {onPress} = this.props;
         this.props.navigation.navigate("ForgotPassword")
-        onPress();
+        //onPress();
     }
 
     handleFacebookLoginButton = async () => {
         const {onPress} = this.props;
         SocialServices.facebookLogin()
             .then(async UserCredential => {
-                UserServices.writeUserDataInRealtimeDatabase(
-                    UserCredential.user.uid, 
-                    UserCredential.additionalUserInfo.profile.first_name, 
-                    UserCredential.additionalUserInfo.profile.last_name, 
-                    UserCredential.additionalUserInfo.profile.email);
+                console.log(UserCredential.user)
+                UserServices.readUserDataFromRealtimeDatabase(UserCredential.user.uid)
+                    .then(data => {
+                        if(data == null) {
+                            UserServices.writeUserDataInRealtimeDatabase(
+                                UserCredential.user.uid, 
+                                UserCredential.additionalUserInfo.profile.first_name, 
+                                UserCredential.additionalUserInfo.profile.last_name, 
+                                UserCredential.additionalUserInfo.profile.email);
+                        }
+                    })
                 this.storeIteminAsyncStorage()
                 await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
                 this.props.navigation.push('Home', { screen: 'Notes' })
@@ -146,7 +152,7 @@ export default class Login extends Component {
             .catch(error => {
                 console.log(error)
             })
-        onPress();
+        //onPress();
     }
     
     render() {

@@ -11,6 +11,7 @@ const ProfileStyle = StyleSheet.create({
     },
 
     text_style : {
+        color : 'black',
         fontWeight : 'bold'
     },
 
@@ -21,7 +22,7 @@ const ProfileStyle = StyleSheet.create({
     },
 
     edit_button_style : {
-        flex : 1, 
+        // flex : 1, 
         justifyContent : 'flex-end', 
         alignItems : 'flex-end'
     }

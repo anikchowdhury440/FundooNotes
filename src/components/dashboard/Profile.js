@@ -31,6 +31,7 @@ export default class Profile extends Component {
             userDetails : '',
             photo : this.props.photo,
             userId : '',
+            showSubmit : false
         }
     }
 
@@ -57,7 +58,7 @@ export default class Profile extends Component {
         //onPress()
     }
 
-    handleChoosePhotoFromLibrary = async () => {
+    handleChoosePhotoFromLibrary = () => {
         this.RBSheet.close()
         const options = {
             mediaType : 'photo',
@@ -67,8 +68,12 @@ export default class Profile extends Component {
         launchImageLibrary(options, async response => {
             if(!response.didCancel) {  
                 this.uploadImage(response.uri)
-                    .then(url => { 
-                        this.setState({photo: url}) 
+                    .then(async url => { 
+                        await this.setState({
+                            photo: url,
+                            showSubmit : true
+                        }) 
+                        UserServices.addImageUrlToUser(this.state.userId, this.state.userDetails.firstName, this.state.userDetails.lastName, this.state.userDetails.email, this.state.photo)
                     })
                     .catch(error => console.log(error))  
             }
@@ -85,11 +90,24 @@ export default class Profile extends Component {
         launchCamera(options, async response => {
             if(!response.didCancel) {  
                 this.uploadImage(response.uri)
-                    .then(url => { 
-                        this.setState({photo: url}) 
+                    .then(async url => { 
+                        await this.setState({
+                            photo: url,
+                            showSubmit : true
+                        }) 
+                        UserServices.addImageUrlToUser(this.state.userId, this.state.userDetails.firstName, this.state.userDetails.lastName, this.state.userDetails.email, this.state.photo)
                     })
                     .catch(error => console.log(error))  
             }
+        })
+    }
+
+    addImageUrlToUser = () => {
+        Firebase.database().ref('users/' + this.state.userId).set({
+            firstName : this.state.userDetails.firstName,
+            lastName : this.state.userDetails.lastName,
+            email : this.state.userDetails.email,
+            photo : this.state.photo
         })
     }
 
@@ -133,20 +151,30 @@ export default class Profile extends Component {
     render() {
         return (
             <View>
-                <View style = {ProfileStyle.image_container_style}>
-                    <ImageBackground
-                        source = {(this.state.photo == '') ? require('../../assets/blank-profile.png') :{uri : this.state.photo}}
-                        style = {{height : 100, width : 100}}>
-                            <View style = {ProfileStyle.edit_button_style}>
-                                <TouchableOpacity
-                                    onPress = {this.handleImageEditButton}>
-                                    <Icon name="edit" size={24} />
-                                </TouchableOpacity>
-                            </View>
-                    </ImageBackground>
+                <ImageBackground
+                    resizeMode = 'stretch'
+                    style = {{padding : 20}}
+                    source = {(this.state.photo == '') ? require('../../assets/blank-profile.png') :{uri : this.state.photo}}>
+                    {/* <View style = {ProfileStyle.image_container_style}>
+                        <ImageBackground
+                            source = {(this.state.photo == '') ? require('../../assets/blank-profile.png') :{uri : this.state.photo}}
+                            style = {{height : 100, width : 100}}>
+                                <View style = {ProfileStyle.edit_button_style}>
+                                    <TouchableOpacity
+                                        onPress = {this.handleImageEditButton}>
+                                        <Icon name="edit" size={24} />
+                                    </TouchableOpacity>
+                                </View>
+                        </ImageBackground>
 
+                    </View> */}
+                <View style = {ProfileStyle.edit_button_style}>
+                    <TouchableOpacity
+                        onPress = {this.handleImageEditButton}>
+                        <Icon name="edit" size={24} />
+                    </TouchableOpacity>
                 </View>
-                <View style = {{marginTop : 20, marginBottom : 20}}>
+                <View style = {{marginTop : 20, marginBottom : 10}}>
                     <View style = {ProfileStyle.text_container_style}>
                         <Text style = {ProfileStyle.text_style}>First Name : </Text>
                         <Text style = {ProfileStyle.text_style}>{this.state.userDetails.firstName}</Text>
@@ -160,6 +188,16 @@ export default class Profile extends Component {
                         <Text style = {ProfileStyle.text_style}>{this.state.userDetails.email}</Text>
                     </View>
                 </View>
+                <View style = {{alignSelf : 'center', marginBottom : 10, marginTop : 10}}>
+                    {(this.state.showSubmit) ? (
+                    <Button 
+                        style = {ProfileStyle.logout_button_styles}
+                        color = 'white'
+                        onPress = {this.props.changeImage}>
+                            Submit
+                    </Button> 
+                    ) : null}
+                </View>
                 <View style = {{alignSelf : 'center'}}>
                     <Button 
                         style = {ProfileStyle.logout_button_styles}
@@ -167,7 +205,7 @@ export default class Profile extends Component {
                         onPress = {this.handleLogoutButton}>
                             {Strings.logout}
                     </Button> 
-                </View>
+                </View>              
                 <RBSheet
                     ref = {ref => {this.RBSheet = ref}}
                     height = {200}
@@ -186,6 +224,7 @@ export default class Profile extends Component {
                             chooseFromLibrary = {this.handleChoosePhotoFromLibrary}
                             cancel = {this.handleCancel}/>
                 </RBSheet>
+                </ImageBackground>
             </View>
         )
     }

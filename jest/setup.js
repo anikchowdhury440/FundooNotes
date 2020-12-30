@@ -31,3 +31,9 @@ jest.mock('react-native-raw-bottom-sheet', () => RBSheetMock)
 
 jest.setTimeout(50000);
 
+jest.mock('react-native-fetch-blob', () => {
+  return {
+    DocumentDir: () => {},
+    polyfill: () => {},
+  }
+});
