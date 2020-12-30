@@ -19,6 +19,12 @@ const ProfileStyle = StyleSheet.create({
         backgroundColor : "#339EFF",
         borderRadius : 20,
     },
+
+    edit_button_style : {
+        flex : 1, 
+        justifyContent : 'flex-end', 
+        alignItems : 'flex-end'
+    }
 })
 
 export default ProfileStyle;

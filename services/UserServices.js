@@ -43,6 +43,15 @@ class UserServices {
         })
     }
 
+    signout = () => {
+        return new Promise((resolve, reject) => {
+            Firebase.auth().signOut()
+                .then(() => resolve('success') )
+                .catch(error => reject(error))
+        })
+    }
+
+
     writeUserDataInRealtimeDatabase = (userid, firstName, lastName, email) => {
         Firebase.database().ref('users/' + userid).set({
             firstName : firstName,

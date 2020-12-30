@@ -32,13 +32,15 @@ describe('test AddNoteScrren', () => {
         expect(component.find(Snackbar)).toHaveLength(1)
     })
 
-    // it('test onPress event of HandleDotIconButton it will call the RBSheet open function', async () => {
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<AddNoteScreen onPress = {onPressEvent} />)
-    //     const instance = component.instance();
-    //     await instance.handleDotIconButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    // })
+    it('test onPress event of HandleDotIconButton it will call the RBSheet open function', async () => {
+        const RBSheet = {open : jest.fn()}
+        const onPressEvent = jest.fn();
+        const component = shallow(<AddNoteScreen onPress = {onPressEvent} RBSheet = {RBSheet} />)
+        const instance = component.instance();
+        await instance.handleDotIconButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(RBSheet.open).toHaveBeenCalled()
+    })
 
     it('test onDismiss event of Snackbar for empty note delete it will set isNoteNotAddedDeleted to be false', async () => {
         const onDismissEvent = jest.fn();

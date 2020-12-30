@@ -35,8 +35,10 @@ export default class TopBar extends Component {
                     <TouchableOpacity
                         style = {TopBarStyle.avatar_style}
                         onPress = {this.props.onPressProfile}>
-                        <Avatar.Image size={24} 
-                            source = {require('../../assets/blank-profile.png')} />
+                        <Avatar.Image 
+                            style = {{backgroundColor : 'white'}}
+                            size={24} 
+                            source = {(this.props.photo == '') ? require('../../assets/blank-profile.png') : {uri : this.props.photo}} />
                     </TouchableOpacity>
                 </Appbar>
             </View>

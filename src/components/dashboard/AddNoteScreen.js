@@ -78,7 +78,7 @@ export default class AddNoteScreen extends Component {
                     .catch(error => console.log(error))
             }
         }
-        // onPress();  
+        //onPress();  
     }
 
     handleDeleteButton = async() => {
