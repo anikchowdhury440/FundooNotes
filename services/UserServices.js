@@ -70,11 +70,9 @@ class UserServices {
         })
     }
 
-    addImageUrlToUser = (userid, firstName, lastName, email, photo) => {
-        Firebase.database().ref('users/' + userid).set({
-            firstName : firstName,
-            lastName : lastName,
-            email : email,
+    addImageUrlToUser = (userid, photo) => {
+        console.log(photo)
+        Firebase.database().ref('users/' + userid).update({
             photo : photo
         })
     }

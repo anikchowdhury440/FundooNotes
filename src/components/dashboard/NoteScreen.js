@@ -8,8 +8,11 @@ import NoteView from './NoteView';
 import UserNoteServices from '../../../services/UserNoteServices';
 import Profile from './Profile';
 import UserServices from '../../../services/UserServices'
-import Firebase from '../../../config/Firebase'
 import * as Keychain from 'react-native-keychain'
+import {openDatabase} from 'react-native-sqlite-storage';
+import SQLiteServices from '../../../services/SQLiteServices';
+
+const db = openDatabase({name: 'user_notes.db', createFromLocation: 1});
 
 export default class NoteScreen extends Component {
     constructor (props) {
@@ -22,6 +25,20 @@ export default class NoteScreen extends Component {
             photo : '',
             userId : ''
         }
+        // db.transaction(tx => {
+        //     tx.executeSql(
+        //         "SELECT * FROM notes_table",
+        //         [],
+        //         (tx, results) => {
+        //             console.log(results.rows.length)
+        //             for (let i = 0; i < results.rows.length; i++) {
+        //                 var item = results.rows.item(i);
+        //                 console.log(item);
+        //             }
+        //         },
+        //         error => console.log(error)
+        //     );
+        // });
     }
 
     async componentDidMount() {
@@ -84,7 +101,8 @@ export default class NoteScreen extends Component {
 
     restoreNotes = async() => {
         const {onPress} = this.props
-        UserNoteServices.restoreNoteInFirebase(this.props.route.params.userId, this.props.route.params.noteKey, this.props.route.params.title, this.props.route.params.note)
+        SQLiteServices.restoreNoteinSQliteStorage(this.props.route.params.noteKey)
+        UserNoteServices.restoreNoteInFirebase(this.props.route.params.userId, this.props.route.params.noteKey)
             .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             .catch(error => console.log(error))
         //onPress()

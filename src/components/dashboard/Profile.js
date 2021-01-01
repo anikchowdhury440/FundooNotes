@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, ImageBackground, TouchableOpacity, Platform} from 'react-native'
+import {View, Text, ImageBackground, TouchableOpacity} from 'react-native'
 import {Button} from 'react-native-paper'
 import ProfileStyle from '../../styles/Profile.styles'
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -73,7 +73,7 @@ export default class Profile extends Component {
                             photo: url,
                             showSubmit : true
                         }) 
-                        UserServices.addImageUrlToUser(this.state.userId, this.state.userDetails.firstName, this.state.userDetails.lastName, this.state.userDetails.email, this.state.photo)
+                        UserServices.addImageUrlToUser(this.state.userId, this.state.photo)
                     })
                     .catch(error => console.log(error))  
             }
@@ -95,19 +95,10 @@ export default class Profile extends Component {
                             photo: url,
                             showSubmit : true
                         }) 
-                        UserServices.addImageUrlToUser(this.state.userId, this.state.userDetails.firstName, this.state.userDetails.lastName, this.state.userDetails.email, this.state.photo)
+                        UserServices.addImageUrlToUser(this.state.userId, this.state.photo)
                     })
                     .catch(error => console.log(error))  
             }
-        })
-    }
-
-    addImageUrlToUser = () => {
-        Firebase.database().ref('users/' + this.state.userId).set({
-            firstName : this.state.userDetails.firstName,
-            lastName : this.state.userDetails.lastName,
-            email : this.state.userDetails.email,
-            photo : this.state.photo
         })
     }
 
@@ -176,15 +167,9 @@ export default class Profile extends Component {
                 </View>
                 <View style = {{marginTop : 20, marginBottom : 10}}>
                     <View style = {ProfileStyle.text_container_style}>
-                        <Text style = {ProfileStyle.text_style}>First Name : </Text>
-                        <Text style = {ProfileStyle.text_style}>{this.state.userDetails.firstName}</Text>
+                        <Text style = {ProfileStyle.text_style}>{this.state.userDetails.firstName + ' ' + this.state.userDetails.lastName }</Text>
                     </View>
                     <View style = {ProfileStyle.text_container_style}>
-                        <Text style = {ProfileStyle.text_style}>Last Name : </Text>
-                        <Text style = {ProfileStyle.text_style}>{this.state.userDetails.lastName}</Text>
-                    </View>
-                    <View style = {ProfileStyle.text_container_style}>
-                        <Text style = {ProfileStyle.text_style}>Email : </Text>
                         <Text style = {ProfileStyle.text_style}>{this.state.userDetails.email}</Text>
                     </View>
                 </View>

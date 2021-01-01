@@ -6,13 +6,14 @@ const ProfileStyle = StyleSheet.create({
     },
 
     text_container_style : {
-        flexDirection : "row", 
         marginTop : 10
     },
 
     text_style : {
-        color : 'black',
-        fontWeight : 'bold'
+        color : 'white',
+        fontWeight : 'bold',
+        alignSelf : 'center',
+        fontSize : 16
     },
 
     logout_button_styles : {
