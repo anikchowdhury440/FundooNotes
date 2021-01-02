@@ -19,12 +19,14 @@ const AddNoteScreenStyle = StyleSheet.create({
         marginRight : 20,
         marginTop : 20,
         fontSize : 22,
+        color : 'black'
     },
 
     note_style : {
         marginLeft : 20,
         marginRight : 20,
         fontSize : 18,
+        color : 'black'
     },
 
     bottom_view : {

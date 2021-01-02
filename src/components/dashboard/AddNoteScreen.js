@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
-import {View, ScrollView, TextInput} from 'react-native'
-import { Appbar, Snackbar} from 'react-native-paper'
+import {View, ScrollView, TextInput, TouchableWithoutFeedback, Text} from 'react-native'
+import { Appbar, Snackbar, Provider, Portal, Dialog, Paragraph, Button} from 'react-native-paper'
 import AddNoteScreenStyle from '../../styles/AddNoteScreen.styles'
 import * as Keychain from 'react-native-keychain'
 import { Strings } from '../../Language/Strings';
-import UserNoteServices from '../../../services/UserNoteServices'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import DotsVerticalRBSheetMenu from './DotsVerticalRBSheetMenu'
-import SQLiteServices from '../../../services/SQLiteServices'
+import NoteDataController from '../../../services/NoteDataController'
+import DotsVerticalRestoreRBSheetMenu from './DotsVerticalRestoreRBSheetMenu'
 
 export default class AddNoteScreen extends Component {
     constructor(props) {
@@ -17,7 +17,11 @@ export default class AddNoteScreen extends Component {
             title : '',
             note : '',
             userId : '',
-            isNoteNotAddedDeleted : false 
+            isDeleted : '',
+            isNoteNotAddedDeleted : false,
+            deleteForeverDialog : false, 
+            restoreDeleteSnackbar : false,
+            restoreSnackbar : false
         }
     }
 
@@ -31,9 +35,11 @@ export default class AddNoteScreen extends Component {
             await this.setState({
                 noteKey : this.props.route.params.noteKey,
                 title : this.props.route.params.notes.title,
-                note : this.props.route.params.notes.note
+                note : this.props.route.params.notes.note,
+                isDeleted : this.props.route.params.notes.is_deleted
             })
         }
+        console.log(this.state.isDeleted)
     }
 
     handleTitle = async (title) => {
@@ -53,30 +59,30 @@ export default class AddNoteScreen extends Component {
         this.RBSheet.open()
         //onPress()
     }
+    
+    generateNoteKey = () => {
+        var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var result = '';
+        for ( var i = 0; i < 20; i++ ) {
+            result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+        }
+        return result;
+    }
 
     handleBackIconButton = async () => {
         // const {onPress} = this.props
         if(this.state.title != '' || this.state.note != '') {
             if(this.props.route.params == undefined) {
-                await SQLiteServices.storeNoteinSQliteStorage(this.state.userId, this.state.title, this.state.note)
-                    .then(results => {
-                        this.setState({
-                            noteKey : results.insertId
-                        })
-                    })
-
-                await UserNoteServices.storeNoteinDatabase(this.state.userId, this.state.title, this.state.note, this.state.noteKey)
+                var noteKey = this.generateNoteKey()
+                NoteDataController.storeNote(noteKey, this.state.userId, this.state.title, this.state.note)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
-                    .catch(error => console.log(error))
-
             } 
-            else {
-                SQLiteServices.updateNoteinSQliteStorage(this.state.noteKey, this.state.title, this.state.note)
-
-                UserNoteServices.updateNoteInFirebase(this.state.userId, this.state.noteKey, this.state.title, this.state.note)
+            else if(this.state.isDeleted == 0){
+                NoteDataController.updateNote(this.state.userId, this.state.noteKey, this.state.title, this.state.note)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
-                    .catch(error => console.log(error))
-                    
+            }
+            else {
+                this.props.navigation.push('Home', {screen : 'Deleted'})
             }
         }
         else{
@@ -84,11 +90,8 @@ export default class AddNoteScreen extends Component {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
             } 
             else {
-                SQLiteServices.removeNoteinSQliteStorage(this.state.noteKey)
-
-                UserNoteServices.removeNoteInFirebase(this.state.userId, this.state.noteKey)
+                NoteDataController.removeNote(this.state.userId, this.state.noteKey)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isEmptyNote : true}}))
-                    .catch(error => console.log(error))
             }
         }
         //onPress();  
@@ -102,13 +105,10 @@ export default class AddNoteScreen extends Component {
             })
         }
         else {
-            SQLiteServices.deleteNoteinSQliteStorage(this.state.noteKey)
-            UserNoteServices.deleteNoteInFirebase(this.state.userId, this.state.noteKey)
-                    .then(() => this.props.navigation.push('Home', { screen : 'Notes', 
-                                                                    params : {isNoteDeleted : true, 
-                                                                            noteKey : this.state.noteKey,
-                                                                            userId : this.state.userId}}))
-                    .catch(error => console.log(error))
+            NoteDataController.deleteNote(this.state.userId, this.state.noteKey)
+                .then(() => this.props.navigation.push('Home', { screen : 'Notes', params : {isNoteDeleted : true, 
+                                                                                            noteKey : this.state.noteKey,
+                                                                                            userId : this.state.userId}}))    
         }
     }
 
@@ -120,8 +120,76 @@ export default class AddNoteScreen extends Component {
         //onDismiss();
     }
 
+    handleDeleteForeverDialogDismiss = async () => {
+        await this.setState({
+            deleteForeverDialog : false
+        })
+    }
+
+    handleDeleteForeverButton = async () => {
+        this.RBSheet.close()
+        await this.setState({
+            deleteForeverDialog : true
+        })
+    }
+
+    handleRestoreButton = () => {
+        this.RBSheet.close()
+        NoteDataController.restoreNote(this.state.userId, this.state.noteKey)
+            .then(async () => {
+                await this.setState({
+                    isDeleted : 0,
+                    restoreDeleteSnackbar : true
+                })
+            })
+    }
+
+    handleDeleteForeverActionButton = () => {
+        NoteDataController.removeNote(this.state.userId, this.state.noteKey)
+            .then(() => this.props.navigation.push('Home', {screen : 'Deleted'}))
+    }
+
+    restoreDeleteSnackbarDismiss = () => {
+        this.setState({
+            restoreDeleteSnackbar : false
+        })
+    }
+
+    restoreDeleteSnackbarAction = () => {
+        NoteDataController.deleteNote(this.state.userId, this.state.noteKey)
+            .then(() => {
+                this.setState({
+                    isDeleted : 1
+                })
+            })
+    }
+
+    handlePressDisabledTextInput = () => {
+        if(this.state.isDeleted == 1) {
+            this.setState({
+                restoreSnackbar : true
+            })
+        }
+    }
+
+    restoreSnackbarDismiss = () => {
+        this.setState({
+            restoreSnackbar : false
+        })
+    }
+
+    restoreSnackbarAction = () => {
+        NoteDataController.restoreNote(this.state.userId, this.state.noteKey)
+            .then(() => {
+                this.setState({
+                    isDeleted : 0
+                })
+            })
+    }
+
     render() {
         return (
+            <Provider>
             <View style = {AddNoteScreenStyle.mainContainer}>
                 <View>
                     <Appbar style = {AddNoteScreenStyle.header_style}>
@@ -141,20 +209,26 @@ export default class AddNoteScreen extends Component {
                     </Appbar>
                 </View>
                 <ScrollView style = {{marginBottom : 60}}> 
-                    <TextInput
-                        style = {AddNoteScreenStyle.title_style}
-                        multiline = {true} 
-                        placeholder = {Strings.title}
-                        onChangeText = {this.handleTitle}
-                        value = {this.state.title}
-                    />
-                    <TextInput
-                        style = {AddNoteScreenStyle.note_style}
-                        multiline = {true} 
-                        placeholder = {Strings.note}
-                        onChangeText = {this.handleNote}
-                        value = {this.state.note}
-                    />
+                    <TouchableWithoutFeedback onPress = {this.handlePressDisabledTextInput}>
+                        <View>
+                            <TextInput
+                                style = {AddNoteScreenStyle.title_style}
+                                multiline = {true} 
+                                placeholder = {Strings.title}
+                                onChangeText = {this.handleTitle}
+                                value = {this.state.title}
+                                editable = {(this.state.isDeleted == 1) ? false : true} 
+                            />
+                            <TextInput
+                                style = {AddNoteScreenStyle.note_style}
+                                multiline = {true} 
+                                placeholder = {Strings.note}
+                                onChangeText = {this.handleNote}
+                                value = {this.state.note}
+                                editable = {(this.state.isDeleted == 1) ? false : true}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
                 </ScrollView>
                 <View style = {AddNoteScreenStyle.bottom_view}>
                     <Appbar style = {AddNoteScreenStyle.bottom_appbar_style}>
@@ -171,6 +245,7 @@ export default class AddNoteScreen extends Component {
                             onPress = {this.handleDotIconButton}/>
                     </Appbar>
                 </View>
+                {this.state.isDeleted == 0 ?
                 <RBSheet
                     ref = {ref => {this.RBSheet = ref}}
                     height = {250}
@@ -186,6 +261,23 @@ export default class AddNoteScreen extends Component {
                     }}>
                         <DotsVerticalRBSheetMenu delete = {this.handleDeleteButton}/>
                 </RBSheet>
+                :
+                <RBSheet
+                    ref = {ref => {this.RBSheet = ref}}
+                    height = {110}
+                    customStyles = {{
+                        container : {
+                            marginBottom : 50,
+                            borderTopWidth : 1,
+                            borderColor : "#d3d3d3", 
+                        },
+                        wrapper: {
+                            backgroundColor: "transparent",
+                        },
+                    }}>
+                        <DotsVerticalRestoreRBSheetMenu restore = {this.handleRestoreButton} deleteForever = {this.handleDeleteForeverButton}/>
+                </RBSheet>
+                }
                 <Snackbar
                     style = {{marginBottom : 100}}
                     visible={this.state.isNoteNotAddedDeleted}
@@ -193,7 +285,41 @@ export default class AddNoteScreen extends Component {
                     duration = {10000}>
                     Notes not added can't be deleted
                 </Snackbar>
+                <Snackbar
+                    style = {{marginBottom : 100}}
+                    visible={this.state.restoreDeleteSnackbar}
+                    onDismiss={this.restoreDeleteSnackbarDismiss}
+                    duration = {10000}
+                    action = {{
+                        label : 'Undo',
+                        onPress : this.restoreDeleteSnackbarAction
+                    }}>
+                        Note Restored
+                </Snackbar>
+                <Snackbar
+                    style = {{marginBottom : 100}}
+                    visible={this.state.restoreSnackbar}
+                    onDismiss={this.restoreSnackbarDismiss}
+                    duration = {10000}
+                    action = {{
+                        label : 'Restore',
+                        onPress : this.restoreSnackbarAction
+                    }}>
+                        Can't edit in Recycle Bin
+                </Snackbar>
+                <Portal>
+                    <Dialog visible = {this.state.deleteForeverDialog} onDismiss = {this.handleDeleteForeverDialogDismiss}>
+                        <Dialog.Content>
+                            <Paragraph style = {{fontSize : 16}}>Delete this note forever?</Paragraph>
+                        </Dialog.Content>
+                        <Dialog.Actions>
+                            <Button color = 'blue' onPress = {this.handleDeleteForeverDialogDismiss}>Cancel</Button>
+                            <Button color = 'blue' onPress = {this.handleDeleteForeverActionButton}>Delete</Button>
+                        </Dialog.Actions>
+                    </Dialog>
+                </Portal>
             </View>
+            </Provider>
         )
     }
 }
