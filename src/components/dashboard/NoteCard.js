@@ -5,7 +5,6 @@ import NoteCardStyle from '../../styles/NoteCard.style';
 export default class NoteCard extends Component {
     constructor(props) {
         super(props)
-        console.log(this.props.notes)
     }
 
     selectNote = (noteKey) => {
