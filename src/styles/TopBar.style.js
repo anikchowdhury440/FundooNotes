@@ -15,7 +15,7 @@ const TopBarStyle = StyleSheet.create({
 
     appbar_content_style : {
         fontSize: 18,
-        color : 'grey'
+        color : 'grey',
     },
 
     avatar_style : {

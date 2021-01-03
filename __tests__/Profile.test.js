@@ -11,27 +11,20 @@ describe('test Profile', () => {
         expect(component).toMatchSnapshot();
     })
 
-    // it('test componentDidMount for Profile Component', async () => {
-    //     const component = shallow(<Profile />)
+    // it('test onPress event of logout button it will navigate to Login Screen', async () => {
+    //     const navigation = { push : jest.fn() }
+    //     const onPressEvent = jest.fn();
+    //     const component = shallow(<Profile onPress = {onPressEvent} navigation = {navigation}/>)
     //     const instance = component.instance();
-    //     await instance.componentDidMount();
-    //     UserServices.readUserDataFromRealtimeDatabase('QvtrCiQfg5YpagwmYMiczn3AlPk1').then(data => expect(instance.state.userDetails).notToBe(''))
+    //     await instance.handleLogoutButton();
+    //     expect(onPressEvent).toHaveBeenCalled();
+    //     return UserServices.signout.then(user => expect(navigation.push).toBeCalledWith('Login'))
     // })
-
-    it('test onPress event of logout button it will navigate to Login Screen', async () => {
-        const navigation = { push : jest.fn() }
-        const onPressEvent = jest.fn();
-        const component = shallow(<Profile onPress = {onPressEvent} navigation = {navigation}/>)
-        const instance = component.instance();
-        await instance.handleLogoutButton();
-        expect(onPressEvent).toHaveBeenCalled();
-        return UserServices.signout.then(user => expect(navigation.push).toBeCalledWith('Login'))
-    })
 
     it('test component in Profile component', () => {
         const component = shallow(<Profile/>)
         expect(component.find(ImageBackground)).toHaveLength(1)
-        expect(component.find(Text)).toHaveLength(6)
+        expect(component.find(Text)).toHaveLength(2)
         expect(component.find(Button)).toHaveLength(1)
         expect(component.find(TouchableOpacity)).toHaveLength(1)
     })
@@ -51,7 +44,7 @@ describe('test Profile', () => {
         const onPressEvent = jest.fn();
         const component = shallow(<Profile onPress = {onPressEvent} RBSheet = {RBSheet}/>)
         const instance = component.instance();
-        await instance.handleImageEditButton();
+        await instance.handleCancel();
         expect(onPressEvent).toHaveBeenCalled();
         expect(RBSheet.close).toHaveBeenCalled();
     })

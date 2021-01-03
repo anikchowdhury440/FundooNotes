@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, TouchableOpacity} from 'react-native';
-import {Appbar, Avatar} from 'react-native-paper';
+import {Appbar, Avatar, TouchableRipple} from 'react-native-paper';
 import { Strings } from '../../Language/Strings';
 import TopBarStyle from '../../styles/TopBar.style';
 
@@ -15,6 +15,12 @@ export default class TopBar extends Component {
         //onPress();
     }
 
+    handleSearchButton = () => {
+        const {onPress} = this.props
+        this.props.navigation.push('Home', { screen : 'SearchNote'})
+        // onPress();
+    }
+
     render() {
         return (
             <View>
@@ -25,6 +31,7 @@ export default class TopBar extends Component {
                         />
                     <Appbar.Content
                         titleStyle = {TopBarStyle.appbar_content_style}
+                        onPress = {this.handleSearchButton}
                         title = {Strings.searchYourNotes}
                         />
                     <Appbar.Action

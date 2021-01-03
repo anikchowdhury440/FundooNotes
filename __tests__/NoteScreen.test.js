@@ -29,6 +29,7 @@ describe('test NoteScreen', () => {
         const component = shallow(<NoteScreen onDismiss = {onDismissEvent}/>)
         const instance = component.instance();
         await instance.emptyNoteSnackbarHandler();
+        expect(onPressEvent).toHaveBeenCalled();
         expect(instance.state.showEmptyNoteSnackbar).toBe(false);
         // expect(navigation.setParams).toHaveBeenCalled()
     })
@@ -38,15 +39,17 @@ describe('test NoteScreen', () => {
         const component = shallow(<NoteScreen onDismiss = {onDismissEvent}/>)
         const instance = component.instance();
         await instance.deletedNoteSnackbarHandler();
+        expect(onPressEvent).toHaveBeenCalled();
         expect(instance.state.showDeletedNoteSnackbar).toBe(false);
     })
 
     it('test onPress method action button Undo in Snackbar it will call the UserNotesServices restoreNoteInFirebase method', async () => {
         const onPressEvent = jest.fn();
         const UserNotesServices = {restoreNoteInFirebase : jest.fn()}
-        const component = shallow(<NoteScreen onPress= {onPressEvent} UserNotesServices = {UserNotesServices}/>)
+        const component = shallow(<NoteScreen onPress= {onPressEvent} />)
         const instance = component.instance();
         await instance.restoreNotes();
+        expect(onPressEvent).toHaveBeenCalled();
         
     })
 
@@ -55,6 +58,7 @@ describe('test NoteScreen', () => {
         const component = shallow(<NoteScreen onPress = {onPressEvent}/>)
         const instance = component.instance();
         await instance.showModal();
+        expect(onPressEvent).toHaveBeenCalled();
         expect(instance.state.showProfileModal).toBe(true);
     })
 
@@ -63,6 +67,16 @@ describe('test NoteScreen', () => {
         const component = shallow(<NoteScreen onDismiss = {onDismissEvent}/>)
         const instance = component.instance();
         await instance.hideModal();
+        expect(onDismissEvent).toHaveBeenCalled();
+        expect(instance.state.showProfileModal).toBe(false);
+    })
+
+    it('test onPress event of change image method it will set showProfileModal to be false', async () => {
+        const onPressEvent = jest.fn();
+        const component = shallow(<NoteScreen onPress = {onPressEvent}/>)
+        const instance = component.instance();
+        await instance.changeImage();
+        expect(onPressEvent).toHaveBeenCalled();
         expect(instance.state.showProfileModal).toBe(false);
     })
 })

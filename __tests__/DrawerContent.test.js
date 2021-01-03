@@ -28,15 +28,15 @@ describe('test DrawerContent', () => {
         expect(navigation.push).toBeCalledWith('Home', { screen : 'Notes'})
     })
 
-    // it('test onPress event of deleted icon button it will navigate to deleted screen', async () => {
-    //     const navigation = { push : jest.fn() }
-    //     const onPressEvent = jest.fn();
-    //     const component = shallow(<DrawerContent onPress = {onPressEvent} navigation = {navigation}/>)
-    //     const instance = component.instance();
-    //     await instance.handleDeletedIconButton();
-    //     expect(onPressEvent).toHaveBeenCalled();
-    //     expect(navigation.push).toBeCalledWith('Home')
-    // })
+    it('test onPress event of deleted icon button it will navigate to deleted screen', async () => {
+        const navigation = { push : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<DrawerContent onPress = {onPressEvent} navigation = {navigation}/>)
+        const instance = component.instance();
+        await instance.handleDeletedIconButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(navigation.push).toBeCalledWith('Home', { screen : 'Deleted'})
+    })
 
     
 })

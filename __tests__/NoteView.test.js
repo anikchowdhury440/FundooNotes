@@ -13,10 +13,5 @@ describe('test NoteView', () => {
         const component = shallow(<NoteView/>)
         const instance = component.instance();
         await instance.componentDidMount()
-        return UserNoteServices.getNoteFromDatabase('QvtrCiQfg5YpagwmYMiczn3AlPk1')
-        .then((user) => {
-            let notes = user ? user : {}
-            expect(instance.state.userNotes).toBe(notes)
-        })
     })
 })

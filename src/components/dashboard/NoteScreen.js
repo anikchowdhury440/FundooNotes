@@ -5,11 +5,9 @@ import NoteScreenStyle from '../../styles/NoteScreen.styles';
 import TopBar from './TopBar';
 import BottomBar from './Bottombar';
 import NoteView from './NoteView';
-import UserNoteServices from '../../../services/UserNoteServices';
 import Profile from './Profile';
 import UserServices from '../../../services/UserServices'
 import * as Keychain from 'react-native-keychain'
-import SQLiteServices from '../../../services/SQLiteServices';
 import NoteDataController from '../../../services/NoteDataController';
 
 export default class NoteScreen extends Component {
@@ -32,8 +30,6 @@ export default class NoteScreen extends Component {
         await this.setState({
             userId : UserCredential.user.uid
         })
-        await SQLiteServices.createTableInSQliteStorage(UserCredential.user.uid)
-        await NoteDataController.getNoteFromFirebaseToSqlite(UserCredential.user.uid)
         if(this.props.route.params != undefined) {
             if(this.props.route.params.isEmptyNote != undefined) {
                 await this.setState({
@@ -110,10 +106,12 @@ export default class NoteScreen extends Component {
     }
 
     changeImage = async () => {
+        const {onPress} = this.props
         this.readImage()
         await this.setState({
             showProfileModal : false
         })
+        //onPress()
     }
 
     render() {

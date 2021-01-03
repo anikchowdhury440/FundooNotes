@@ -25,4 +25,14 @@ describe('test TopBar', () => {
         expect(onPressEvent).toHaveBeenCalled();
         expect(navigation.openDrawer).toHaveBeenCalled()
     })
+
+    it('test onPress of Menu icon button it will open the Navigation Drawer', async () => {
+        const navigation = { push : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<TopBar onPress = {onPressEvent} navigation = {navigation}/>)
+        const instance = component.instance();
+        await instance.handleSearchButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(navigation.push).toHaveBeenCalled()
+    })
 })
