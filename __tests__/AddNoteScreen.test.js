@@ -38,7 +38,7 @@ describe('test AddNoteScrren', () => {
         const instance = component.instance();
         await instance.handleDotIconButton();
         expect(onPressEvent).toHaveBeenCalled();
-        expect(RBSheet.open).toHaveBeenCalled()
+        expect(RBSheet.open).toHaveBeenCalled();
     })
 
     it('test onDismiss event of Snackbar for empty note delete it will set isNoteNotAddedDeleted to be false', async () => {
