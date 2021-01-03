@@ -2,22 +2,23 @@ import React, {Component} from 'react';
 import {ScrollView, View, Text} from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import NoteViewStyle from '../../styles/NoteView.style';
-import UserNoteServices from '../../../services/UserNoteServices';
 import NoteCard from './NoteCard';
 import SQLiteServices from '../../../services/SQLiteServices';
+import NoteDataController from '../../../services/NoteDataController';
 
 export default class NoteView extends Component {
     constructor(props) {
         super(props);
         this.state = {
             userNotes : [],
-            connectionStatus : 'Offline'
         }
     }
 
     async componentDidMount() {
         const credential = await Keychain.getGenericPassword();
         const UserCredential = JSON.parse(credential.password);
+        await SQLiteServices.createTableInSQliteStorage(UserCredential.user.uid)
+        await NoteDataController.getNoteFromFirebaseToSqlite(UserCredential.user.uid)
         SQLiteServices.selectNoteFromSQliteStorage(UserCredential.user.uid)
             .then(async result => {
                 var temp = [];
@@ -37,7 +38,7 @@ export default class NoteView extends Component {
             <ScrollView style = {NoteViewStyle.container}>
                 <View style = {NoteViewStyle.list_conatiner}>
                     {this.state.userNotes.length > 0 ?
-                        this.state.userNotes.map(note => (
+                        this.state.userNotes.reverse().map(note => (
                             <React.Fragment key = {note.note_id}>
                                 {note.is_deleted == 0 ? (
                                     <NoteCard listView = {this.props.listView} notes = {note} noteKey = {note.note_id} navigation = {this.props.navigation}/>)

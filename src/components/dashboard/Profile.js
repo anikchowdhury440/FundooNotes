@@ -31,7 +31,8 @@ export default class Profile extends Component {
             userDetails : '',
             photo : this.props.photo,
             userId : '',
-            showSubmit : false
+            showSubmit : false,
+            fullName : ''
         }
     }
 
@@ -44,7 +45,8 @@ export default class Profile extends Component {
         await UserServices.readUserDataFromRealtimeDatabase(UserCredential.user.uid)
             .then(async data => {
                 await this.setState({
-                    userDetails : data
+                    userDetails : data,
+                    fullName : data.firstName + ' ' + data.lastName
                 })
             })
     }
@@ -167,7 +169,7 @@ export default class Profile extends Component {
                 </View>
                 <View style = {{marginTop : 20, marginBottom : 10}}>
                     <View style = {ProfileStyle.text_container_style}>
-                        <Text style = {ProfileStyle.text_style}>{this.state.userDetails.firstName + ' ' + this.state.userDetails.lastName }</Text>
+                        <Text style = {ProfileStyle.text_style}>{this.state.fullName}</Text>
                     </View>
                     <View style = {ProfileStyle.text_container_style}>
                         <Text style = {ProfileStyle.text_style}>{this.state.userDetails.email}</Text>

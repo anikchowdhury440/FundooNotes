@@ -12,7 +12,6 @@ const ProfileStyle = StyleSheet.create({
     text_style : {
         color : 'white',
         fontWeight : 'bold',
-        alignSelf : 'center',
         fontSize : 16
     },
 

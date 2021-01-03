@@ -121,16 +121,20 @@ export default class AddNoteScreen extends Component {
     }
 
     handleDeleteForeverDialogDismiss = async () => {
+        const {onDismiss} = this.props
         await this.setState({
             deleteForeverDialog : false
         })
+        //onDismiss()
     }
 
     handleDeleteForeverButton = async () => {
+        const {onPress} = this.props
         this.RBSheet.close()
         await this.setState({
             deleteForeverDialog : true
         })
+        //onPress();
     }
 
     handleRestoreButton = () => {
@@ -150,41 +154,51 @@ export default class AddNoteScreen extends Component {
     }
 
     restoreDeleteSnackbarDismiss = () => {
+        const {onDismiss} = this.props
         this.setState({
             restoreDeleteSnackbar : false
         })
+        //onDismiss();
     }
 
     restoreDeleteSnackbarAction = () => {
+        const {onPress} = this.props
         NoteDataController.deleteNote(this.state.userId, this.state.noteKey)
             .then(() => {
                 this.setState({
                     isDeleted : 1
                 })
             })
+        //onPress()
     }
 
     handlePressDisabledTextInput = () => {
+        const {onPress} = this.props
         if(this.state.isDeleted == 1) {
             this.setState({
                 restoreSnackbar : true
             })
         }
+        //onPress()
     }
 
     restoreSnackbarDismiss = () => {
+        const {onDismiss} = this.props
         this.setState({
             restoreSnackbar : false
         })
+        //onDismiss()
     }
 
     restoreSnackbarAction = () => {
+        const {onPress} = this.props
         NoteDataController.restoreNote(this.state.userId, this.state.noteKey)
             .then(() => {
                 this.setState({
                     isDeleted : 0
                 })
             })
+        //onPress()
     }
 
     render() {
@@ -198,14 +212,21 @@ export default class AddNoteScreen extends Component {
                             icon = 'keyboard-backspace'
                             onPress = {this.handleBackIconButton}/>
                         <Appbar.Content />
-                        <Appbar.Action
-                            style = {AddNoteScreenStyle.header_icon_style}                             
-                            icon = 'pin-outline'/>
-                        <Appbar.Action    
-                            style = {AddNoteScreenStyle.header_icon_style}                          
-                            icon = 'bell-plus-outline'/>
-                        <Appbar.Action 
-                            icon = 'archive-arrow-down-outline'/>
+                        {
+                            (this.state.isDeleted == 0) ? 
+                            <Appbar style = {{backgroundColor : 'transparent'}}>
+                                <Appbar.Action
+                                    style = {AddNoteScreenStyle.header_icon_style}                             
+                                    icon = 'pin-outline'/>
+                                <Appbar.Action    
+                                    style = {AddNoteScreenStyle.header_icon_style}                          
+                                    icon = 'bell-plus-outline'/>
+                                <Appbar.Action 
+                                    icon = 'archive-arrow-down-outline'/>
+                            </Appbar>
+                            :
+                            null
+                        }
                     </Appbar>
                 </View>
                 <ScrollView style = {{marginBottom : 60}}> 
@@ -235,10 +256,17 @@ export default class AddNoteScreen extends Component {
                         <Appbar.Action 
                             icon = 'plus-box-outline'/>
                         <Appbar.Content/>
-                        <Appbar.Action 
-                            icon = 'undo-variant'/>
-                        <Appbar.Action 
-                            icon = 'redo-variant'/>
+                        {
+                            (this.state.isDeleted == 0) ? 
+                            <Appbar style = {{backgroundColor : 'transparent'}}>
+                                <Appbar.Action 
+                                    icon = 'undo-variant'/>
+                                <Appbar.Action 
+                                    icon = 'redo-variant'/>
+                            </Appbar>
+                            :
+                            null
+                        }
                         <Appbar.Content/>
                         <Appbar.Action 
                             icon = 'dots-vertical'
