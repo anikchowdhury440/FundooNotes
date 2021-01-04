@@ -204,149 +204,149 @@ export default class AddNoteScreen extends Component {
     render() {
         return (
             <Provider>
-            <View style = {AddNoteScreenStyle.mainContainer}>
-                <View>
-                    <Appbar style = {AddNoteScreenStyle.header_style}>
-                        <Appbar.Action 
-                            style = {{marginLeft : 10}}
-                            icon = 'keyboard-backspace'
-                            onPress = {this.handleBackIconButton}/>
-                        <Appbar.Content />
-                        {
-                            (this.state.isDeleted == 0) ? 
-                            <Appbar style = {{backgroundColor : 'transparent'}}>
-                                <Appbar.Action
-                                    style = {AddNoteScreenStyle.header_icon_style}                             
-                                    icon = 'pin-outline'/>
-                                <Appbar.Action    
-                                    style = {AddNoteScreenStyle.header_icon_style}                          
-                                    icon = 'bell-plus-outline'/>
-                                <Appbar.Action 
-                                    icon = 'archive-arrow-down-outline'/>
-                            </Appbar>
-                            :
-                            null
-                        }
-                    </Appbar>
+                <View style = {AddNoteScreenStyle.mainContainer}>
+                    <View>
+                        <Appbar style = {AddNoteScreenStyle.header_style}>
+                            <Appbar.Action 
+                                style = {{marginLeft : 10}}
+                                icon = 'keyboard-backspace'
+                                onPress = {this.handleBackIconButton}/>
+                            <Appbar.Content />
+                            {
+                                (this.state.isDeleted == 0) ? 
+                                <Appbar style = {{backgroundColor : 'transparent'}}>
+                                    <Appbar.Action
+                                        style = {AddNoteScreenStyle.header_icon_style}                             
+                                        icon = 'pin-outline'/>
+                                    <Appbar.Action    
+                                        style = {AddNoteScreenStyle.header_icon_style}                          
+                                        icon = 'bell-plus-outline'/>
+                                    <Appbar.Action 
+                                        icon = 'archive-arrow-down-outline'/>
+                                </Appbar>
+                                :
+                                null
+                            }
+                        </Appbar>
+                    </View>
+                    <ScrollView style = {{marginBottom : 60}}> 
+                        <TouchableWithoutFeedback onPress = {this.handlePressDisabledTextInput}>
+                            <View>
+                                <TextInput
+                                    style = {AddNoteScreenStyle.title_style}
+                                    multiline = {true} 
+                                    placeholder = {Strings.title}
+                                    onChangeText = {this.handleTitle}
+                                    value = {this.state.title}
+                                    editable = {(this.state.isDeleted == 1) ? false : true} 
+                                />
+                                <TextInput
+                                    style = {AddNoteScreenStyle.note_style}
+                                    multiline = {true} 
+                                    placeholder = {Strings.note}
+                                    onChangeText = {this.handleNote}
+                                    value = {this.state.note}
+                                    editable = {(this.state.isDeleted == 1) ? false : true}
+                                />
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </ScrollView>
+                    <View style = {AddNoteScreenStyle.bottom_view}>
+                        <Appbar style = {AddNoteScreenStyle.bottom_appbar_style}>
+                            <Appbar.Action 
+                                icon = 'plus-box-outline'/>
+                            <Appbar.Content/>
+                            {
+                                (this.state.isDeleted == 0) ? 
+                                <Appbar style = {{backgroundColor : 'transparent'}}>
+                                    <Appbar.Action 
+                                        icon = 'undo-variant'/>
+                                    <Appbar.Action 
+                                        icon = 'redo-variant'/>
+                                </Appbar>
+                                :
+                                null
+                            }
+                            <Appbar.Content/>
+                            <Appbar.Action 
+                                icon = 'dots-vertical'
+                                onPress = {this.handleDotIconButton}/>
+                        </Appbar>
+                    </View>
+                    {this.state.isDeleted == 0 ?
+                    <RBSheet
+                        ref = {ref => {this.RBSheet = ref}}
+                        height = {250}
+                        customStyles = {{
+                            container : {
+                                marginBottom : 50,
+                                borderTopWidth : 1,
+                                borderColor : "#d3d3d3", 
+                            },
+                            wrapper: {
+                                backgroundColor: "transparent",
+                            },
+                        }}>
+                            <DotsVerticalRBSheetMenu delete = {this.handleDeleteButton}/>
+                    </RBSheet>
+                    :
+                    <RBSheet
+                        ref = {ref => {this.RBSheet = ref}}
+                        height = {110}
+                        customStyles = {{
+                            container : {
+                                marginBottom : 50,
+                                borderTopWidth : 1,
+                                borderColor : "#d3d3d3", 
+                            },
+                            wrapper: {
+                                backgroundColor: "transparent",
+                            },
+                        }}>
+                            <DotsVerticalRestoreRBSheetMenu restore = {this.handleRestoreButton} deleteForever = {this.handleDeleteForeverButton}/>
+                    </RBSheet>
+                    }
+                    <Snackbar
+                        style = {{marginBottom : 100}}
+                        visible={this.state.isNoteNotAddedDeleted}
+                        onDismiss={this.isNotAddedNoteDeletedSnackbarHandler}
+                        duration = {10000}>
+                        Notes not added can't be deleted
+                    </Snackbar>
+                    <Snackbar
+                        style = {{marginBottom : 100}}
+                        visible={this.state.restoreDeleteSnackbar}
+                        onDismiss={this.restoreDeleteSnackbarDismiss}
+                        duration = {10000}
+                        action = {{
+                            label : 'Undo',
+                            onPress : this.restoreDeleteSnackbarAction
+                        }}>
+                            Note Restored
+                    </Snackbar>
+                    <Snackbar
+                        style = {{marginBottom : 100}}
+                        visible={this.state.restoreSnackbar}
+                        onDismiss={this.restoreSnackbarDismiss}
+                        duration = {10000}
+                        action = {{
+                            label : 'Restore',
+                            onPress : this.restoreSnackbarAction
+                        }}>
+                            Can't edit in Recycle Bin
+                    </Snackbar>
+                    <Portal>
+                        <Dialog visible = {this.state.deleteForeverDialog} onDismiss = {this.handleDeleteForeverDialogDismiss}>
+                            <Dialog.Content>
+                                <Paragraph style = {{fontSize : 16}}>Delete this note forever?</Paragraph>
+                            </Dialog.Content>
+                            <Dialog.Actions>
+                                <Button color = 'blue' onPress = {this.handleDeleteForeverDialogDismiss}>Cancel</Button>
+                                <Button color = 'blue' onPress = {this.handleDeleteForeverActionButton}>Delete</Button>
+                            </Dialog.Actions>
+                        </Dialog>
+                    </Portal>
                 </View>
-                <ScrollView style = {{marginBottom : 60}}> 
-                    <TouchableWithoutFeedback onPress = {this.handlePressDisabledTextInput}>
-                        <View>
-                            <TextInput
-                                style = {AddNoteScreenStyle.title_style}
-                                multiline = {true} 
-                                placeholder = {Strings.title}
-                                onChangeText = {this.handleTitle}
-                                value = {this.state.title}
-                                editable = {(this.state.isDeleted == 1) ? false : true} 
-                            />
-                            <TextInput
-                                style = {AddNoteScreenStyle.note_style}
-                                multiline = {true} 
-                                placeholder = {Strings.note}
-                                onChangeText = {this.handleNote}
-                                value = {this.state.note}
-                                editable = {(this.state.isDeleted == 1) ? false : true}
-                            />
-                        </View>
-                    </TouchableWithoutFeedback>
-                </ScrollView>
-                <View style = {AddNoteScreenStyle.bottom_view}>
-                    <Appbar style = {AddNoteScreenStyle.bottom_appbar_style}>
-                        <Appbar.Action 
-                            icon = 'plus-box-outline'/>
-                        <Appbar.Content/>
-                        {
-                            (this.state.isDeleted == 0) ? 
-                            <Appbar style = {{backgroundColor : 'transparent'}}>
-                                <Appbar.Action 
-                                    icon = 'undo-variant'/>
-                                <Appbar.Action 
-                                    icon = 'redo-variant'/>
-                            </Appbar>
-                            :
-                            null
-                        }
-                        <Appbar.Content/>
-                        <Appbar.Action 
-                            icon = 'dots-vertical'
-                            onPress = {this.handleDotIconButton}/>
-                    </Appbar>
-                </View>
-                {this.state.isDeleted == 0 ?
-                <RBSheet
-                    ref = {ref => {this.RBSheet = ref}}
-                    height = {250}
-                    customStyles = {{
-                        container : {
-                            marginBottom : 50,
-                            borderTopWidth : 1,
-                            borderColor : "#d3d3d3", 
-                        },
-                        wrapper: {
-                            backgroundColor: "transparent",
-                        },
-                    }}>
-                        <DotsVerticalRBSheetMenu delete = {this.handleDeleteButton}/>
-                </RBSheet>
-                :
-                <RBSheet
-                    ref = {ref => {this.RBSheet = ref}}
-                    height = {110}
-                    customStyles = {{
-                        container : {
-                            marginBottom : 50,
-                            borderTopWidth : 1,
-                            borderColor : "#d3d3d3", 
-                        },
-                        wrapper: {
-                            backgroundColor: "transparent",
-                        },
-                    }}>
-                        <DotsVerticalRestoreRBSheetMenu restore = {this.handleRestoreButton} deleteForever = {this.handleDeleteForeverButton}/>
-                </RBSheet>
-                }
-                <Snackbar
-                    style = {{marginBottom : 100}}
-                    visible={this.state.isNoteNotAddedDeleted}
-                    onDismiss={this.isNotAddedNoteDeletedSnackbarHandler}
-                    duration = {10000}>
-                    Notes not added can't be deleted
-                </Snackbar>
-                <Snackbar
-                    style = {{marginBottom : 100}}
-                    visible={this.state.restoreDeleteSnackbar}
-                    onDismiss={this.restoreDeleteSnackbarDismiss}
-                    duration = {10000}
-                    action = {{
-                        label : 'Undo',
-                        onPress : this.restoreDeleteSnackbarAction
-                    }}>
-                        Note Restored
-                </Snackbar>
-                <Snackbar
-                    style = {{marginBottom : 100}}
-                    visible={this.state.restoreSnackbar}
-                    onDismiss={this.restoreSnackbarDismiss}
-                    duration = {10000}
-                    action = {{
-                        label : 'Restore',
-                        onPress : this.restoreSnackbarAction
-                    }}>
-                        Can't edit in Recycle Bin
-                </Snackbar>
-                <Portal>
-                    <Dialog visible = {this.state.deleteForeverDialog} onDismiss = {this.handleDeleteForeverDialogDismiss}>
-                        <Dialog.Content>
-                            <Paragraph style = {{fontSize : 16}}>Delete this note forever?</Paragraph>
-                        </Dialog.Content>
-                        <Dialog.Actions>
-                            <Button color = 'blue' onPress = {this.handleDeleteForeverDialogDismiss}>Cancel</Button>
-                            <Button color = 'blue' onPress = {this.handleDeleteForeverActionButton}>Delete</Button>
-                        </Dialog.Actions>
-                    </Dialog>
-                </Portal>
-            </View>
             </Provider>
         )
     }
