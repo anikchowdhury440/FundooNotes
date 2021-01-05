@@ -1,15 +1,30 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableWithoutFeedback} from 'react-native';
 import { Drawer } from 'react-native-paper';
 import DrawerContentStyle from '../../styles/DrawerContent.styles';
 import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 import { Strings } from '../../Language/Strings';
+import * as Keychain from 'react-native-keychain'
+import UserLabelServices from '../../../services/UserLabelServices';
+import {storeUserID, storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
+import { connect } from 'react-redux'
 
-export default class DrawerContent extends Component {
+class DrawerContent extends Component {
     constructor(props) {
       super(props)
+    }
+
+    componentDidMount = async () => {
+        const credential = await Keychain.getGenericPassword();
+        const UserCredential = JSON.parse(credential.password);
+        this.props.storeUserId(UserCredential.user.uid)
+        await UserLabelServices.getLabelFromDatabase(UserCredential.user.uid)
+            .then(async data => {
+                let labels = data ? data : {}
+                this.props.storeUserLabel(labels)
+            })
     }
 
     handleNoteIconButton = () => {
@@ -29,7 +44,13 @@ export default class DrawerContent extends Component {
       this.props.navigation.navigation.push('CreateLabel')
     }
 
+    handleEditButton = () => {
+      this.props.navigation.navigation.closeDrawer();
+      this.props.navigation.navigation.push('CreateLabel')
+    }
+
     render() {
+      let labelId = Object.keys(this.props.userLabel);
       return (
         <View style = {{flex : 1}}>
           <DrawerContentScrollView>
@@ -49,6 +70,33 @@ export default class DrawerContent extends Component {
               </Drawer.Section>
 
               <Drawer.Section style = {DrawerContentStyle.drawer_section_style}>
+                {
+                  (labelId.length > 0) ? 
+                  <View style = {DrawerContentStyle.label_edit_style}>
+                    <Text>LABELS</Text>
+                    <TouchableWithoutFeedback
+                      onPress = {this.handleEditButton}>
+                      <Text style = {{marginLeft : 130}}>EDIT</Text>
+                    </TouchableWithoutFeedback>
+                  </View>
+                  :
+                  null
+                }
+                {
+                  (labelId.length > 0)
+                  ?    
+                    labelId.map(key => (
+                      <React.Fragment key = {key}>
+                        <Drawer.Item
+                          style = {DrawerContentStyle.drawer_item_style}
+                          icon = 'label-outline'
+                          label = {this.props.userLabel[key].label}
+                        />
+                      </React.Fragment>
+                    ))
+                  :
+                  null
+                }
                 <Drawer.Item
                   style = {DrawerContentStyle.drawer_item_style}
                   icon = 'plus'
@@ -91,5 +139,20 @@ export default class DrawerContent extends Component {
     }
 }
 
-// export default DrawerContent
+const mapStateToProps = state => {
+  return {
+      userId : state.createLabelReducer.userId,
+      userLabel : state.createLabelReducer.userLabel
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      storeUserId : (userId) => dispatch(storeUserID(userId)),
+      storeUserLabel : (userLabel) => dispatch(storeUserLabel(userLabel))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(DrawerContent)
+
   

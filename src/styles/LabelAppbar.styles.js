@@ -1,21 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const CreateNewLabelStyle = StyleSheet.create({
-    mainContainer : {
-        flex : 1,
-        backgroundColor : 'white'
-    },
-
-    header_style : {
-        backgroundColor : 'transparent'
-    },
-
-    create_label_appbar : {
-        borderTopWidth : 0.7,
-        borderBottomWidth : 0.7, 
-        borderColor : 'grey',
-    },
-
+const LabelAppBarStyle = StyleSheet.create({
     textinput_style : { 
         backgroundColor : 'transparent', 
         paddingLeft : 20, 
@@ -30,7 +15,7 @@ const CreateNewLabelStyle = StyleSheet.create({
     },
 
     text_style : {
-        color : 'grey',
+        color : 'black',
         fontSize : 17,
         paddingLeft : 20
     },
@@ -42,4 +27,4 @@ const CreateNewLabelStyle = StyleSheet.create({
     }
 })
 
-export default CreateNewLabelStyle;
+export default LabelAppBarStyle

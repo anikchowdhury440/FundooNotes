@@ -50,8 +50,10 @@ export default class SearchNotesScreen extends Component {
         if(this.state.search != '') {
             let temp = [];
             for(let i = 0; i < this.state.userNotes.length; i++) {
-                if(this.state.userNotes[i].title.toLowerCase().includes(searchText.toLowerCase()) || this.state.userNotes[i].note.toLowerCase().includes(searchText.toLowerCase())) {
-                    temp.push(this.state.userNotes[i])
+
+                if(this.state.userNotes[i].title.toLowerCase().includes(searchText.toLowerCase()) || 
+                    this.state.userNotes[i].note.toLowerCase().includes(searchText.toLowerCase())) {
+                        temp.push(this.state.userNotes[i])
                 }
             }
             this.setState({
