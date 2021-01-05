@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {View, Text, TextInput, TouchableWithoutFeedback, ScrollView} from 'react-native';
-import {Appbar} from 'react-native-paper';
+import {Appbar, Provider} from 'react-native-paper';
 import CreateNewLabelStyle from '../../styles/CreateNewLabel.styles'
 import {storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
 import { connect } from 'react-redux'
 import UserLabelServices from '../../../services/UserLabelServices';
 import LabelAppbar from './LabelAppbar';
+import NoteDataController from '../../../services/NoteDataController';
+import SQLiteLabelServices from '../../../services/SQLiteLabelServices';
 
 class CreateNewLabel extends Component {
     constructor(props) {
@@ -14,8 +16,16 @@ class CreateNewLabel extends Component {
             createLabel : true,
             createLabelText : '',
             labelAlreadyExistMsg : false,
-            change : true
+            change : true,
+            activeLabel : ''
         }
+    }
+
+    selectActiveLabel = async (labelKey) => {
+        await this.setState({
+            activeLabel : labelKey,
+            createLabel : false
+        })
     }
 
     handleBackIconButton = () => {
@@ -57,14 +67,21 @@ class CreateNewLabel extends Component {
                 })
             }
             else {
-                UserLabelServices.addLabelinDatabase(this.props.userId, this.state.createLabelText)
-                    .then(() => console.log('success'))
-                    .catch(error => console.log(error))
-                await UserLabelServices.getLabelFromDatabase(this.props.userId)
-                    .then(async data => {
-                        let labels = data ? data : {}
-                        this.props.storeUserLabel(labels)
+                var labelKey = this.generateLabelKey()
+                NoteDataController.storeLabel(this.props.userId, labelKey, this.state.createLabelText)
+                    .then(() => {
+                        SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.userId)
+                            .then(async result => {
+                                var temp = [];
+                                if(result.rows.length != 0) {
+                                    for (let i = 0; i < result.rows.length; ++i)
+                                        temp.push(result.rows.item(i));
+                                }
+                                this.props.storeUserLabel(temp)
+                            })
+                            .catch(error => console.log(error))
                     })
+                    .catch(error => console.log(error))
                 await this.setState({
                     createLabel : !this.state.createLabel,
                     createLabelText : ''
@@ -73,9 +90,18 @@ class CreateNewLabel extends Component {
         }
     }
 
+    generateLabelKey = () => {
+        var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var result = '';
+        for ( var i = 0; i < 20; i++ ) {
+            result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+        }
+        return result;
+    }
+
     render() {
-        let labelId = Object.keys(this.props.userLabel);
         return(
+            <Provider>
             <View style = {CreateNewLabelStyle.mainContainer}>
                 <View>
                     <Appbar style = {CreateNewLabelStyle.header_style}>
@@ -146,10 +172,10 @@ class CreateNewLabel extends Component {
                     </View>
                     <View>
                         {
-                            labelId.length > 0 ?
-                                labelId.map(key => (
-                                    <React.Fragment key = {key}>
-                                        <LabelAppbar labelKey = {key}/>
+                            this.props.userLabel.length > 0 ?
+                                this.props.userLabel.map(labels => (
+                                    <React.Fragment key = {labels.label_id}>
+                                        <LabelAppbar labelKey = {labels.label_id} labels = {labels} activeLabel = {this.state.activeLabel} selectActiveLabel = {this.selectActiveLabel}/>
                                     </React.Fragment>
                                 ))
                                 :
@@ -158,6 +184,7 @@ class CreateNewLabel extends Component {
                     </View>
                 </ScrollView>
             </View>
+            </Provider>
         )
     }
 }

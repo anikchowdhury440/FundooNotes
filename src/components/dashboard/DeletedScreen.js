@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, ScrollView} from 'react-native'
-import { Appbar, Card, Title, Paragraph } from 'react-native-paper'
+import { Appbar} from 'react-native-paper'
 import DeletedScreenStyle from '../../styles/DeletedScreen.style'
 import * as Keychain from 'react-native-keychain';
 import SQLiteServices from '../../../services/SQLiteServices';

@@ -1,51 +1,57 @@
 import React, {Component} from 'react';
 import {TextInput, Text, TouchableWithoutFeedback, View} from 'react-native';
-import {Appbar} from 'react-native-paper';
+import {Appbar, Dialog, Paragraph, Portal, Button} from 'react-native-paper';
 import LabelAppBarStyle from '../../styles/LabelAppbar.styles';
 import {storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
 import { connect } from 'react-redux'
 import UserLabelServices from '../../../services/UserLabelServices';
+import NoteDataController from '../../../services/NoteDataController';
+import SQLiteLabelServices from '../../../services/SQLiteLabelServices';
 
 class LabelAppbar extends Component {
     constructor(props) {
         super(props)
         this.state = {
             edit : false,
-            editTextInput : this.props.userLabel[this.props.labelKey].label,
+            editTextInput : this.props.labels.label,
             emptyMsg : false,
             errorMsg : false,
+            dialogVisible : false
         }
     }
 
     handleCheckButton = async () => {
         if(!this.state.errorMsg && !this.state.emptyMsg) {
-            UserLabelServices.updateLabelInFirebase(this.props.userId, this.props.labelKey, this.state.editTextInput)
+            NoteDataController.updateLabel(this.props.userId, this.props.labelKey, this.state.editTextInput)
                 .then(() => {
-                    UserLabelServices.getLabelFromDatabase(this.props.userId)
-                    .then(async data => {
-                        let labels = data ? data : {}
-                        this.props.storeUserLabel(labels)
-                        this.setState({
-                            edit : false
+                    SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.userId)
+                        .then(async result => {
+                            var temp = [];
+                            if(result.rows.length != 0) {
+                                for (let i = 0; i < result.rows.length; ++i)
+                                    temp.push(result.rows.item(i));
+                            }
+                            this.props.storeUserLabel(temp)
+                            this.props.selectActiveLabel('')
                         })
-                    }) 
+                        .catch(error => console.log(error)) 
                 })
                 .catch(error => console.log(error))
         }
     }
 
     handleEditButton = () => {
+        this.props.selectActiveLabel(this.props.labelKey)
         this.setState({
-            edit : true
+            editTextInput : this.props.labels.label
         })
     }
 
     handleEditTextInput = async (editText) => {
-        let labelId = Object.keys(this.props.userLabel);
         let temp = []
-        if(labelId.length > 0) {
-            labelId.map(key => {
-                temp.push(this.props.userLabel[key].label.toLowerCase())
+        if(this.props.userLabel.length > 0) {
+            this.props.userLabel.map(labels => {
+                temp.push(labels.label.toLowerCase())
             })
         }
         await this.setState({
@@ -74,80 +80,129 @@ class LabelAppbar extends Component {
     }
 
     handleDeleteButton = () => {
-        UserLabelServices.deleteLabelInFirebase(this.props.userId, this.props.labelKey)
+        this.setState({
+            dialogVisible : true
+        })
+        this.props.selectActiveLabel('')
+    }
+
+    handleDeleteDialogButton = () => {
+        NoteDataController.removeLabel(this.props.userId, this.props.labelKey)
             .then(() => {
-                UserLabelServices.getLabelFromDatabase(this.props.userId)
-                    .then(async data => {
-                        let labels = data ? data : {}
-                        this.props.storeUserLabel(labels)
+                SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.userId)
+                    .then(async result => {
+                        var temp = [];
+                        if(result.rows.length != 0) {
+                            for (let i = 0; i < result.rows.length; ++i)
+                                temp.push(result.rows.item(i));
+                        }
+                        this.props.storeUserLabel(temp)
                         this.setState({
-                            edit : false
+                            dialogVisible : false
                         })
-                    }) 
+                    })
+                    .catch(error => console.log(error))
             })
             .catch(error => console.log(error))
+    }
 
+    handleDialogDissmiss = () => {
+        this.setState({
+            dialogVisible : false
+        })
     }
 
     render() {
         return(
-            <Appbar style = {{backgroundColor : 'transparent'}}>
-                {
-                    (this.state.edit) ?
-                    <Appbar.Action 
-                        icon = 'delete-outline'
-                        style = {{marginLeft : 10}}
-                        onPress = {this.handleDeleteButton}/>
-                    :
-                    <Appbar.Action 
-                        icon = 'label-outline'
-                        style = {{marginLeft : 10}}/> 
-                }
-                {
-                    (this.state.edit)?
-                    <View style = {{flexDirection :'column', width : '65%'}}>
-                        <TextInput
-                            style = {(this.state.errorMsg || this.state.emptyMsg) ? LabelAppBarStyle.textinput_error_style : LabelAppBarStyle.textinput_style}
-                            autoFocus = {true}
-                            onChangeText = {this.handleEditTextInput}
-                            value = {this.state.editTextInput}
-                        />
-                        {
-                            (this.state.emptyMsg) ?
-                                <Text style = {LabelAppBarStyle.text_error_style}>
-                                    Enter a Label Name
-                                </Text>
-                                :
-                                (this.state.errorMsg) ?
+            <View>
+                <Appbar style = {{backgroundColor : 'transparent'}}>
+                    {
+                        (this.props.activeLabel == this.props.labelKey) ?
+                        <Appbar.Action 
+                            icon = 'delete-outline'
+                            style = {{marginLeft : 10}}
+                            onPress = {this.handleDeleteButton}/>
+                        :
+                        <Appbar.Action 
+                            icon = 'label-outline'
+                            style = {{marginLeft : 10}}/> 
+                    }
+                    {
+                        (this.props.activeLabel == this.props.labelKey)?
+                        <View style = {{flexDirection :'column', width : '65%'}}>
+                            <TextInput
+                                style = {(this.state.errorMsg || this.state.emptyMsg) ? LabelAppBarStyle.textinput_error_style : LabelAppBarStyle.textinput_style}
+                                autoFocus = {true}
+                                onChangeText = {this.handleEditTextInput}
+                                value = {this.state.editTextInput}
+                            />
+                            {
+                                (this.state.emptyMsg) ?
                                     <Text style = {LabelAppBarStyle.text_error_style}>
-                                        Label Already Exist
+                                        Enter a Label Name
                                     </Text>
                                     :
-                                    null
-                        }
-                    </View>
-                    :
-                    <TouchableWithoutFeedback onPress = {this.handleEditButton}>
-                        <View style = {{width : '65%'}}>
-                            <Text
-                                style = {LabelAppBarStyle.text_style}>
-                                {this.props.userLabel[this.props.labelKey].label}
-                            </Text>
+                                    (this.state.errorMsg) ?
+                                        <Text style = {LabelAppBarStyle.text_error_style}>
+                                            Label Already Exist
+                                        </Text>
+                                        :
+                                        null
+                            }
                         </View>
-                    </TouchableWithoutFeedback>
-                }
-                <Appbar.Content/>
-                {
-                    (this.state.edit) ?
-                    <Appbar.Action 
-                        icon = 'check'
-                        onPress = {this.handleCheckButton}/>
-                    :
-                    <Appbar.Action 
-                        icon = 'pencil'
-                        onPress = {this.handleEditButton}/>
-                }
-            </Appbar>
+                        :
+                        <TouchableWithoutFeedback onPress = {this.handleEditButton}>
+                            <View style = {{width : '65%'}}>
+                                <Text
+                                    style = {LabelAppBarStyle.text_style}>
+                                    {this.props.labels.label}
+                                </Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    }
+                    <Appbar.Content/>
+                    {
+                        (this.props.activeLabel == this.props.labelKey) ?
+                        <Appbar.Action 
+                            icon = 'check'
+                            onPress = {this.handleCheckButton}/>
+                        :
+                        <Appbar.Action 
+                            icon = 'pencil'
+                            onPress = {this.handleEditButton}/>
+                    }
+                </Appbar>
+                <Portal>
+                    <Dialog visible = {this.state.dialogVisible} onDismiss = {this.handleDialogDissmiss}>
+                    <Dialog.Title
+                        style = {{fontSize : 18}}>
+                            Delete Label?
+                    </Dialog.Title>
+                    <Dialog.Content
+                        style = {{paddingBottom : 5}}>
+                        <Paragraph
+                            style = {{fontSize : 18}}>
+                            We'll delete this label and remove it from all of your notes. Your notes won't be deleted.
+                        </Paragraph>
+                    </Dialog.Content>
+                    <Dialog.Actions
+                        style = {{marginBottom : 5}}>
+                        <Button 
+                            onPress = {this.handleDialogDissmiss}
+                            color = 'blue'
+                            style = {{marginRight : 10}}>
+                                Cancel
+                        </Button>
+                        <Button 
+                            onPress = {this.handleDeleteDialogButton}
+                            color = 'blue'
+                            style = {{marginRight : 20}}>
+                                Delete
+                        </Button>
+                    </Dialog.Actions>
+                    </Dialog>
+                </Portal>
+            </View>
         )
     }
 }

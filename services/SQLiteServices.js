@@ -3,12 +3,12 @@ import {openDatabase} from 'react-native-sqlite-storage';
 const db = openDatabase({name: 'user_notes.db', createFromLocation: 1});
 
 class SQLiteServices {
-    storeNoteinSQliteStorage = (userId, noteId, title, note) => {
+    storeNoteinSQliteStorage = (userId, noteId, title, note, isDeleted) => {
         return new Promise((resolve, reject) => {
             db.transaction(tx => {
                 tx.executeSql(
                     `INSERT INTO ${userId} (note_id, title, note, is_deleted) VALUES (?,?,?,?)`,
-                    [noteId, title, note, 0],
+                    [noteId, title, note, isDeleted],
                     (tx, results) => resolve('success'),
                     error => reject(error)
                 );
@@ -91,6 +91,20 @@ class SQLiteServices {
                 (tx, results) => console.log('success'),
                 error => console.log(error)
             )
+        })
+    }
+
+    updateNoteinSQliteStorageFromFirebase = (userId, noteId, title, note, isDeleted) => {
+        console.log(isDeleted)
+        return new Promise((resolve, reject) => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `UPDATE ${userId} set title = ?, note = ?, is_deleted = ? where note_id = ?`,
+                    [title, note, isDeleted, noteId],
+                    (tx, results) => resolve('success'),
+                    error => reject(error)
+                );
+            });
         })
     }
 

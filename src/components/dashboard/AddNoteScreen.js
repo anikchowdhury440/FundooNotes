@@ -88,6 +88,7 @@ export default class AddNoteScreen extends Component {
         else{
             if(this.props.route.params == undefined) {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
+                console.log(this.generateNoteKey())
             } 
             else {
                 NoteDataController.removeNote(this.state.userId, this.state.noteKey)
