@@ -3,12 +3,12 @@ import {openDatabase} from 'react-native-sqlite-storage';
 const db = openDatabase({name: 'user_notes.db', createFromLocation: 1});
 
 class SQLiteServices {
-    storeNoteinSQliteStorage = (userId, noteId, title, note, isDeleted) => {
+    storeNoteinSQliteStorage = (userId, noteId, notes) => {
         return new Promise((resolve, reject) => {
             db.transaction(tx => {
                 tx.executeSql(
-                    `INSERT INTO ${userId} (note_id, title, note, is_deleted) VALUES (?,?,?,?)`,
-                    [noteId, title, note, isDeleted],
+                    `INSERT INTO ${userId} (note_id, title, note, is_deleted, label_id, is_archived) VALUES (?,?,?,?,?,?)`,
+                    [noteId, notes.title, notes.note, notes.isDeleted, notes.labelId, notes.isArchived],
                     (tx, results) => resolve('success'),
                     error => reject(error)
                 );
@@ -16,12 +16,12 @@ class SQLiteServices {
         })
     }
 
-    updateNoteinSQliteStorage = (userId, noteId, title, note) => {
+    updateNoteinSQliteStorage = (userId, noteId, notes) => {
         return new Promise((resolve, reject) => {
             db.transaction(tx => {
                 tx.executeSql(
-                    `UPDATE ${userId} set title = ?, note = ? where note_id = ?`,
-                    [title, note, noteId],
+                    `UPDATE ${userId} set title = ?, note = ?, is_deleted = ?, label_id = ?, is_archived = ? where note_id = ?`,
+                    [notes.title, notes.note, notes.isDeleted, notes.labelId, notes.isArchived, noteId],
                     (tx, results) => resolve('success'),
                     error => reject(error)
                 );
@@ -29,12 +29,12 @@ class SQLiteServices {
         })
     }
 
-    deleteNoteinSQliteStorage = (userId, noteId) => {
+    deleteNoteinSQliteStorage = (userId, noteId, notes) => {
         return new Promise((resolve, reject) => {
             db.transaction(tx => {
                 tx.executeSql(
-                    `UPDATE ${userId} set is_deleted = ? where note_id = ?`,
-                    [1, noteId],
+                    `UPDATE ${userId} set title = ?, note = ?, is_deleted = ? where note_id = ?`,
+                    [notes.title, notes.note, 1, noteId],
                     (tx, results) => resolve('success'),
                     error => reject(error)
                 );
@@ -86,7 +86,7 @@ class SQLiteServices {
     createTableInSQliteStorage = (userId) => {
         db.transaction(tx => {
             tx.executeSql(
-                `CREATE TABLE IF NOT EXISTS ${userId} (note_id TEXT PRIMARY KEY, title TEXT, note TEXT, is_deleted INTEGER)`,
+                `CREATE TABLE IF NOT EXISTS ${userId} (note_id TEXT PRIMARY KEY, title TEXT, note TEXT, is_deleted INTEGER, label_id TEXT, is_archived INTEGER)`,
                 [],
                 (tx, results) => console.log('success'),
                 error => console.log(error)
@@ -94,13 +94,23 @@ class SQLiteServices {
         })
     }
 
-    updateNoteinSQliteStorageFromFirebase = (userId, noteId, title, note, isDeleted) => {
-        console.log(isDeleted)
+    deleteTableinSQLiteStorage = (userId) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `DROP TABLE ${userId}`,
+                [],
+                (tx, results) => console.log('table deleted'),
+                error => console.log(error)
+            );
+        });
+    }
+
+    updateNoteLabelinSQliteStorage = (userId, noteId, notes) => {
         return new Promise((resolve, reject) => {
             db.transaction(tx => {
                 tx.executeSql(
-                    `UPDATE ${userId} set title = ?, note = ?, is_deleted = ? where note_id = ?`,
-                    [title, note, isDeleted, noteId],
+                    `UPDATE ${userId} set title = ?, note = ?, label_id = ? where note_id = ?`,
+                    [notes.title, notes.note, notes.labelId, noteId],
                     (tx, results) => resolve('success'),
                     error => reject(error)
                 );
@@ -108,6 +118,35 @@ class SQLiteServices {
         })
     }
 
+    selectNoteByLabelIdFromSQliteStorage = (userId, labelId, isDeleted) => {
+        return new Promise((resolve, reject) => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `SELECT * FROM ${userId} where label_id = ? AND is_deleted = ?`,
+                    [labelId, isDeleted],
+                    (tx, results) => {
+                        resolve(results)
+                    },
+                    error => reject(error)
+                );
+            });
+        })
+    }
+
+    selectNoteByDeletedFromSQliteStorage = (userId, isDeleted) => {
+        return new Promise((resolve, reject) => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `SELECT * FROM ${userId} where is_deleted = ?`,
+                    [isDeleted],
+                    (tx, results) => {
+                        resolve(results)
+                    },
+                    error => reject(error)
+                );
+            });
+        })
+    }
 }
 
 export default new SQLiteServices();

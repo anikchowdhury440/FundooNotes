@@ -17,19 +17,20 @@ export default class NoteView extends Component {
     async componentDidMount() {
         const credential = await Keychain.getGenericPassword();
         const UserCredential = JSON.parse(credential.password);
-        NoteDataController.retrieveDataFromFirebase(UserCredential.user.uid)
-        SQLiteServices.selectNoteFromSQliteStorage(UserCredential.user.uid)
+        await NoteDataController.retrieveDataFromFirebase(UserCredential.user.uid)
+        await SQLiteServices.selectNoteByDeletedFromSQliteStorage(UserCredential.user.uid, 0)
             .then(async result => {
                 var temp = [];
                 if(result.rows.length != 0) {
                     for (let i = 0; i < result.rows.length; ++i)
                         temp.push(result.rows.item(i));
                     await this.setState({
-                        userNotes : temp
+                        userNotes : temp.reverse()
                     })
                 }                
             })
-            .catch(error => console.log(error))
+            .catch(error => console.log('Error', error))
+        console.log(this.state.userNotes)
     }
 
     render() {
@@ -37,12 +38,9 @@ export default class NoteView extends Component {
             <ScrollView style = {NoteViewStyle.container}>
                 <View style = {NoteViewStyle.list_conatiner}>
                     {this.state.userNotes.length > 0 ?
-                        this.state.userNotes.reverse().map(note => (
+                        this.state.userNotes.map(note => (
                             <React.Fragment key = {note.note_id}>
-                                {note.is_deleted == 0 ? (
-                                    <NoteCard listView = {this.props.listView} notes = {note} noteKey = {note.note_id} navigation = {this.props.navigation}/>)
-                                : null}
-                                    
+                                { <NoteCard listView = {this.props.listView} notes = {note} noteKey = {note.note_id} navigation = {this.props.navigation}/> }
                             </React.Fragment>
                         ))
                     : null}

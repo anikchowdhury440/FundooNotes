@@ -7,8 +7,11 @@ import SocialServices from '../../../services/SocialServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Strings} from '../../Language/Strings'
 import * as Keychain from 'react-native-keychain'
+import {storeUserID, storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
+import { connect } from 'react-redux'
+import SQLiteLabelServices from '../../../services/SQLiteLabelServices';
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props)
 
@@ -28,7 +31,20 @@ export default class Login extends Component {
         try {
             const isLoggedIn = JSON.parse(await AsyncStorage.getItem('isLoggedIn'))
             if(isLoggedIn) {
-              this.props.navigation.push('Home', { screen: 'Notes' })
+                const credential = await Keychain.getGenericPassword();
+                const UserCredential = JSON.parse(credential.password);
+                this.props.storeUserId(UserCredential.user.uid)
+                SQLiteLabelServices.selectLabelFromSQliteStorage(UserCredential.user.uid)
+                    .then(async result => {
+                        var temp = [];
+                        if(result.rows.length != 0) {
+                            for (let i = 0; i < result.rows.length; ++i)
+                                temp.push(result.rows.item(i));
+                            this.props.storeUserLabel(temp)
+                        }                
+                    })
+                    .catch(error => console.log(error))
+                this.props.navigation.push('Home', { screen: 'Notes' })
             }
           } 
           catch(e) {
@@ -244,3 +260,19 @@ export default class Login extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        userId : state.createLabelReducer.userId,
+        userLabel : state.createLabelReducer.userLabel
+    }
+  }
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+        storeUserId : (userId) => dispatch(storeUserID(userId)),
+        storeUserLabel : (userLabel) => dispatch(storeUserLabel(userLabel))
+    }
+  }
+  
+  export default connect(mapStateToProps,mapDispatchToProps)(Login)

@@ -8,20 +8,24 @@ import RBSheet from 'react-native-raw-bottom-sheet'
 import DotsVerticalRBSheetMenu from './DotsVerticalRBSheetMenu'
 import NoteDataController from '../../../services/NoteDataController'
 import DotsVerticalRestoreRBSheetMenu from './DotsVerticalRestoreRBSheetMenu'
+import { connect } from 'react-redux'
 
-export default class AddNoteScreen extends Component {
+class AddNoteScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            noteKey : '',
+            noteKey : this.generateNoteKey(),
             title : '',
             note : '',
             userId : '',
-            isDeleted : '',
+            isDeleted : 0,
+            labelId : '',
+            isArchived : 0,
             isNoteNotAddedDeleted : false,
             deleteForeverDialog : false, 
             restoreDeleteSnackbar : false,
-            restoreSnackbar : false
+            restoreSnackbar : false,
+            labelName : ''
         }
     }
 
@@ -36,10 +40,18 @@ export default class AddNoteScreen extends Component {
                 noteKey : this.props.route.params.noteKey,
                 title : this.props.route.params.notes.title,
                 note : this.props.route.params.notes.note,
-                isDeleted : this.props.route.params.notes.is_deleted
+                isDeleted : this.props.route.params.notes.is_deleted,
+                labelId : this.props.route.params.notes.label_id,
+                isArchived : this.props.route.params.notes.is_archived,
             })
         }
-        console.log(this.state.isDeleted)
+        this.props.userLabel.map(async labels => {
+            if(labels.label_id == this.state.labelId) {
+                await this.setState({
+                    labelName : labels.label
+                })
+            }
+        })
     }
 
     handleTitle = async (title) => {
@@ -71,14 +83,20 @@ export default class AddNoteScreen extends Component {
 
     handleBackIconButton = async () => {
         // const {onPress} = this.props
+        const notes = {
+            title : this.state.title,
+            note : this.state.note,
+            isDeleted : this.state.isDeleted,
+            labelId : this.state.labelId,
+            isArchived : this.state.isArchived
+        }
         if(this.state.title != '' || this.state.note != '') {
             if(this.props.route.params == undefined) {
-                var noteKey = this.generateNoteKey()
-                NoteDataController.storeNote(noteKey, this.state.userId, this.state.title, this.state.note)
+                NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             } 
             else if(this.state.isDeleted == 0){
-                NoteDataController.updateNote(this.state.userId, this.state.noteKey, this.state.title, this.state.note)
+                NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             }
             else {
@@ -88,7 +106,6 @@ export default class AddNoteScreen extends Component {
         else{
             if(this.props.route.params == undefined) {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
-                console.log(this.generateNoteKey())
             } 
             else {
                 NoteDataController.removeNote(this.state.userId, this.state.noteKey)
@@ -100,13 +117,20 @@ export default class AddNoteScreen extends Component {
 
     handleDeleteButton = async() => {
         this.RBSheet.close()
-        if(this.props.route.params == undefined){
+        const notes = {
+            title : this.state.title,
+            note : this.state.note,
+            isDeleted : this.state.isDeleted,
+            labelId : this.state.labelId,
+            isArchived : this.state.isArchived
+        }
+        if(this.props.route.params == undefined || this.props.route.params.newNote){
             await this.setState({
                 isNoteNotAddedDeleted : true
             })
         }
         else {
-            NoteDataController.deleteNote(this.state.userId, this.state.noteKey)
+            NoteDataController.deleteNote(this.state.userId, this.state.noteKey, notes)
                 .then(() => this.props.navigation.push('Home', { screen : 'Notes', params : {isNoteDeleted : true, 
                                                                                             noteKey : this.state.noteKey,
                                                                                             userId : this.state.userId}}))    
@@ -164,7 +188,14 @@ export default class AddNoteScreen extends Component {
 
     restoreDeleteSnackbarAction = () => {
         const {onPress} = this.props
-        NoteDataController.deleteNote(this.state.userId, this.state.noteKey)
+        const notes = {
+            title : this.state.title,
+            note : this.state.note,
+            isDeleted : this.state.isDeleted,
+            labelId : this.state.labelId,
+            isArchived : this.state.isArchived
+        }
+        NoteDataController.deleteNote(this.state.userId, this.state.noteKey, notes)
             .then(() => {
                 this.setState({
                     isDeleted : 1
@@ -204,7 +235,19 @@ export default class AddNoteScreen extends Component {
 
     handleLabelButton = () => {
         this.RBSheet.close();
-        this.props.navigation.navigate('SelectLabel')
+        const notes = {
+            title : this.state.title,
+            note : this.state.note,
+            isDeleted : this.state.isDeleted,
+            labelId : this.state.labelId,
+            isArchived : this.state.isArchived
+        }
+        if(this.props.route.params == undefined) {
+            this.props.navigation.push('SelectLabel', { noteKey : this.state.noteKey, notes : notes, newNote : true})
+        }
+        else {
+            this.props.navigation.push('SelectLabel', { noteKey : this.state.noteKey, notes : notes})
+        }
     }
 
     render() {
@@ -254,6 +297,16 @@ export default class AddNoteScreen extends Component {
                                     value = {this.state.note}
                                     editable = {(this.state.isDeleted == 1) ? false : true}
                                 />
+                                {
+                                    (this.state.labelName != '') ?
+                                        <TouchableWithoutFeedback onPress = {this.handleLabelButton}>
+                                            <View style = {AddNoteScreenStyle.label_text_container}>
+                                                <Text style = {AddNoteScreenStyle.label_text}>{this.state.labelName}</Text>
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                    :
+                                    null
+                                }
                             </View>
                         </TouchableWithoutFeedback>
                     </ScrollView>
@@ -357,3 +410,12 @@ export default class AddNoteScreen extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        userId : state.createLabelReducer.userId,
+        userLabel : state.createLabelReducer.userLabel
+    }
+}
+
+export default connect(mapStateToProps)(AddNoteScreen)

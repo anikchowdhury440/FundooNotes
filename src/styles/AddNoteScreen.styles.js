@@ -39,6 +39,22 @@ const AddNoteScreenStyle = StyleSheet.create({
         backgroundColor : 'white'
     },
 
+    label_text_container : {
+        marginLeft : 25, 
+        flexWrap : 'wrap', 
+        marginTop : 10
+    },
+
+    label_text: {
+        borderWidth : 1, 
+        paddingTop: 5, 
+        paddingBottom : 5, 
+        paddingLeft : 15, 
+        paddingRight : 15, 
+        borderColor : 'grey', 
+        borderRadius : 40
+    }
+
 })
 
 export default AddNoteScreenStyle;
