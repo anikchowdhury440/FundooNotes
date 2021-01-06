@@ -8,6 +8,7 @@ import ForgotPasswordScreen from '../components/pages/ForgotPasswordScreen';
 import DrawerNavigatorStack from './DrawerNavigationStack';
 import AddNoteScreen from '../components/dashboard/AddNoteScreen';
 import CreateNewLabel from '../components/dashboard/CreateNewLabel';
+import SelectLabelScreen from '../components/dashboard/SelectLabelScreen';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ function ApplicationStack() {
                 <Stack.Screen name = "Home" component = {DrawerNavigatorStack}/>
                 <Stack.Screen name = "AddNote" component = {AddNoteScreen}/>
                 <Stack.Screen name = "CreateLabel" component = {CreateNewLabel}/>
+                <Stack.Screen name = "SelectLabel" component = {SelectLabelScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
     )

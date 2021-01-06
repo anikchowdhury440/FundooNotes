@@ -202,6 +202,11 @@ export default class AddNoteScreen extends Component {
         //onPress()
     }
 
+    handleLabelButton = () => {
+        this.RBSheet.close();
+        this.props.navigation.navigate('SelectLabel')
+    }
+
     render() {
         return (
             <Provider>
@@ -288,7 +293,7 @@ export default class AddNoteScreen extends Component {
                                 backgroundColor: "transparent",
                             },
                         }}>
-                            <DotsVerticalRBSheetMenu delete = {this.handleDeleteButton}/>
+                            <DotsVerticalRBSheetMenu delete = {this.handleDeleteButton} label = {this.handleLabelButton}/>
                     </RBSheet>
                     :
                     <RBSheet
