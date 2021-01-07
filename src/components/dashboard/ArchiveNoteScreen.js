@@ -1,23 +1,22 @@
 import React, {Component} from 'react'
-import {View, ScrollView, Text} from 'react-native'
-import { Appbar, Card, Paragraph, Title } from 'react-native-paper'
-import LabelNoteScreenStyle from '../../styles/LabelNoteScreen.styles'
-import BottomBar from './Bottombar'
-import { connect } from 'react-redux'
+import {View, ScrollView} from 'react-native'
+import { Appbar } from 'react-native-paper'
 import SQLiteServices from '../../../services/SQLiteServices'
+import ArchiveNoteScreenStyle from '../../styles/ArchiveNoteScreen.styles'
+import { connect } from 'react-redux'
 import NoteCard from './NoteCard'
 
-class LabelNoteScreen extends Component {
+class ArchiveNoteScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
             listView : true,
-            userNotes : [],
+            userNotes : []
         }
     }
 
     componentDidMount = async () => {
-        await SQLiteServices.selectNoteByLabelIdFromSQliteStorage(this.props.userId, this.props.route.params.labels.label_id, 0)
+        await SQLiteServices.selectNoteByArchiveFromSQliteStorage(this.props.userId, 1, 0)
             .then(async result => {
                 var temp = [];
                 if(result.rows.length != 0) {
@@ -31,37 +30,33 @@ class LabelNoteScreen extends Component {
             .catch(error => console.log('Error', error))
     }
 
-    selectView = async () => {
-        await this.setState({
-            listView : !this.state.listView
-        })
-    }
-
-    handleMenuIconButton = () => {
+    handleMenuButton = async () => {
+        const {onPress} = this.props
         this.props.navigation.openDrawer();
+        //onPress();
     }
 
     handleSearchIconButton = () => {
         this.props.navigation.navigate('Home', { screen : 'SearchNote'})
     }
 
-    selectNote = (note) => {
-        const {onPress} = this.props
-        this.props.navigation.push('AddNote', { noteKey : note.note_id, notes : note})
-        //onPress();
+    selectView = async () => {
+        await this.setState({
+            listView : !this.state.listView
+        })
     }
 
     render() {
         return (
-            <View style = {LabelNoteScreenStyle.mainContainer}>
+            <View style = {ArchiveNoteScreenStyle.mainContainer}>
                 <View style = {{marginBottom : 10}}>
-                    <Appbar style = {{backgroundColor : 'transparent'}}>
-                        <Appbar.Action 
+                    <Appbar style = {ArchiveNoteScreenStyle.header_style}>
+                        <Appbar.Action
                             style = {{marginLeft : 10}}
                             icon = 'menu'
-                            onPress = {this.handleMenuIconButton}/>
-                        <Appbar.Content 
-                            title = {this.props.route.params.labels.label}/>
+                            onPress = {this.handleMenuButton}
+                            />
+                        <Appbar.Content title = 'Archive'/>
                         <Appbar.Action
                             style = {{marginRight : 10}}
                             icon = 'magnify'
@@ -69,14 +64,11 @@ class LabelNoteScreen extends Component {
                         <Appbar.Action
                             style = {{marginRight : 10}}
                             icon = {(this.state.listView) ? 'view-grid-outline' : 'view-agenda-outline'}
-                            onPress={this.selectView}
-                        />
-                        <Appbar.Action
-                            icon = 'dots-vertical' />
+                            onPress={this.selectView} />
                     </Appbar>
                 </View>
                 <ScrollView style = {{marginBottom : 60}}>
-                    <View style = {LabelNoteScreenStyle.list_container}>
+                    <View style = {ArchiveNoteScreenStyle.list_container}>
                         {this.state.userNotes.length > 0 ?
                             this.state.userNotes.map(note => (
                                 <React.Fragment key = {note.note_id}>
@@ -86,7 +78,6 @@ class LabelNoteScreen extends Component {
                         : null}
                     </View>
                 </ScrollView>
-                <BottomBar navigation = {this.props.navigation}/> 
             </View>
         )
     }
@@ -99,4 +90,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(LabelNoteScreen)
+export default connect(mapStateToProps)(ArchiveNoteScreen)

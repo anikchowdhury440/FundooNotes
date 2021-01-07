@@ -205,6 +205,26 @@ class NoteDataController {
                 .catch(error => console.log(error))
         })
     }
+
+    updateNoteArchive = (noteId, userId, usernotes) => {
+        const notes = {
+            title : usernotes.title,
+            note : usernotes.note,
+            isDeleted : usernotes.isDeleted,
+            labelId : usernotes.labelId,
+            isArchived : 0
+        }
+        return new Promise((resolve) => {
+            SQLiteServices.updateNoteinSQliteStorage(userId, noteId, notes)
+                .then(() => {
+                    UserNoteServices.updateNoteInFirebase(userId, noteId, notes)
+                        .then(() => console.log('updated'))
+                        .catch(error => console.log(error))
+                    resolve('success')
+                })
+                .catch(error => console.log(error))
+        })
+    }
 }
 
 export default new NoteDataController();

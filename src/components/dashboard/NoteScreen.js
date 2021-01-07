@@ -17,9 +17,11 @@ export default class NoteScreen extends Component {
             listView : true,
             showEmptyNoteSnackbar : false,
             showDeletedNoteSnackbar : false,
+            showArchivedNoteSnackbar : false,
             showProfileModal : false,
             photo : '',
-            userId : ''
+            userId : '',
+            render : true
         }
         
     }
@@ -39,6 +41,11 @@ export default class NoteScreen extends Component {
             if(this.props.route.params.isNoteDeleted != undefined) {
                 await this.setState({
                     showDeletedNoteSnackbar : true
+                })
+            }
+            if(this.props.route.params.isNoteArchived != undefined) {
+                await this.setState({
+                    showArchivedNoteSnackbar : true
                 })
             }
         }
@@ -69,7 +76,7 @@ export default class NoteScreen extends Component {
         await this.setState({ 
             showEmptyNoteSnackbar : false
         })
-        this.props.navigation.setParams({isEmptyNote : false})
+        this.props.navigation.setParams({isEmptyNote : undefined})
         //onDismiss()
     }
 
@@ -78,8 +85,15 @@ export default class NoteScreen extends Component {
         await this.setState({ 
             showDeletedNoteSnackbar : false
         })
-        this.props.navigation.setParams({isNoteDeleted : false})
+        this.props.navigation.setParams({isNoteDeleted : undefined})
         //onDismiss()
+    }
+
+    archivedNoteSnackbarHandler = async () => {
+        await this.setState({ 
+            showArchivedNoteSnackbar : false
+        })
+        this.props.navigation.setParams({isNoteArchived : undefined})
     }
 
     restoreNotes = async() => {
@@ -87,6 +101,11 @@ export default class NoteScreen extends Component {
         NoteDataController.restoreNote(this.props.route.params.userId, this.props.route.params.noteKey)
             .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
         //onPress()
+    }
+
+    unArchivedNote = async() => {
+        NoteDataController.updateNoteArchive(this.props.route.params.noteKey, this.props.route.params.userId, this.props.route.params.notes)
+            .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
     }
 
     showModal = async() => {
@@ -145,6 +164,17 @@ export default class NoteScreen extends Component {
                             onPress : this.restoreNotes
                         }}>
                             Note Moved to Bin
+                    </Snackbar>
+                    <Snackbar
+                        style = {{marginBottom : 100}}
+                        visible={this.state.showArchivedNoteSnackbar}
+                        onDismiss={this.archivedNoteSnackbarHandler}
+                        duration = {10000}
+                        action = {{
+                            label : 'Undo',
+                            onPress : this.unArchivedNote
+                        }}>
+                            Note Archived
                     </Snackbar>
                     <Portal>
                         <Modal 

@@ -147,6 +147,21 @@ class SQLiteServices {
             });
         })
     }
+
+    selectNoteByArchiveFromSQliteStorage = (userId, isArchived, isDeleted) => {
+        return new Promise((resolve, reject) => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `SELECT * FROM ${userId} where is_deleted = ? AND is_archived = ?`,
+                    [isDeleted, isArchived],
+                    (tx, results) => {
+                        resolve(results)
+                    },
+                    error => reject(error)
+                );
+            });
+        })
+    }
 }
 
 export default new SQLiteServices();

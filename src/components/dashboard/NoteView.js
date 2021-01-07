@@ -18,7 +18,7 @@ export default class NoteView extends Component {
         const credential = await Keychain.getGenericPassword();
         const UserCredential = JSON.parse(credential.password);
         await NoteDataController.retrieveDataFromFirebase(UserCredential.user.uid)
-        await SQLiteServices.selectNoteByDeletedFromSQliteStorage(UserCredential.user.uid, 0)
+        await SQLiteServices.selectNoteByArchiveFromSQliteStorage(UserCredential.user.uid, 0, 0)
             .then(async result => {
                 var temp = [];
                 if(result.rows.length != 0) {
@@ -30,7 +30,6 @@ export default class NoteView extends Component {
                 }                
             })
             .catch(error => console.log('Error', error))
-        console.log(this.state.userNotes)
     }
 
     render() {

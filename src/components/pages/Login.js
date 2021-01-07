@@ -34,22 +34,26 @@ class Login extends Component {
                 const credential = await Keychain.getGenericPassword();
                 const UserCredential = JSON.parse(credential.password);
                 this.props.storeUserId(UserCredential.user.uid)
-                SQLiteLabelServices.selectLabelFromSQliteStorage(UserCredential.user.uid)
-                    .then(async result => {
-                        var temp = [];
-                        if(result.rows.length != 0) {
-                            for (let i = 0; i < result.rows.length; ++i)
-                                temp.push(result.rows.item(i));
-                            this.props.storeUserLabel(temp)
-                        }                
-                    })
-                    .catch(error => console.log(error))
+                this.storeUserLabel(UserCredential.user.uid)
                 this.props.navigation.push('Home', { screen: 'Notes' })
             }
           } 
           catch(e) {
             console.log(e)
           }
+    }
+
+    storeUserLabel = (userId) => {
+        SQLiteLabelServices.selectLabelFromSQliteStorage(userId)
+            .then(async result => {
+                var temp = [];
+                if(result.rows.length != 0) {
+                    for (let i = 0; i < result.rows.length; ++i)
+                        temp.push(result.rows.item(i));
+                    this.props.storeUserLabel(temp)
+                }                
+            })
+            .catch(error => console.log(error))
     }
 
     emailHandler = async (email) => {
@@ -99,6 +103,7 @@ class Login extends Component {
                 .then(async (UserCredential) => {
                     this.storeIteminAsyncStorage()
                     await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
+                    this.storeUserLabel(UserCredential.user.uid)
                     this.props.navigation.push('Home', { screen: 'Notes' })
                 })
                 .catch(error => {
@@ -150,7 +155,6 @@ class Login extends Component {
         const {onPress} = this.props;
         SocialServices.facebookLogin()
             .then(async UserCredential => {
-                console.log(UserCredential.user)
                 UserServices.readUserDataFromRealtimeDatabase(UserCredential.user.uid)
                     .then(data => {
                         if(data == null) {
@@ -163,6 +167,7 @@ class Login extends Component {
                     })
                 this.storeIteminAsyncStorage()
                 await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
+                this.storeUserLabel(UserCredential.user.uid)
                 this.props.navigation.push('Home', { screen: 'Notes' })
             })
             .catch(error => {

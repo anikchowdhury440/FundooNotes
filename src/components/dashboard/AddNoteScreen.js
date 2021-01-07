@@ -14,7 +14,7 @@ class AddNoteScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            noteKey : this.generateNoteKey(),
+            noteKey : '',
             title : '',
             note : '',
             userId : '',
@@ -25,6 +25,7 @@ class AddNoteScreen extends Component {
             deleteForeverDialog : false, 
             restoreDeleteSnackbar : false,
             restoreSnackbar : false,
+            noteUnArchivedSnackbar : false,
             labelName : ''
         }
     }
@@ -43,6 +44,11 @@ class AddNoteScreen extends Component {
                 isDeleted : this.props.route.params.notes.is_deleted,
                 labelId : this.props.route.params.notes.label_id,
                 isArchived : this.props.route.params.notes.is_archived,
+            })
+        }
+        else {
+            await this.setState({
+                noteKey : this.generateNoteKey()
             })
         }
         this.props.userLabel.map(async labels => {
@@ -95,12 +101,15 @@ class AddNoteScreen extends Component {
                 NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             } 
-            else if(this.state.isDeleted == 0){
-                NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
-                    .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
+            else if(this.state.isDeleted == 1){
+                this.props.navigation.push('Home', {screen : 'Deleted'})
+            }
+            else if(this.state.isArchived == 1) {
+                this.props.navigation.push('Home', {screen : 'archiveNote'})
             }
             else {
-                this.props.navigation.push('Home', {screen : 'Deleted'})
+                NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
+                    .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             }
         }
         else{
@@ -117,6 +126,9 @@ class AddNoteScreen extends Component {
 
     handleDeleteButton = async() => {
         this.RBSheet.close()
+        await this.setState({
+            isDeleted : 0
+        })
         const notes = {
             title : this.state.title,
             note : this.state.note,
@@ -124,7 +136,7 @@ class AddNoteScreen extends Component {
             labelId : this.state.labelId,
             isArchived : this.state.isArchived
         }
-        if(this.props.route.params == undefined || this.props.route.params.newNote){
+        if(this.props.route.params == undefined || this.props.route.params.newNote != undefined){
             await this.setState({
                 isNoteNotAddedDeleted : true
             })
@@ -186,8 +198,11 @@ class AddNoteScreen extends Component {
         //onDismiss();
     }
 
-    restoreDeleteSnackbarAction = () => {
+    restoreDeleteSnackbarAction = async () => {
         const {onPress} = this.props
+        await this.setState({
+            isDeleted : 1
+        })
         const notes = {
             title : this.state.title,
             note : this.state.note,
@@ -196,11 +211,6 @@ class AddNoteScreen extends Component {
             isArchived : this.state.isArchived
         }
         NoteDataController.deleteNote(this.state.userId, this.state.noteKey, notes)
-            .then(() => {
-                this.setState({
-                    isDeleted : 1
-                })
-            })
         //onPress()
     }
 
@@ -250,6 +260,80 @@ class AddNoteScreen extends Component {
         }
     }
 
+    handleArchiveDownButton = async () => {
+        await this.setState({
+            isArchived : 1
+        })
+        const notes = {
+            title : this.state.title,
+            note : this.state.note,
+            isDeleted : this.state.isDeleted,
+            labelId : this.state.labelId,
+            isArchived : this.state.isArchived
+        }
+        if(this.state.title != '' || this.state.note != '') {
+            if(this.props.route.params == undefined) {
+                NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
+                    .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isNoteArchived : true, 
+                                                                                                noteKey : this.state.noteKey,
+                                                                                                userId : this.state.userId,
+                                                                                                notes : notes}}))
+            } 
+            else {
+                NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
+                    .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isNoteArchived : true, 
+                                                                                                noteKey : this.state.noteKey,
+                                                                                                userId : this.state.userId,
+                                                                                                notes : notes}}))
+            }
+        }
+        else{
+            if(this.props.route.params == undefined) {
+                this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
+            } 
+            else {
+                NoteDataController.removeNote(this.state.userId, this.state.noteKey)
+                    .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isEmptyNote : true}}))
+            }
+        }
+        //onPress();
+    }
+
+    handleArchiveUpButton = async () => {
+        await this.setState({
+            isArchived : 0,
+            noteUnArchivedSnackbar : true
+        })
+        const notes = {
+            title : this.state.title,
+            note : this.state.note,
+            isDeleted : this.state.isDeleted,
+            labelId : this.state.labelId,
+            isArchived : this.state.isArchived
+        }
+        NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
+    }
+
+    unArchiveSnackbarDismiss = () => {
+        this.setState({
+            noteUnArchivedSnackbar : false
+        })
+    }
+
+    archiveSnackbarAction = async () => {
+        await this.setState({
+            isArchived : 1,
+        })
+        const notes = {
+            title : this.state.title,
+            note : this.state.note,
+            isDeleted : this.state.isDeleted,
+            labelId : this.state.labelId,
+            isArchived : this.state.isArchived
+        }
+        NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
+    }
+
     render() {
         return (
             <Provider>
@@ -270,8 +354,16 @@ class AddNoteScreen extends Component {
                                     <Appbar.Action    
                                         style = {AddNoteScreenStyle.header_icon_style}                          
                                         icon = 'bell-plus-outline'/>
-                                    <Appbar.Action 
-                                        icon = 'archive-arrow-down-outline'/>
+                                    {
+                                        (this.state.isArchived == 0) ?
+                                            <Appbar.Action 
+                                                icon = 'archive-arrow-down-outline'
+                                                onPress = {this.handleArchiveDownButton}/>
+                                            :
+                                            <Appbar.Action 
+                                                icon = 'archive-arrow-up-outline'
+                                                onPress = {this.handleArchiveUpButton}/>
+                                    }
                                 </Appbar>
                                 :
                                 null
@@ -393,6 +485,17 @@ class AddNoteScreen extends Component {
                             onPress : this.restoreSnackbarAction
                         }}>
                             Can't edit in Recycle Bin
+                    </Snackbar>
+                    <Snackbar
+                        style = {{marginBottom : 100}}
+                        visible={this.state.noteUnArchivedSnackbar}
+                        onDismiss={this.unArchiveSnackbarDismiss}
+                        duration = {10000}
+                        action = {{
+                            label : 'Undo',
+                            onPress : this.archiveSnackbarAction
+                        }}>
+                            Note Unarchieved
                     </Snackbar>
                     <Portal>
                         <Dialog visible = {this.state.deleteForeverDialog} onDismiss = {this.handleDeleteForeverDialogDismiss}>

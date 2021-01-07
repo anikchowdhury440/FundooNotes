@@ -6,11 +6,7 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 import { Strings } from '../../Language/Strings';
-import * as Keychain from 'react-native-keychain'
-import UserLabelServices from '../../../services/UserLabelServices';
-import {storeUserID, storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
 import { connect } from 'react-redux'
-import SQLiteLabelServices from '../../../services/SQLiteLabelServices';
 
 class DrawerContent extends Component {
     constructor(props) {
@@ -30,13 +26,15 @@ class DrawerContent extends Component {
     }
 
     handleCreateNewLabelButton = () => {
-      this.props.navigation.navigation.closeDrawer();
       this.props.navigation.navigation.push('CreateLabel')
     }
 
     handleEditButton = () => {
-      this.props.navigation.navigation.closeDrawer();
       this.props.navigation.navigation.push('CreateLabel')
+    }
+
+    handleArchiveButton = () => {
+      this.props.navigation.navigation.push('Home', { screen : 'archiveNote'})
     }
 
     render() {
@@ -101,6 +99,7 @@ class DrawerContent extends Component {
                   style = {DrawerContentStyle.drawer_item_style}
                   icon = 'archive-arrow-down-outline'
                   label = {Strings.archieve}
+                  onPress = {this.handleArchiveButton}
                 />
 
                 <Drawer.Item
