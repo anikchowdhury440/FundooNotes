@@ -10,6 +10,7 @@ import * as Keychain from 'react-native-keychain'
 import {storeUserID, storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
 import { connect } from 'react-redux'
 import SQLiteLabelServices from '../../../services/SQLiteLabelServices';
+import NoteDataController from '../../../services/NoteDataController';
 
 class Login extends Component {
     constructor(props) {
@@ -33,6 +34,7 @@ class Login extends Component {
             if(isLoggedIn) {
                 const credential = await Keychain.getGenericPassword();
                 const UserCredential = JSON.parse(credential.password);
+                await NoteDataController.retrieveDataFromFirebase(UserCredential.user.uid)
                 this.props.storeUserId(UserCredential.user.uid)
                 this.storeUserLabel(UserCredential.user.uid)
                 this.props.navigation.push('Home', { screen: 'Notes' })

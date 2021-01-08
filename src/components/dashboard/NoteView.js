@@ -18,7 +18,6 @@ export default class NoteView extends Component {
     async componentDidMount() {
         const credential = await Keychain.getGenericPassword();
         const UserCredential = JSON.parse(credential.password);
-        await NoteDataController.retrieveDataFromFirebase(UserCredential.user.uid)
         await SQLiteServices.selectNoteByArchiveFromSQliteStorage(UserCredential.user.uid, 0, 0)
             .then(async result => {
                 var temp = [];

@@ -6,7 +6,7 @@ class SQLiteLabelServices {
     createTableInSQliteStorage = (userId) => {
         db.transaction(tx => {
             tx.executeSql(
-                `CREATE TABLE IF NOT EXISTS '${userId}Label' (label_id TEXT PRIMARY KEY, label TEXT)`,
+                `CREATE TABLE IF NOT EXISTS '${userId}Label' (label_id TEXT PRIMARY KEY, label_name TEXT, note_id TEXT)`,
                 [],
                 (tx, results) => console.log('success'),
                 error => console.log(error)
@@ -31,8 +31,8 @@ class SQLiteLabelServices {
         return new Promise((resolve, reject) => {
             db.transaction(tx => {
                 tx.executeSql(
-                    `INSERT INTO '${userId}Label' (label_id, label) VALUES (?,?)`,
-                    [labelId, label],
+                    `INSERT INTO '${userId}Label' (label_id, label_name, note_id) VALUES (?,?,?)`,
+                    [labelId, label.labelName, label.noteId],
                     (tx, results) => resolve('success'),
                     error => reject(error)
                 );
@@ -44,8 +44,8 @@ class SQLiteLabelServices {
         return new Promise((resolve, reject) => {
             db.transaction(tx => {
                 tx.executeSql(
-                    `UPDATE '${userId}Label' set label = ? where label_id = ?`,
-                    [label, labelId],
+                    `UPDATE '${userId}Label' set label_name = ?, note_id = ? where label_id = ?`,
+                    [label.labelName, label.noteId, labelId],
                     (tx, results) => resolve('success'),
                     error => reject(error)
                 );
@@ -67,14 +67,14 @@ class SQLiteLabelServices {
     }
 
     deleteTableinSQLiteStorage = (userId) => {
-            db.transaction(tx => {
-                tx.executeSql(
-                    `DROP TABLE '${userId}Label'`,
-                    [],
-                    (tx, results) => console.log('table deleted'),
-                    error => console.log(error)
-                );
-            });
+        db.transaction(tx => {
+            tx.executeSql(
+                `DROP TABLE '${userId}Label'`,
+                [],
+                (tx, results) => console.log('table deleted'),
+                error => console.log(error)
+            );
+        });
     }
 }
 

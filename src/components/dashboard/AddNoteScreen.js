@@ -9,6 +9,8 @@ import DotsVerticalRBSheetMenu from './DotsVerticalRBSheetMenu'
 import NoteDataController from '../../../services/NoteDataController'
 import DotsVerticalRestoreRBSheetMenu from './DotsVerticalRestoreRBSheetMenu'
 import { connect } from 'react-redux'
+import {storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
+import SQLiteLabelServices from '../../../services/SQLiteLabelServices'
 
 class AddNoteScreen extends Component {
     constructor(props) {
@@ -26,7 +28,6 @@ class AddNoteScreen extends Component {
             restoreDeleteSnackbar : false,
             restoreSnackbar : false,
             noteUnArchivedSnackbar : false,
-            labelName : ''
         }
     }
 
@@ -108,14 +109,17 @@ class AddNoteScreen extends Component {
         }
         if(this.state.title != '' || this.state.note != '') {
             if(this.props.route.params.newNote) {
+                this.updateNoteIdInLabel();
                 NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             } else if(this.state.isDeleted == 1) {
                 this.props.navigation.push('Home', {screen : 'Deleted'})
             } else if(this.state.isArchived == 1) {
+                this.updateNoteIdInLabel();
                 NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
-                    .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
+                    .then(() => this.props.navigation.push('Home', {screen : 'archiveNote'}))
             } else {
+                this.updateNoteIdInLabel();
                 NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             }
@@ -123,6 +127,7 @@ class AddNoteScreen extends Component {
             if(this.props.route.params.newNote) {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
             } else {
+                this.removeNoteIdinLabel();
                 NoteDataController.removeNote(this.state.userId, this.state.noteKey)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isEmptyNote : true}}))
             }
@@ -147,6 +152,7 @@ class AddNoteScreen extends Component {
                 isNoteNotAddedDeleted : true
             })
         } else {
+            this.updateNoteIdInLabel();
             NoteDataController.deleteNote(this.state.userId, this.state.noteKey, notes)
                 .then(() => this.props.navigation.push('Home', { screen : 'Notes', params : {isNoteDeleted : true, 
                                                                                             noteKey : this.state.noteKey,
@@ -191,6 +197,7 @@ class AddNoteScreen extends Component {
     }
 
     handleDeleteForeverActionButton = () => {
+        this.removeNoteIdinLabel();
         NoteDataController.removeNote(this.state.userId, this.state.noteKey)
             .then(() => this.props.navigation.push('Home', {screen : 'Deleted'}))
     }
@@ -215,6 +222,7 @@ class AddNoteScreen extends Component {
             labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived
         }
+        this.updateNoteIdInLabel()
         NoteDataController.deleteNote(this.state.userId, this.state.noteKey, notes)
         //onPress()
     }
@@ -277,12 +285,14 @@ class AddNoteScreen extends Component {
         }
         if(this.state.title != '' || this.state.note != '') {
             if(this.props.route.params.newNote) {
+                this.updateNoteIdInLabel()
                 NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isNoteArchived : true, 
                                                                                                 noteKey : this.state.noteKey,
                                                                                                 userId : this.state.userId,
                                                                                                 notes : notes}}))
             } else {
+                this.updateNoteIdInLabel()
                 NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isNoteArchived : true, 
                                                                                                 noteKey : this.state.noteKey,
@@ -293,6 +303,7 @@ class AddNoteScreen extends Component {
             if(this.props.route.params.newNote) {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
             } else {
+                this.removeNoteIdinLabel();
                 NoteDataController.removeNote(this.state.userId, this.state.noteKey)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isEmptyNote : true}}))
             }
@@ -312,6 +323,7 @@ class AddNoteScreen extends Component {
             labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived
         }
+        this.updateNoteIdInLabel()
         NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
     }
 
@@ -332,7 +344,84 @@ class AddNoteScreen extends Component {
             labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived
         }
+        this.updateNoteIdInLabel()
         NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
+    }
+
+    updateNoteIdInLabel = () => {
+        let noteId
+        if(this.state.labelId.length > 0) {
+            this.props.userLabel.map(label => {
+                if(this.state.labelId.includes(label.label_id)){
+                    noteId = JSON.parse(label.note_id)
+                    if(!noteId.includes(this.state.noteKey)) {
+                        noteId.push(this.state.noteKey)
+                        const labels = {
+                            labelName : label.label_name,
+                            noteId : JSON.stringify(noteId)
+                        }
+                        NoteDataController.updateLabel(this.props.userId, label.label_id, labels)
+                        this.updateLabelinReduxStore();
+                    }
+                } else {
+                    noteId = JSON.parse(label.note_id)
+                    if(noteId.includes(this.state.noteKey)){
+                        let index = noteId.indexOf(this.state.noteKey)
+                        noteId.splice(index, 1)
+                        const labels = {
+                            labelName : label.label_name,
+                            noteId : JSON.stringify(noteId)
+                        }
+                        NoteDataController.updateLabel(this.props.userId, label.label_id, labels)
+                        this.updateLabelinReduxStore()
+                    }
+                }
+            })  
+        } else {
+            this.props.userLabel.map(label => {
+                noteId = JSON.parse(label.note_id);
+                if(noteId.includes(this.state.noteKey)) {
+                    let index = noteId.indexOf(this.state.noteKey)
+                    noteId.splice(index, 1)
+                    const labels = {
+                        labelName : label.label_name,
+                        noteId : JSON.stringify(noteId)
+                    }
+                    NoteDataController.updateLabel(this.props.userId, label.label_id, labels)
+                    this.updateLabelinReduxStore();
+                }
+            })
+        }
+    }
+
+    removeNoteIdinLabel = () => {
+        let noteId
+        this.props.userLabel.map(label => {
+            noteId = JSON.parse(label.note_id);
+            if(noteId.includes(this.state.noteKey)) {
+                let index = noteId.indexOf(this.state.noteKey)
+                noteId.splice(index, 1)
+                const labels = {
+                    labelName : label.label_name,
+                    noteId : JSON.stringify(noteId)
+                }
+                NoteDataController.updateLabel(this.props.userId, label.label_id, labels)
+                this.updateLabelinReduxStore();
+            }
+        })        
+    }
+
+    updateLabelinReduxStore = () => {
+        SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.userId)
+            .then(async result => {
+                var temp = [];
+                if(result.rows.length != 0) {
+                    for (let i = 0; i < result.rows.length; ++i)
+                        temp.push(result.rows.item(i));
+                }
+                this.props.storeUserLabel(temp)
+            })
+            .catch(error => console.log(error))
     }
 
     render() {
@@ -398,7 +487,7 @@ class AddNoteScreen extends Component {
                                                <React.Fragment key = {labels.label_id}>
                                                     <TouchableWithoutFeedback onPress = {this.handleLabelButton}>
                                                         <View>
-                                                            <Text style = {AddNoteScreenStyle.label_text}>{labels.label}</Text>
+                                                            <Text style = {AddNoteScreenStyle.label_text}>{labels.label_name}</Text>
                                                         </View>
                                                     </TouchableWithoutFeedback>
                                                 </React.Fragment>
@@ -531,4 +620,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(AddNoteScreen)
+const mapDispatchToProps = dispatch => {
+    return {
+        storeUserLabel : (userLabel) => dispatch(storeUserLabel(userLabel))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddNoteScreen)

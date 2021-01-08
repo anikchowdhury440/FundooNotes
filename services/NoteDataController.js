@@ -7,12 +7,10 @@ class NoteDataController {
     storeNote = (noteId, userId, notes) => {
         return new Promise((resolve) => {
             SQLiteServices.storeNoteinSQliteStorage(userId, noteId, notes)
-                .then(() => {
-                    UserNoteServices.storeNoteinDatabase(userId, noteId, notes)
-                        .then(() => console.log('added'))
-                        .catch(error => console.log(error))
-                    resolve('success')
-                })
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserNoteServices.storeNoteinDatabase(userId, noteId, notes)
+                .then(() => console.log('added'))
                 .catch(error => console.log(error))
         })
     }
@@ -20,12 +18,10 @@ class NoteDataController {
     updateNote = (noteId, userId, notes) => {
         return new Promise((resolve) => {
             SQLiteServices.updateNoteinSQliteStorage(userId, noteId, notes)
-                .then(() => {
-                    UserNoteServices.updateNoteInFirebase(userId, noteId, notes)
-                        .then(() => console.log('updated'))
-                        .catch(error => console.log(error))
-                    resolve('success')
-                })
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserNoteServices.updateNoteInFirebase(userId, noteId, notes)
+                .then(() => console.log('updated'))
                 .catch(error => console.log(error))
         })
     }
@@ -33,12 +29,10 @@ class NoteDataController {
     removeNote = (userId, noteKey) => {
         return new Promise((resolve) => {
             SQLiteServices.removeNoteinSQliteStorage(userId, noteKey)
-                .then(() => {
-                    UserNoteServices.removeNoteInFirebase(userId, noteKey)
-                        .then(() => console.log('removed'))
-                        .catch(error => console.log(error))
-                    resolve('success')
-                })
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserNoteServices.removeNoteInFirebase(userId, noteKey)
+                .then(() => console.log('removed'))
                 .catch(error => console.log(error))
         })
     }
@@ -46,12 +40,10 @@ class NoteDataController {
     deleteNote = (userId, noteKey, notes) => {
         return new Promise((resolve) => {
             SQLiteServices.deleteNoteinSQliteStorage(userId, noteKey, notes)
-                .then(() => {
-                    UserNoteServices.deleteNoteInFirebase(userId, noteKey, notes)
-                        .then(() => console.log('deleted'))
-                        .catch(error => console.log(error))
-                    resolve('success')
-                })
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserNoteServices.deleteNoteInFirebase(userId, noteKey, notes)
+                .then(() => console.log('deleted'))
                 .catch(error => console.log(error))
         })
     }
@@ -59,12 +51,10 @@ class NoteDataController {
     restoreNote = (userId, noteKey) => {
         return new Promise((resolve) => {
             SQLiteServices.restoreNoteinSQliteStorage(userId, noteKey)
-                .then(() => {
-                    UserNoteServices.restoreNoteInFirebase(userId, noteKey)
-                        .then(() => console.log('restored'))
-                        .catch(error => console.log(error))
-                    resolve('success')
-                })
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserNoteServices.restoreNoteInFirebase(userId, noteKey)
+                .then(() => console.log('restored'))
                 .catch(error => console.log(error))
         })
     }
@@ -116,12 +106,10 @@ class NoteDataController {
     storeLabel = (userId, labelId, label) => {
         return new Promise((resolve) => {
             SQLiteLabelServices.storeLabelinSQliteStorage(userId, labelId, label)
-                .then(() => {
-                    UserLabelServices.addLabelinDatabase(userId, labelId, label)
-                        .then(() => console.log('added'))
-                        .catch(error => console.log(error))
-                    resolve('success')
-                })
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserLabelServices.addLabelinDatabase(userId, labelId, label)
+                .then(() => console.log('added'))
                 .catch(error => console.log(error))
         })
     }
@@ -129,12 +117,10 @@ class NoteDataController {
     updateLabel = (userId, labelId, label) => {
         return new Promise((resolve) => {
             SQLiteLabelServices.updateLabelinSQliteStorage(userId, labelId, label)
-                .then(() => {
-                    UserLabelServices.updateLabelInFirebase(userId, labelId, label)
-                        .then(() => console.log('updated'))
-                        .catch(error => console.log(error))
-                    resolve('success')
-                })
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserLabelServices.updateLabelInFirebase(userId, labelId, label)
+                .then(() => console.log('updated'))
                 .catch(error => console.log(error))
         })
     }
@@ -142,12 +128,10 @@ class NoteDataController {
     removeLabel = (userId, labelId) => {
         return new Promise((resolve) => {
             SQLiteLabelServices.removeLabelinSQliteStorage(userId, labelId)
-                .then(() => {
-                    UserLabelServices.deleteLabelInFirebase(userId, labelId)
-                        .then(() => console.log('removed'))
-                        .catch(error => console.log(error))
-                    resolve('success')
-                })
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserLabelServices.deleteLabelInFirebase(userId, labelId)
+                .then(() => console.log('removed'))
                 .catch(error => console.log(error))
         })
     }
@@ -169,11 +153,17 @@ class NoteDataController {
             })
         labelKeyFirebase.map(key => {
             if(!labelKeySqlite.includes(key)) {
-                label = labels[key].label
+                const label = {
+                    labelName : labels[key].label.labelName,
+                    noteId : labels[key].label.noteId
+                }
                 SQLiteLabelServices.storeLabelinSQliteStorage(userId, key, label)
             }
             else {
-                label = labels[key].label
+                const label = {
+                    labelName : labels[key].label.labelName,
+                    noteId : labels[key].label.noteId
+                }
                 SQLiteLabelServices.updateLabelinSQliteStorage(userId, key, label)
             }
         })
@@ -194,12 +184,10 @@ class NoteDataController {
     updateNoteLabel = (userId, noteKey, labelId) => {
         return new Promise((resolve) => {
             SQLiteServices.updateNoteLabelinSQliteStorage(userId, noteKey, labelId)
-                .then(() => {
-                    UserNoteServices.updateNoteLabelInFirebase(userId, noteKey, labelId)
-                        .then(() => console.log('Label Updated'))
-                        .catch(error => console.log(error))
-                    resolve('success')
-                })
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserNoteServices.updateNoteLabelInFirebase(userId, noteKey, labelId)
+                .then(() => console.log('Label Updated'))
                 .catch(error => console.log(error))
         })
     }
@@ -214,12 +202,10 @@ class NoteDataController {
         }
         return new Promise((resolve) => {
             SQLiteServices.updateNoteinSQliteStorage(userId, noteId, notes)
-                .then(() => {
-                    UserNoteServices.updateNoteInFirebase(userId, noteId, notes)
-                        .then(() => console.log('updated'))
-                        .catch(error => console.log(error))
-                    resolve('success')
-                })
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserNoteServices.updateNoteInFirebase(userId, noteId, notes)
+                .then(() => console.log('updated'))
                 .catch(error => console.log(error))
         })
     }

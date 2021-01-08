@@ -21,6 +21,7 @@ class CreateNewLabel extends Component {
             activeLabel : '',
             userNotes : []
         }
+        // console.log(this.props.userLabel)
     }
 
     componentDidMount = async () => {
@@ -75,7 +76,7 @@ class CreateNewLabel extends Component {
             let temp = []
             if(labelId.length > 0) {
                 labelId.map(key => {
-                    temp.push(this.props.userLabel[key].label.toLowerCase())
+                    temp.push(this.props.userLabel[key].label_name.toLowerCase())
                 })
             }
             if(temp.includes(this.state.createLabelText.toLowerCase())) {
@@ -85,7 +86,11 @@ class CreateNewLabel extends Component {
             }
             else {
                 var labelKey = this.generateLabelKey()
-                NoteDataController.storeLabel(this.props.userId, labelKey, this.state.createLabelText)
+                const label = {
+                    labelName : this.state.createLabelText,
+                    noteId : JSON.stringify([])
+                }
+                NoteDataController.storeLabel(this.props.userId, labelKey, label)
                     .then(() => {
                         SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.userId)
                             .then(async result => {
