@@ -105,28 +105,13 @@ class SQLiteServices {
         });
     }
 
-    updateNoteLabelinSQliteStorage = (userId, noteId, notes) => {
+    updateNoteLabelinSQliteStorage = (userId, noteId, labelId) => {
         return new Promise((resolve, reject) => {
             db.transaction(tx => {
                 tx.executeSql(
-                    `UPDATE ${userId} set title = ?, note = ?, label_id = ? where note_id = ?`,
-                    [notes.title, notes.note, notes.labelId, noteId],
+                    `UPDATE ${userId} set label_id = ? where note_id = ?`,
+                    [labelId, noteId],
                     (tx, results) => resolve('success'),
-                    error => reject(error)
-                );
-            });
-        })
-    }
-
-    selectNoteByLabelIdFromSQliteStorage = (userId, labelId, isDeleted) => {
-        return new Promise((resolve, reject) => {
-            db.transaction(tx => {
-                tx.executeSql(
-                    `SELECT * FROM ${userId} where label_id = ? AND is_deleted = ?`,
-                    [labelId, isDeleted],
-                    (tx, results) => {
-                        resolve(results)
-                    },
                     error => reject(error)
                 );
             });

@@ -32,12 +32,20 @@ const African = {
     notes : "Aantekeninge",
     reminder : "Onthounota",
     createNewLabel : "Skep 'n nuwe etiket",
-    archieve : "Argief",
+    archive : "Argief",
     deleted : "Uitgevee",
     settings : "Instellings",
     help : "Hulp en terugvoer",
     title : "Titel",
     note : "Let wel",
+    notAddedNoteDeleted : "Notas wat nie bygevoeg is nie, kan nie uitgevee word nie",
+    noteRestored : "Nota is herstel",
+    notEditRecycleBin : "Kan nie in die asblik wysig nie",
+    noteUnarchived : "Nota is nie geargiveer nie",
+    restore : "Herstel",
+    undo : "Ontdoen",
+    editLabels : "Wysig etikette",
+    labelAlreadyExist : "Etiket bestaan ​​reeds"
 }
 
 export default African;

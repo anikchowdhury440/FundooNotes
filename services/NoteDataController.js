@@ -175,8 +175,6 @@ class NoteDataController {
             else {
                 label = labels[key].label
                 SQLiteLabelServices.updateLabelinSQliteStorage(userId, key, label)
-                    // .then(() => console.log('success'))
-                    // .catch(error => console.log(error))
             }
         })
         labelKeySqlite.forEach(labelKey => {
@@ -193,11 +191,11 @@ class NoteDataController {
         this.getLabelFromFirebaseToSqlite(userId)
     }
 
-    updateNoteLabel = (userId, noteKey, notes) => {
+    updateNoteLabel = (userId, noteKey, labelId) => {
         return new Promise((resolve) => {
-            SQLiteServices.updateNoteLabelinSQliteStorage(userId, noteKey, notes)
+            SQLiteServices.updateNoteLabelinSQliteStorage(userId, noteKey, labelId)
                 .then(() => {
-                    UserNoteServices.updateNoteLabelInFirebase(userId, noteKey, notes)
+                    UserNoteServices.updateNoteLabelInFirebase(userId, noteKey, labelId)
                         .then(() => console.log('Label Updated'))
                         .catch(error => console.log(error))
                     resolve('success')

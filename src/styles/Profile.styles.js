@@ -10,7 +10,7 @@ const ProfileStyle = StyleSheet.create({
     },
 
     text_style : {
-        color : 'white',
+        color : 'black',
         fontWeight : 'bold',
         fontSize : 16
     },

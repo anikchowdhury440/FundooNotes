@@ -32,12 +32,20 @@ const English = {
     notes : "Notes",
     reminder : "Reminder",
     createNewLabel : "Create New Label",
-    archieve : "Archieve",
+    archive : "Archive",
     deleted : "Deleted",
     settings : "Settings",
     help : "Help & Feedback",
     title : "Title",
     note : "Note",
+    notAddedNoteDeleted : "Notes not added can't be deleted",
+    noteRestored : "Note Restored",
+    notEditRecycleBin : "Can't edit in Recycle Bin",
+    noteUnarchived : "Note Unarchieved",
+    restore : "Restore",
+    undo : "Undo",
+    editLabels : "Edit Labels",
+    labelAlreadyExist : "Label Already Exist"
 }
 
 export default English

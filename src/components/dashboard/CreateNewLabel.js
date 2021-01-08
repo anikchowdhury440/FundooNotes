@@ -7,6 +7,8 @@ import { connect } from 'react-redux'
 import LabelAppbar from './LabelAppbar';
 import NoteDataController from '../../../services/NoteDataController';
 import SQLiteLabelServices from '../../../services/SQLiteLabelServices';
+import SQLiteServices from '../../../services/SQLiteServices';
+import { Strings } from '../../Language/Strings';
 
 class CreateNewLabel extends Component {
     constructor(props) {
@@ -16,8 +18,24 @@ class CreateNewLabel extends Component {
             createLabelText : '',
             labelAlreadyExistMsg : false,
             change : true,
-            activeLabel : ''
+            activeLabel : '',
+            userNotes : []
         }
+    }
+
+    componentDidMount = async () => {
+        await SQLiteServices.selectNoteFromSQliteStorage(this.props.userId)
+            .then(async result => {
+                var temp = [];
+                if(result.rows.length != 0) {
+                    for (let i = 0; i < result.rows.length; ++i)
+                        temp.push(result.rows.item(i));
+                    await this.setState({
+                        userNotes : temp.reverse()
+                    })
+                }                
+            })
+            .catch(error => console.log('Error', error))
     }
 
     selectActiveLabel = async (labelKey) => {
@@ -109,7 +127,7 @@ class CreateNewLabel extends Component {
                                 icon = 'keyboard-backspace'
                                 onPress = {this.handleBackIconButton}/>
                             <Appbar.Content 
-                                title = 'Edit Labels'/>
+                                title = {Strings.editLabels}/>
                         </Appbar>
                     </View>
                     <ScrollView>
@@ -132,7 +150,7 @@ class CreateNewLabel extends Component {
                                         <View style = {{flexDirection :'column', width : '65%'}}>
                                             <TextInput
                                             style = {this.state.labelAlreadyExistMsg ? CreateNewLabelStyle.textinput_error_style : CreateNewLabelStyle.textinput_style}    
-                                            placeholder = 'Create New Label'
+                                            placeholder = {Strings.createNewLabel}
                                             autoFocus = {true}
                                             onChangeText = {this.handleCreateLabelTextInput}
                                             value = {this.state.createLabelText}/>
@@ -140,7 +158,7 @@ class CreateNewLabel extends Component {
                                             {
                                                 (this.state.labelAlreadyExistMsg) ?
                                                 <Text style = {CreateNewLabelStyle.text_error_style}>
-                                                    Label Already Exist
+                                                    {Strings.labelAlreadyExist}
                                                 </Text>
                                                 :
                                                 null
@@ -151,7 +169,7 @@ class CreateNewLabel extends Component {
                                         <View style = {{width : '65%'}}>
                                             <Text
                                                 style = {CreateNewLabelStyle.text_style}>
-                                                Create New Label
+                                                    {Strings.createNewLabel}
                                             </Text>
                                         </View>
                                     </TouchableWithoutFeedback>
@@ -172,9 +190,15 @@ class CreateNewLabel extends Component {
                         <View>
                             {
                                 this.props.userLabel.length > 0 ?
-                                    this.props.userLabel.map(labels => (
+                                    this.props.userLabel.map(labels =>
+                                        (
                                         <React.Fragment key = {labels.label_id}>
-                                            <LabelAppbar labelKey = {labels.label_id} labels = {labels} activeLabel = {this.state.activeLabel} selectActiveLabel = {this.selectActiveLabel}/>
+                                            <LabelAppbar 
+                                                labelKey = {labels.label_id} 
+                                                labels = {labels} 
+                                                activeLabel = {this.state.activeLabel} 
+                                                selectActiveLabel = {this.selectActiveLabel}
+                                                userNotes = {this.state.userNotes}/>
                                         </React.Fragment>
                                     ))
                                     :

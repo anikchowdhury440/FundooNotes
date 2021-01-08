@@ -8,11 +8,11 @@ export default class SelectLabelAppbar extends Component {
     }
 
     handleCheckbox = async() => {
-        if(this.props.activeLabel != this.props.labelKey) {
-            this.props.selectActiveLabel(this.props.labelKey)
+        if(this.props.selectedLabel.includes(this.props.labelKey)) {
+            this.props.handleSelectedLabel(this.props.labelKey, 'remove')
         }
         else {
-            this.props.selectActiveLabel('')
+            this.props.handleSelectedLabel(this.props.labelKey, 'add')
         }
     }
 
@@ -30,7 +30,7 @@ export default class SelectLabelAppbar extends Component {
                         <View
                             style = {{marginRight : 10}}>
                             <Checkbox 
-                                status = {(this.props.activeLabel == this.props.labelKey) ? 'checked' : 'unchecked'}
+                                status = {(this.props.selectedLabel.includes(this.props.labelKey)) ? 'checked' : 'unchecked'}
                                 onPress = {this.handleCheckbox}
                                 uncheckedColor = 'black'
                                 color = '#4169E1'/>

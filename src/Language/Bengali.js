@@ -32,12 +32,20 @@ const Bengali = {
         notes : "নোটস",
         reminder : "অনুস্মারক",
         createNewLabel : "নতুন লেবেল তৈরি করুন",
-        archieve : "সংরক্ষণাগার",
+        archive : "সংরক্ষণাগার",
         deleted : "মোছা হয়েছে",
         settings : "সেটিংস",
         help : "সহায়তা এবং প্রতিক্রিয়া",
         title : "শিরোনাম",
         note : "নোট",
+        notAddedNoteDeleted : "যোগ করা নোট মুছে ফেলা যাবে না",
+        noteRestored : "নোট পুনরুদ্ধার করা হয়েছে",
+        notEditRecycleBin : "রিসাইকেল বিনটিতে সম্পাদনা করা যায় না",
+        noteUnarchived : "নোট সংরক্ষণাগারহীন",
+        restore : "পুনরুদ্ধার করুন",
+        undo : "পূর্বাবস্থায় ফেরা",
+        editLabels : "লেবেলগুলি সম্পাদনা করুন",
+        labelAlreadyExist : "লেবেল ইতিমধ্যে বিদ্যমান"
 }
 
 export default Bengali

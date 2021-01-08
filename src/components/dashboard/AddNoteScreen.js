@@ -19,7 +19,7 @@ class AddNoteScreen extends Component {
             note : '',
             userId : '',
             isDeleted : 0,
-            labelId : '',
+            labelId : [],
             isArchived : 0,
             isNoteNotAddedDeleted : false,
             deleteForeverDialog : false, 
@@ -42,22 +42,14 @@ class AddNoteScreen extends Component {
                 title : this.props.route.params.notes.title,
                 note : this.props.route.params.notes.note,
                 isDeleted : this.props.route.params.notes.is_deleted,
-                labelId : this.props.route.params.notes.label_id,
+                labelId : JSON.parse(this.props.route.params.notes.label_id),
                 isArchived : this.props.route.params.notes.is_archived,
             })
-        }
-        else {
+        } else {
             await this.setState({
                 noteKey : this.generateNoteKey()
             })
         }
-        this.props.userLabel.map(async labels => {
-            if(labels.label_id == this.state.labelId) {
-                await this.setState({
-                    labelName : labels.label
-                })
-            }
-        })
     }
 
     handleTitle = async (title) => {
@@ -93,30 +85,26 @@ class AddNoteScreen extends Component {
             title : this.state.title,
             note : this.state.note,
             isDeleted : this.state.isDeleted,
-            labelId : this.state.labelId,
+            labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived
         }
         if(this.state.title != '' || this.state.note != '') {
-            if(this.props.route.params == undefined) {
+            if(this.props.route.params == undefined || this.props.route.params.newNote != undefined) {
                 NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
-            } 
-            else if(this.state.isDeleted == 1){
+            } else if(this.state.isDeleted == 1) {
                 this.props.navigation.push('Home', {screen : 'Deleted'})
-            }
-            else if(this.state.isArchived == 1) {
-                this.props.navigation.push('Home', {screen : 'archiveNote'})
-            }
-            else {
+            } else if(this.state.isArchived == 1) {
+                NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
+                    .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
+            } else {
                 NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             }
-        }
-        else{
+        } else {
             if(this.props.route.params == undefined) {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
-            } 
-            else {
+            } else {
                 NoteDataController.removeNote(this.state.userId, this.state.noteKey)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isEmptyNote : true}}))
             }
@@ -133,15 +121,14 @@ class AddNoteScreen extends Component {
             title : this.state.title,
             note : this.state.note,
             isDeleted : this.state.isDeleted,
-            labelId : this.state.labelId,
+            labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived
         }
         if(this.props.route.params == undefined || this.props.route.params.newNote != undefined){
             await this.setState({
                 isNoteNotAddedDeleted : true
             })
-        }
-        else {
+        } else {
             NoteDataController.deleteNote(this.state.userId, this.state.noteKey, notes)
                 .then(() => this.props.navigation.push('Home', { screen : 'Notes', params : {isNoteDeleted : true, 
                                                                                             noteKey : this.state.noteKey,
@@ -207,7 +194,7 @@ class AddNoteScreen extends Component {
             title : this.state.title,
             note : this.state.note,
             isDeleted : this.state.isDeleted,
-            labelId : this.state.labelId,
+            labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived
         }
         NoteDataController.deleteNote(this.state.userId, this.state.noteKey, notes)
@@ -252,10 +239,9 @@ class AddNoteScreen extends Component {
             labelId : this.state.labelId,
             isArchived : this.state.isArchived
         }
-        if(this.props.route.params == undefined) {
+        if(this.props.route.params == undefined || this.props.route.params.newNote != undefined) {
             this.props.navigation.push('SelectLabel', { noteKey : this.state.noteKey, notes : notes, newNote : true})
-        }
-        else {
+        } else {
             this.props.navigation.push('SelectLabel', { noteKey : this.state.noteKey, notes : notes})
         }
     }
@@ -268,30 +254,27 @@ class AddNoteScreen extends Component {
             title : this.state.title,
             note : this.state.note,
             isDeleted : this.state.isDeleted,
-            labelId : this.state.labelId,
+            labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived
         }
         if(this.state.title != '' || this.state.note != '') {
-            if(this.props.route.params == undefined) {
+            if(this.props.route.params == undefined || this.props.route.params.newNote != undefined) {
                 NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isNoteArchived : true, 
                                                                                                 noteKey : this.state.noteKey,
                                                                                                 userId : this.state.userId,
                                                                                                 notes : notes}}))
-            } 
-            else {
+            } else {
                 NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isNoteArchived : true, 
                                                                                                 noteKey : this.state.noteKey,
                                                                                                 userId : this.state.userId,
                                                                                                 notes : notes}}))
             }
-        }
-        else{
+        } else {
             if(this.props.route.params == undefined) {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
-            } 
-            else {
+            } else {
                 NoteDataController.removeNote(this.state.userId, this.state.noteKey)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isEmptyNote : true}}))
             }
@@ -308,7 +291,7 @@ class AddNoteScreen extends Component {
             title : this.state.title,
             note : this.state.note,
             isDeleted : this.state.isDeleted,
-            labelId : this.state.labelId,
+            labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived
         }
         NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
@@ -328,7 +311,7 @@ class AddNoteScreen extends Component {
             title : this.state.title,
             note : this.state.note,
             isDeleted : this.state.isDeleted,
-            labelId : this.state.labelId,
+            labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived
         }
         NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
@@ -389,16 +372,25 @@ class AddNoteScreen extends Component {
                                     value = {this.state.note}
                                     editable = {(this.state.isDeleted == 1) ? false : true}
                                 />
+                                <View style = {AddNoteScreenStyle.label_text_container}>
                                 {
-                                    (this.state.labelName != '') ?
-                                        <TouchableWithoutFeedback onPress = {this.handleLabelButton}>
-                                            <View style = {AddNoteScreenStyle.label_text_container}>
-                                                <Text style = {AddNoteScreenStyle.label_text}>{this.state.labelName}</Text>
-                                            </View>
-                                        </TouchableWithoutFeedback>
-                                    :
-                                    null
+                                    (this.state.labelId.length > 0) ?
+                                        this.props.userLabel.map(labels => (
+                                            this.state.labelId.includes(labels.label_id) ?
+                                               <React.Fragment key = {labels.label_id}>
+                                                    <TouchableWithoutFeedback onPress = {this.handleLabelButton}>
+                                                        <View>
+                                                            <Text style = {AddNoteScreenStyle.label_text}>{labels.label}</Text>
+                                                        </View>
+                                                    </TouchableWithoutFeedback>
+                                                </React.Fragment>
+                                            :
+                                            null
+                                        ))
+                                        :
+                                        null
                                 }
+                                </View>
                             </View>
                         </TouchableWithoutFeedback>
                     </ScrollView>
@@ -462,7 +454,7 @@ class AddNoteScreen extends Component {
                         visible={this.state.isNoteNotAddedDeleted}
                         onDismiss={this.isNotAddedNoteDeletedSnackbarHandler}
                         duration = {10000}>
-                        Notes not added can't be deleted
+                        {Strings.notAddedNoteDeleted}
                     </Snackbar>
                     <Snackbar
                         style = {{marginBottom : 100}}
@@ -470,10 +462,10 @@ class AddNoteScreen extends Component {
                         onDismiss={this.restoreDeleteSnackbarDismiss}
                         duration = {10000}
                         action = {{
-                            label : 'Undo',
+                            label : Strings.undo,
                             onPress : this.restoreDeleteSnackbarAction
                         }}>
-                            Note Restored
+                            {Strings.noteRestored}
                     </Snackbar>
                     <Snackbar
                         style = {{marginBottom : 100}}
@@ -481,10 +473,10 @@ class AddNoteScreen extends Component {
                         onDismiss={this.restoreSnackbarDismiss}
                         duration = {10000}
                         action = {{
-                            label : 'Restore',
+                            label : Strings.restore,
                             onPress : this.restoreSnackbarAction
                         }}>
-                            Can't edit in Recycle Bin
+                            {Strings.notEditRecycleBin}
                     </Snackbar>
                     <Snackbar
                         style = {{marginBottom : 100}}
@@ -492,10 +484,10 @@ class AddNoteScreen extends Component {
                         onDismiss={this.unArchiveSnackbarDismiss}
                         duration = {10000}
                         action = {{
-                            label : 'Undo',
+                            label : Strings.undo,
                             onPress : this.archiveSnackbarAction
                         }}>
-                            Note Unarchieved
+                            {Strings.noteUnarchived}
                     </Snackbar>
                     <Portal>
                         <Dialog visible = {this.state.deleteForeverDialog} onDismiss = {this.handleDeleteForeverDialogDismiss}>

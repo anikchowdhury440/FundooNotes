@@ -5,6 +5,7 @@ import SQLiteServices from '../../../services/SQLiteServices'
 import ArchiveNoteScreenStyle from '../../styles/ArchiveNoteScreen.styles'
 import { connect } from 'react-redux'
 import NoteCard from './NoteCard'
+import { Strings } from '../../Language/Strings';
 
 class ArchiveNoteScreen extends Component {
     constructor(props) {
@@ -56,7 +57,7 @@ class ArchiveNoteScreen extends Component {
                             icon = 'menu'
                             onPress = {this.handleMenuButton}
                             />
-                        <Appbar.Content title = 'Archive'/>
+                        <Appbar.Content title = {Strings.archive}/>
                         <Appbar.Action
                             style = {{marginRight : 10}}
                             icon = 'magnify'

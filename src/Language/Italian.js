@@ -32,12 +32,20 @@ const Italian = {
     notes : "Appunti",
     reminder : "Promemoria",
     createNewLabel : "Crea nuova etichetta",
-    archieve : "Archivio",
+    archive : "Archivio",
     deleted : "Eliminato",
     settings : "impostazioni",
     help : "Guida e feedback",
     title : "Titolo",
     note : "Nota",
+    notAddedNoteDeleted : "Le note non aggiunte non possono essere eliminate",
+    noteRestored : "Nota restaurata",
+    notEditRecycleBin : "Impossibile modificare nel Cestino",
+    noteUnarchived : "Nota non raggiunto",
+    restore : "Ristabilire",
+    undo : "Disfare",
+    editLabels : "Modifica etichette",
+    labelAlreadyExist : "Etichetta già esistente"
 }
 
 export default Italian;

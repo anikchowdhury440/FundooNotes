@@ -98,7 +98,7 @@ class DrawerContent extends Component {
                 <Drawer.Item
                   style = {DrawerContentStyle.drawer_item_style}
                   icon = 'archive-arrow-down-outline'
-                  label = {Strings.archieve}
+                  label = {Strings.archive}
                   onPress = {this.handleArchiveButton}
                 />
 

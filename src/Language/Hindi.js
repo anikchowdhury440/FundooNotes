@@ -32,12 +32,20 @@ const Hindi = {
     notes : "नोट्स",
     reminder : "अनुस्मारक",
     createNewLabel : "नया लेबल बनाएं",
-    archieve : "पुरालेख",
+    archive : "पुरालेख",
     deleted : "हटाए गए",
     settings : "समायोजन",
     help : "सहायता और प्रतिक्रिया",
     title : "शीर्षक",
     note : "नोट",
+    notAddedNoteDeleted : "नहीं जोड़े गए नोटों को हटाया नहीं जा सकता है",
+    noteRestored : "नोट पुनर्स्थापित किया गया",
+    notEditRecycleBin : "रीसायकल बिन में संपादित नहीं किया जा सकता",
+    noteUnarchived : "नोट अनारक्षित है",
+    restore : "पुनर्स्थापित",
+    undo : "पूर्ववत",
+    editLabels : "लेबल संपादित करें",
+    labelAlreadyExist : "लेबल पहले से मौजूद है"
 }
 
 export default Hindi;

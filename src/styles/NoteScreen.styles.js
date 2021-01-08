@@ -8,7 +8,7 @@ const NoteScreenStyle = StyleSheet.create({
 
     modal_container_style : {
         backgroundColor: 'white', 
-        //padding: 20,
+        padding: 20,
         width : 300,
         alignSelf : 'center',
         marginBottom : 200

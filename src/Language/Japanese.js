@@ -32,12 +32,20 @@ const Japaneese = {
     notes : "ノート",
     reminder : "リマインダー",
     createNewLabel : "新しいラベルを作成する",
-    archieve : "アーカイブ",
+    archive : "アーカイブ",
     deleted : "削除",
     settings : "設定",
     help : "ヘルプとフィードバック",
     title : "題名",
     note : "注意",
+    notAddedNoteDeleted : "追加されていないメモは削除できません",
+    noteRestored : "復元されたメモ",
+    notEditRecycleBin : "ごみ箱で編集できません",
+    noteUnarchived : "未アーカイブに注意",
+    restore : "戻す",
+    undo : "元に戻す",
+    editLabels : "ラベルの編集",
+    labelAlreadyExist : "ラベルはすでに存在します"
 }
 
 export default Japaneese

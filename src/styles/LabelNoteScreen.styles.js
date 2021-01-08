@@ -48,6 +48,13 @@ const LabelNoteScreenStyle = StyleSheet.create({
     list_note_title_empty_style : {
         marginTop : -25
     },
+
+    arvhive_text_style : {
+        marginLeft : 20,
+        marginTop : 15,
+        marginBottom : 10
+
+    }
 })
 
 export default LabelNoteScreenStyle;

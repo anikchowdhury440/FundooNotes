@@ -144,28 +144,17 @@ export default class Profile extends Component {
     render() {
         return (
             <View>
-                <ImageBackground
-                    resizeMode = 'stretch'
-                    style = {{padding : 20}}
-                    source = {(this.state.photo == '') ? require('../../assets/blank-profile.png') :{uri : this.state.photo}}>
-                    {/* <View style = {ProfileStyle.image_container_style}>
-                        <ImageBackground
-                            source = {(this.state.photo == '') ? require('../../assets/blank-profile.png') :{uri : this.state.photo}}
-                            style = {{height : 100, width : 100}}>
-                                <View style = {ProfileStyle.edit_button_style}>
-                                    <TouchableOpacity
-                                        onPress = {this.handleImageEditButton}>
+                <View style = {ProfileStyle.image_container_style}>
+                    <ImageBackground
+                        source = {(this.state.photo == '') ? require('../../assets/blank-profile.png') :{uri : this.state.photo}}
+                        style = {{height : 100, width : 100}}>
+                            <View style = {ProfileStyle.edit_button_style}>
+                                <TouchableOpacity
+                                    onPress = {this.handleImageEditButton}>
                                         <Icon name="edit" size={24} />
-                                    </TouchableOpacity>
-                                </View>
-                        </ImageBackground>
-
-                    </View> */}
-                <View style = {ProfileStyle.edit_button_style}>
-                    <TouchableOpacity
-                        onPress = {this.handleImageEditButton}>
-                        <Icon name="edit" size={24} />
-                    </TouchableOpacity>
+                                </TouchableOpacity>
+                            </View>
+                    </ImageBackground>
                 </View>
                 <View style = {{marginTop : 20, marginBottom : 10}}>
                     <View style = {ProfileStyle.text_container_style}>
@@ -211,7 +200,6 @@ export default class Profile extends Component {
                             chooseFromLibrary = {this.handleChoosePhotoFromLibrary}
                             cancel = {this.handleCancel}/>
                 </RBSheet>
-                </ImageBackground>
             </View>
         )
     }

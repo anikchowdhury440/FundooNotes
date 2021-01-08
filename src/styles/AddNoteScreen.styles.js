@@ -42,7 +42,8 @@ const AddNoteScreenStyle = StyleSheet.create({
     label_text_container : {
         marginLeft : 25, 
         flexWrap : 'wrap', 
-        marginTop : 10
+        marginTop : 10,
+        flexDirection : 'row'
     },
 
     label_text: {
@@ -52,7 +53,8 @@ const AddNoteScreenStyle = StyleSheet.create({
         paddingLeft : 15, 
         paddingRight : 15, 
         borderColor : 'grey', 
-        borderRadius : 40
+        borderRadius : 40,
+        marginRight : 10
     }
 
 })

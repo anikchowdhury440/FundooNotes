@@ -59,12 +59,10 @@ class UserNoteServices {
         })
     }
 
-    updateNoteLabelInFirebase = (userid, notekey, notes) => {
+    updateNoteLabelInFirebase = (userid, notekey, labelId) => {
         return new Promise((resolve, reject) => {
             Firebase.database().ref('UserNotes/' + userid  + '/' + notekey + '/' + 'notes').update({
-                title : notes.title,
-                note : notes.note,
-                labelId : notes.labelId
+                labelId : labelId
             })
             .then(() => resolve('success'))
             .catch(error => reject(error))

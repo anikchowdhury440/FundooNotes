@@ -4,7 +4,6 @@ import {Appbar, Dialog, Paragraph, Portal, Button} from 'react-native-paper';
 import LabelAppBarStyle from '../../styles/LabelAppbar.styles';
 import {storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
 import { connect } from 'react-redux'
-import UserLabelServices from '../../../services/UserLabelServices';
 import NoteDataController from '../../../services/NoteDataController';
 import SQLiteLabelServices from '../../../services/SQLiteLabelServices';
 
@@ -16,8 +15,9 @@ class LabelAppbar extends Component {
             editTextInput : this.props.labels.label,
             emptyMsg : false,
             errorMsg : false,
-            dialogVisible : false
+            dialogVisible : false,
         }
+
     }
 
     handleCheckButton = async () => {
@@ -37,7 +37,7 @@ class LabelAppbar extends Component {
                         .catch(error => console.log(error)) 
                 })
                 .catch(error => console.log(error))
-        }
+        }        
     }
 
     handleEditButton = () => {
@@ -104,6 +104,16 @@ class LabelAppbar extends Component {
                     .catch(error => console.log(error))
             })
             .catch(error => console.log(error))
+        if(this.props.userNotes.length > 0) {
+            this.props.userNotes.map(notes => {
+                let labelId = JSON.parse(notes.label_id)
+                if(labelId.includes(this.props.labelKey)) {
+                    let index = labelId.indexOf(this.props.labelKey)
+                    labelId.splice(index, 1)
+                    NoteDataController.updateNoteLabel(this.props.userId, notes.note_id, JSON.stringify(labelId))
+                }
+            })
+        }
     }
 
     handleDialogDissmiss = () => {
@@ -132,7 +142,8 @@ class LabelAppbar extends Component {
                         <View style = {{flexDirection :'column', width : '65%'}}>
                             <TextInput
                                 style = {(this.state.errorMsg || this.state.emptyMsg) ? LabelAppBarStyle.textinput_error_style : LabelAppBarStyle.textinput_style}
-                                autoFocus = {true}
+                                onFocus = {this.handleEditButton}
+                                autoFocus = {this.props.activeLabel == this.props.labelKey ? true : false}
                                 onChangeText = {this.handleEditTextInput}
                                 value = {this.state.editTextInput}
                             />

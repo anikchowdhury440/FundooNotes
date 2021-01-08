@@ -4,7 +4,6 @@ import SelectLabelScreenStyle from '../../styles/SelectLabelScreen.styles'
 import { connect } from 'react-redux'
 import {Appbar} from 'react-native-paper';
 import SelectLabelAppbar from './SelectLabelAppbar';
-import NoteDataController from '../../../services/NoteDataController';
 
 class SelectLabelScreen extends Component {
     constructor(props) {
@@ -12,31 +11,25 @@ class SelectLabelScreen extends Component {
         this.state = {
             search : '',
             userLabelAfterSearch : this.props.userLabel,
-            activeLabel : this.props.route.params.notes.labelId
+            selectedLabel : this.props.route.params.notes.labelId
         }
     }
 
-    selectActiveLabel = async (labelKey) => {
-        await this.setState({
-            activeLabel : labelKey,
-        })
-        const notes = {
-            title : this.props.route.params.notes.title,
-            note : this.props.route.params.notes.note,
-            isDeleted : this.props.route.params.notes.isDeleted,
-            labelId : this.state.activeLabel,
-            isArchived : this.props.route.params.notes.isArchived
+    handleSelectedLabel = async (labelKey, operation) => {
+        var labels = this.state.selectedLabel
+        if(operation == 'add') {
+            labels.push(labelKey)
+            await this.setState({
+                selectedLabel : labels
+            })
         }
-        if(this.props.route.params.newNote == undefined) {
-            NoteDataController.updateNoteLabel(this.props.userId, this.props.route.params.noteKey, notes)
-                .then(() => console.log('success'))
-                .catch(error => console.log(error))
-        } 
         else {
-            NoteDataController.storeNote(this.props.route.params.noteKey, this.props.userId, notes)
-                .then(() => console.log('success'))
-                .catch(error => console.log(error))
-        }  
+            let index = labels.indexOf(labelKey)
+            labels.splice(index, 1)
+            await this.setState({
+                selectedLabel : labels
+            })
+        }
     }
 
     handleBackIconButton = () => {
@@ -44,7 +37,7 @@ class SelectLabelScreen extends Component {
             title : this.props.route.params.notes.title,
             note : this.props.route.params.notes.note,
             is_deleted : this.props.route.params.notes.isDeleted,
-            label_id : this.state.activeLabel,
+            label_id : JSON.stringify(this.state.selectedLabel),
             is_archived : this.props.route.params.notes.isArchived
         }
         if(this.props.route.params.newNote == undefined) {
@@ -59,7 +52,6 @@ class SelectLabelScreen extends Component {
         await this.setState({
             search : searchText,
         })
-        console.log(this.props.userLabel)
         if(this.state.search != '') {
             let temp = [];
             for(let i = 0; i < this.props.userLabel.length; i++) {
@@ -101,7 +93,11 @@ class SelectLabelScreen extends Component {
                             (this.state.userLabelAfterSearch.length > 0) ?
                                 this.state.userLabelAfterSearch.map(labels => (
                                     <React.Fragment key = {labels.label_id}>
-                                        <SelectLabelAppbar labelKey = {labels.label_id} labels = {labels} activeLabel = {this.state.activeLabel} selectActiveLabel = {this.selectActiveLabel}/>
+                                        <SelectLabelAppbar 
+                                            labelKey = {labels.label_id} 
+                                            labels = {labels} 
+                                            selectedLabel = {this.state.selectedLabel}
+                                            handleSelectedLabel = {this.handleSelectedLabel}/>
                                     </React.Fragment>
                                 ))
                                 :

@@ -5,6 +5,7 @@ import NoteViewStyle from '../../styles/NoteView.style';
 import NoteCard from './NoteCard';
 import SQLiteServices from '../../../services/SQLiteServices';
 import NoteDataController from '../../../services/NoteDataController';
+import SQLiteLabelServices from '../../../services/SQLiteLabelServices';
 
 export default class NoteView extends Component {
     constructor(props) {
