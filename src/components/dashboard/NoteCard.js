@@ -14,7 +14,7 @@ class NoteCard extends Component {
 
     selectNote = (noteKey) => {
         const {onPress} = this.props
-        this.props.navigation.push('AddNote', { noteKey : noteKey, notes : this.props.notes})
+        this.props.navigation.push('AddNote', { noteKey : noteKey, notes : this.props.notes, newNote : false})
         //onPress();
     }
 

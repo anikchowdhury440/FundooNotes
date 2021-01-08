@@ -36,7 +36,7 @@ class AddNoteScreen extends Component {
         await this.setState({
             userId : UserCredential.user.uid
         })
-        if(this.props.route.params != undefined) {
+        if(!this.props.route.params.newNote) {
             await this.setState({
                 noteKey : this.props.route.params.noteKey,
                 title : this.props.route.params.notes.title,
@@ -46,9 +46,27 @@ class AddNoteScreen extends Component {
                 isArchived : this.props.route.params.notes.is_archived,
             })
         } else {
-            await this.setState({
-                noteKey : this.generateNoteKey()
-            })
+            if(this.props.route.params.labelId == undefined) {
+                if (this.props.route.params.notes != undefined) {
+                    await this.setState({
+                        noteKey : this.props.route.params.noteKey,
+                        title : this.props.route.params.notes.title,
+                        note : this.props.route.params.notes.note,
+                        isDeleted : this.props.route.params.notes.is_deleted,
+                        labelId : JSON.parse(this.props.route.params.notes.label_id),
+                        isArchived : this.props.route.params.notes.is_archived,
+                    })
+                } else {
+                    await this.setState({
+                        noteKey : this.generateNoteKey()
+                    })
+                }
+            } else {
+                await this.setState({
+                    noteKey : this.generateNoteKey(),
+                    labelId : JSON.parse(this.props.route.params.labelId)
+                })
+            }
         }
     }
 
@@ -89,7 +107,7 @@ class AddNoteScreen extends Component {
             isArchived : this.state.isArchived
         }
         if(this.state.title != '' || this.state.note != '') {
-            if(this.props.route.params == undefined || this.props.route.params.newNote != undefined) {
+            if(this.props.route.params.newNote) {
                 NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             } else if(this.state.isDeleted == 1) {
@@ -102,7 +120,7 @@ class AddNoteScreen extends Component {
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes'}))
             }
         } else {
-            if(this.props.route.params == undefined) {
+            if(this.props.route.params.newNote) {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
             } else {
                 NoteDataController.removeNote(this.state.userId, this.state.noteKey)
@@ -124,7 +142,7 @@ class AddNoteScreen extends Component {
             labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived
         }
-        if(this.props.route.params == undefined || this.props.route.params.newNote != undefined){
+        if(this.props.route.params.newNote){
             await this.setState({
                 isNoteNotAddedDeleted : true
             })
@@ -239,10 +257,10 @@ class AddNoteScreen extends Component {
             labelId : this.state.labelId,
             isArchived : this.state.isArchived
         }
-        if(this.props.route.params == undefined || this.props.route.params.newNote != undefined) {
+        if(this.props.route.params.newNote) {
             this.props.navigation.push('SelectLabel', { noteKey : this.state.noteKey, notes : notes, newNote : true})
         } else {
-            this.props.navigation.push('SelectLabel', { noteKey : this.state.noteKey, notes : notes})
+            this.props.navigation.push('SelectLabel', { noteKey : this.state.noteKey, notes : notes, newNote : false})
         }
     }
 
@@ -258,7 +276,7 @@ class AddNoteScreen extends Component {
             isArchived : this.state.isArchived
         }
         if(this.state.title != '' || this.state.note != '') {
-            if(this.props.route.params == undefined || this.props.route.params.newNote != undefined) {
+            if(this.props.route.params.newNote) {
                 NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
                     .then(() => this.props.navigation.push('Home', {screen : 'Notes', params : {isNoteArchived : true, 
                                                                                                 noteKey : this.state.noteKey,
@@ -272,7 +290,7 @@ class AddNoteScreen extends Component {
                                                                                                 notes : notes}}))
             }
         } else {
-            if(this.props.route.params == undefined) {
+            if(this.props.route.params.newNote) {
                 this.props.navigation.push('Home', { screen: 'Notes', params : {isEmptyNote : true}}) 
             } else {
                 NoteDataController.removeNote(this.state.userId, this.state.noteKey)
