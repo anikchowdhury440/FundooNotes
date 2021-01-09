@@ -3,6 +3,7 @@ import {Text, View} from 'react-native'
 import {Card, Title, Paragraph} from 'react-native-paper'
 import NoteCardStyle from '../../styles/NoteCard.style';
 import { connect } from 'react-redux'
+import { storeNavigationScreen } from '../../redux/actions/CreateNewLabelActions'
 
 class NoteCard extends Component {
     constructor(props) {
@@ -58,7 +59,7 @@ class NoteCard extends Component {
 const mapStateToProps = state => {
     return {
         userId : state.createLabelReducer.userId,
-        userLabel : state.createLabelReducer.userLabel
+        userLabel : state.createLabelReducer.userLabel,
     }
 }
 

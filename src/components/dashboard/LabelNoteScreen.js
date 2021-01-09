@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {View, ScrollView, Text} from 'react-native'
-import { Appbar, Card, Paragraph, Title } from 'react-native-paper'
+import { Appbar, Snackbar} from 'react-native-paper'
 import LabelNoteScreenStyle from '../../styles/LabelNoteScreen.styles'
 import BottomBar from './Bottombar'
 import { connect } from 'react-redux'
+import { storeLabelId, storeNavigationScreen } from '../../redux/actions/CreateNewLabelActions'
 import SQLiteServices from '../../../services/SQLiteServices'
 import NoteCard from './NoteCard'
 
@@ -15,11 +16,31 @@ class LabelNoteScreen extends Component {
             userArchivedNotes : [],
             userUnArchivedNotes : [],
             archivePresent : false, 
-            labelId : this.getLabelId()
+            labelId : this.getLabelId(),
+            showEmptyNoteSnackbar : false,
+            showDeletedNoteSnackbar : false,
+            showArchivedNoteSnackbar : false,
         }
     }
 
     componentDidMount = async () => {
+        if(this.props.route.params != undefined) {
+            if(this.props.route.params.isEmptyNote != undefined) {
+                await this.setState({
+                    showEmptyNoteSnackbar : true
+                })
+            }
+            if(this.props.route.params.isNoteDeleted != undefined) {
+                await this.setState({
+                    showDeletedNoteSnackbar : true
+                })
+            }
+            if(this.props.route.params.isNoteArchived != undefined) {
+                await this.setState({
+                    showArchivedNoteSnackbar : true
+                })
+            }
+        }
         await SQLiteServices.selectNoteByArchiveFromSQliteStorage(this.props.userId, 1, 0)
             .then(async result => {
                 var temp = [];
@@ -53,6 +74,8 @@ class LabelNoteScreen extends Component {
                 }
             })
         }
+        this.props.storeNavigationScreen('labelNote')
+        this.props.storeLabelId(this.props.route.params.labels)
     }
 
     getLabelId = () => {
@@ -79,6 +102,43 @@ class LabelNoteScreen extends Component {
         const {onPress} = this.props
         this.props.navigation.push('AddNote', { noteKey : note.note_id, notes : note})
         //onPress();
+    }
+
+    emptyNoteSnackbarHandler = async () => {
+        const {onDismiss} = this.props
+        await this.setState({ 
+            showEmptyNoteSnackbar : false
+        })
+        this.props.navigation.setParams({isEmptyNote : undefined})
+        //onDismiss()
+    }
+
+    deletedNoteSnackbarHandler = async () => {
+        const {onDismiss} = this.props
+        await this.setState({ 
+            showDeletedNoteSnackbar : false
+        })
+        this.props.navigation.setParams({isNoteDeleted : undefined})
+        //onDismiss()
+    }
+
+    archivedNoteSnackbarHandler = async () => {
+        await this.setState({ 
+            showArchivedNoteSnackbar : false
+        })
+        this.props.navigation.setParams({isNoteArchived : undefined})
+    }
+
+    restoreNotes = async() => {
+        const {onPress} = this.props
+        NoteDataController.restoreNote(this.props.route.params.userId, this.props.route.params.noteKey)
+            .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
+        //onPress()
+    }
+
+    unArchivedNote = async() => {
+        NoteDataController.updateNoteArchive(this.props.route.params.noteKey, this.props.route.params.userId, this.props.route.params.notes)
+            .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
     }
 
     render() {
@@ -111,7 +171,11 @@ class LabelNoteScreen extends Component {
                             this.state.userUnArchivedNotes.map(note => 
                                 JSON.parse(note.label_id).includes(this.props.route.params.labels.label_id) ?
                                     <React.Fragment key = {note.note_id}>
-                                        { <NoteCard listView = {this.state.listView} notes = {note} noteKey = {note.note_id} navigation = {this.props.navigation}/> }
+                                        { <NoteCard 
+                                            listView = {this.state.listView} 
+                                            notes = {note} 
+                                            noteKey = {note.note_id} 
+                                            navigation = {this.props.navigation} /> }
                                     </React.Fragment>
                                 :
                                 null
@@ -144,7 +208,38 @@ class LabelNoteScreen extends Component {
                         : null}
                     </View>
                 </ScrollView>
-                <BottomBar navigation = {this.props.navigation} labelId = {JSON.stringify(this.state.labelId)}/> 
+                <BottomBar 
+                    navigation = {this.props.navigation} 
+                    labelId = {JSON.stringify(this.state.labelId)}/> 
+                <Snackbar
+                    style = {{marginBottom : 100}}
+                    visible={this.state.showEmptyNoteSnackbar}
+                    onDismiss={this.emptyNoteSnackbarHandler}
+                    duration = {10000}>
+                        Empty Note Discarded
+                </Snackbar>
+                <Snackbar
+                    style = {{marginBottom : 100}}
+                    visible={this.state.showDeletedNoteSnackbar}
+                    onDismiss={this.deletedNoteSnackbarHandler}
+                    duration = {10000}
+                    action = {{
+                        label : 'Undo',
+                        onPress : this.restoreNotes
+                    }}>
+                        Note Moved to Bin
+                </Snackbar>
+                <Snackbar
+                    style = {{marginBottom : 100}}
+                    visible={this.state.showArchivedNoteSnackbar}
+                    onDismiss={this.archivedNoteSnackbarHandler}
+                    duration = {10000}
+                    action = {{
+                        label : 'Undo',
+                        onPress : this.unArchivedNote
+                    }}>
+                        Note Archived
+                </Snackbar>
             </View>
         )
     }
@@ -153,8 +248,16 @@ class LabelNoteScreen extends Component {
 const mapStateToProps = state => {
     return {
         userId : state.createLabelReducer.userId,
-        userLabel : state.createLabelReducer.userLabel
+        userLabel : state.createLabelReducer.userLabel,
+        screenName : state.createLabelReducer.screenName,
     }
 }
 
-export default connect(mapStateToProps)(LabelNoteScreen)
+const mapDispatchToProps = dispatch => {
+    return {
+        storeNavigationScreen : (screenName) => dispatch(storeNavigationScreen(screenName)),
+        storeLabelId : (labelKey) => dispatch(storeLabelId(labelKey))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LabelNoteScreen)

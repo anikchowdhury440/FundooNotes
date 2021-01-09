@@ -54,6 +54,7 @@ class DrawerContent extends Component {
                   style = {DrawerContentStyle.drawer_item_style}
                   icon = 'bell-outline'
                   label = {Strings.reminder}
+                  onPress = {() => this.props.navigation.navigation.navigate('Home', { screen : 'reminderNote'})}
                 />
               </Drawer.Section>
 
