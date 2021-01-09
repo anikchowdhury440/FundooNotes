@@ -49,11 +49,10 @@ const LabelNoteScreenStyle = StyleSheet.create({
         marginTop : -25
     },
 
-    arvhive_text_style : {
+    archive_text_style : {
         marginLeft : 20,
         marginTop : 15,
         marginBottom : 10
-
     }
 })
 

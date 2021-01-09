@@ -185,7 +185,7 @@ class LabelNoteScreen extends Component {
                     <View>
                         {this.state.archivePresent ?
                             (
-                                <Text style = {LabelNoteScreenStyle.arvhive_text_style} >ARCHIVE</Text>
+                                <Text style = {LabelNoteScreenStyle.archive_text_style}>ARCHIVE</Text>
                             )
                             :
                             null

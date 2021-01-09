@@ -2,16 +2,33 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import AddNoteScreen from '../src/components/dashboard/AddNoteScreen'
 import {Appbar, Snackbar} from 'react-native-paper'
+import { Provider } from "react-redux";
+import configureMockStore from "redux-mock-store";
+
+const mockStore = configureMockStore();
+
 
 describe('test AddNoteScrren', () => {
+    let component, store;
+
+    beforeEach(() => {
+        const initialState = {
+            userId : ''
+        };
+        store = mockStore(initialState);
+        // Shallow render the container passing in the mock store
+        component = shallow(
+            <AddNoteScreen store={store} />
+        );
+    });
 
     it('should match to snapshot', () => {
-        const component = shallow(<AddNoteScreen />)
+        // const component = shallow( <AddNoteScreen store = {store}/>)
         expect(component).toMatchSnapshot();
     })
 
     it('test when title provided in textinput should update title state', async () => {
-        const component = shallow(<AddNoteScreen/>)
+        const component = shallow( <AddNoteScreen store={store}/>)
         expect(component.instance().state.title).toBe('')
         component.instance().handleTitle('Good Morning')
         expect(component.instance().state.title).toBe('Good Morning')
