@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {View, TextInput, ScrollView, Text} from 'react-native'
 import { Appbar, Card, Paragraph, Title } from 'react-native-paper'
 import SearchNoteScreenStyle from '../../styles/SearchNoteScreen.styles'
-import * as Keychain from 'react-native-keychain';
 import SQLiteServices from '../../../services/SQLiteServices';
 import Highlighter from 'react-native-highlight-words';
 import { connect } from 'react-redux'
@@ -14,7 +13,6 @@ class SearchNotesScreen extends Component {
             search : '',
             userNotes : [],
             userNotesAfterSearch : [],
-            userId : '',
             label : false,
             archivePresent : false,
             archivePresentCheck : false,
@@ -22,12 +20,7 @@ class SearchNotesScreen extends Component {
     }
 
     async componentDidMount() {
-        const credential = await Keychain.getGenericPassword();
-        const UserCredential = JSON.parse(credential.password);
-        await this.setState({
-            userId : UserCredential.user.uid
-        })
-        SQLiteServices.selectNoteFromSQliteStorage(UserCredential.user.uid)
+        SQLiteServices.selectNoteFromSQliteStorage(this.props.userId)
             .then(async result => {
                 var temp = [];
                 if(result.rows.length != 0) {
@@ -43,7 +36,12 @@ class SearchNotesScreen extends Component {
 
     handleBackIconButton = () => {
         const {onPress} = this.props
-        this.props.navigation.navigate('Home', {screen : 'Notes'})
+        if(this.props.screenName != 'labelNote') {
+            this.props.navigation.push('Home', {screen : this.props.screenName})
+        } else {
+            this.props.navigation.push('Home', { screen : this.props.screenName, 
+                                                 params : {labels : this.props.labelKey}})
+        }
         //onPress()
     }
     
@@ -251,7 +249,9 @@ class SearchNotesScreen extends Component {
 const mapStateToProps = state => {
     return {
         userId : state.createLabelReducer.userId,
-        userLabel : state.createLabelReducer.userLabel
+        userLabel : state.createLabelReducer.userLabel,
+        screenName : state.createLabelReducer.screenName,
+        labelKey : state.createLabelReducer.labelKey,
     }
 }
 

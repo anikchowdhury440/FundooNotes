@@ -31,10 +31,8 @@ class UserNoteServices {
 
     deleteNoteInFirebase = (userid, notekey, notes) => {
         return new Promise((resolve, reject) => {
-            Firebase.database().ref('UserNotes/' + userid  + '/' + notekey + '/' + 'notes').update({
-                title : notes.title,
-                note : notes.note,
-                isDeleted : 1
+            Firebase.database().ref('UserNotes/' + userid  + '/' + notekey).set({
+                notes : notes
             })
             .then(() => resolve('success'))
             .catch(error => reject(error))

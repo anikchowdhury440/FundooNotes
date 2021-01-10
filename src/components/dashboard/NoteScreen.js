@@ -22,18 +22,12 @@ class NoteScreen extends Component {
             showArchivedNoteSnackbar : false,
             showProfileModal : false,
             photo : '',
-            userId : '',
         }
         
     }
 
     async componentDidMount() {
         this.props.storeNavigationScreen('Notes')
-        const credential = await Keychain.getGenericPassword();
-        const UserCredential = JSON.parse(credential.password);
-        await this.setState({
-            userId : UserCredential.user.uid
-        })
         if(this.props.route.params != undefined) {
             if(this.props.route.params.isEmptyNote != undefined) {
                 await this.setState({
@@ -55,7 +49,7 @@ class NoteScreen extends Component {
     }
 
     readImage = async () => {
-        await UserServices.readUserDataFromRealtimeDatabase(this.state.userId)
+        await UserServices.readUserDataFromRealtimeDatabase(this.props.userId)
             .then(async data => {
                 if(data.photo != undefined){
                     await this.setState({
@@ -100,13 +94,13 @@ class NoteScreen extends Component {
 
     restoreNotes = async() => {
         const {onPress} = this.props
-        NoteDataController.restoreNote(this.props.route.params.userId, this.props.route.params.noteKey)
+        NoteDataController.restoreNote(this.props.userId, this.props.route.params.noteKey)
             .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
         //onPress()
     }
 
     unArchivedNote = async() => {
-        NoteDataController.updateNoteArchive(this.props.route.params.noteKey, this.props.route.params.userId, this.props.route.params.notes)
+        NoteDataController.updateNoteArchive(this.props.route.params.noteKey, this.props.userId, this.props.route.params.notes)
             .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
     }
 

@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {View, ScrollView, TextInput, TouchableWithoutFeedback, Text} from 'react-native'
 import { Appbar, Snackbar, Provider, Portal, Dialog, Paragraph, Button} from 'react-native-paper'
 import AddNoteScreenStyle from '../../styles/AddNoteScreen.styles'
-import * as Keychain from 'react-native-keychain'
 import { Strings } from '../../Language/Strings';
 import RBSheet from 'react-native-raw-bottom-sheet'
 import DotsVerticalRBSheetMenu from './DotsVerticalRBSheetMenu'
@@ -11,6 +10,7 @@ import DotsVerticalRestoreRBSheetMenu from './DotsVerticalRestoreRBSheetMenu'
 import { connect } from 'react-redux'
 import {storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
 import SQLiteLabelServices from '../../../services/SQLiteLabelServices'
+import SQLiteServices from '../../../services/SQLiteServices';
 
 class AddNoteScreen extends Component {
     constructor(props) {
@@ -19,10 +19,10 @@ class AddNoteScreen extends Component {
             noteKey : '',
             title : '',
             note : '',
-            userId : '',
             isDeleted : 0,
             labelId : [],
             isArchived : 0,
+            reminder : '',
             isNoteNotAddedDeleted : false,
             deleteForeverDialog : false, 
             restoreDeleteSnackbar : false,
@@ -34,11 +34,6 @@ class AddNoteScreen extends Component {
     }
 
     componentDidMount = async () => {
-        const credential = await Keychain.getGenericPassword();
-        const UserCredential = JSON.parse(credential.password);
-        await this.setState({
-            userId : UserCredential.user.uid
-        })
         if(!this.props.route.params.newNote) {
             await this.setState({
                 noteKey : this.props.route.params.noteKey,
@@ -47,6 +42,7 @@ class AddNoteScreen extends Component {
                 isDeleted : this.props.route.params.notes.is_deleted,
                 labelId : JSON.parse(this.props.route.params.notes.label_id),
                 isArchived : this.props.route.params.notes.is_archived,
+                reminder : this.props.route.params.notes.reminder
             })
         } else {
             if(this.props.route.params.labelId == undefined) {
@@ -58,6 +54,7 @@ class AddNoteScreen extends Component {
                         isDeleted : this.props.route.params.notes.is_deleted,
                         labelId : JSON.parse(this.props.route.params.notes.label_id),
                         isArchived : this.props.route.params.notes.is_archived,
+                        reminder : this.props.route.params.notes.reminder
                     })
                 } else {
                     await this.setState({
@@ -107,12 +104,13 @@ class AddNoteScreen extends Component {
             note : this.state.note,
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
-            isArchived : this.state.isArchived
+            isArchived : this.state.isArchived,
+            reminder : this.state.reminder
         }
         if(this.state.title != '' || this.state.note != '') {
             if(this.props.route.params.newNote) {
                 this.updateNoteIdInLabel();
-                NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
+                NoteDataController.storeNote(this.state.noteKey, this.props.userId, notes)
                     .then(() => {
                         if(this.props.screenName != 'labelNote') {
                             this.props.navigation.push('Home', {screen : this.props.screenName})
@@ -123,7 +121,7 @@ class AddNoteScreen extends Component {
                     })
             } else {
                 this.updateNoteIdInLabel();
-                NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
+                NoteDataController.updateNote(this.state.noteKey, this.props.userId, notes)
                     .then(() => {
                         if(this.props.screenName != 'labelNote') {
                             this.props.navigation.push('Home', { screen : this.props.screenName })
@@ -145,7 +143,7 @@ class AddNoteScreen extends Component {
                 }
             } else {
                 this.removeNoteIdinLabel();
-                NoteDataController.removeNote(this.state.userId, this.state.noteKey)
+                NoteDataController.removeNote(this.props.userId, this.state.noteKey)
                     .then(() => {
                         if(this.props.screenName != 'labelNote') {
                             this.props.navigation.push('Home', { screen: this.props.screenName, 
@@ -164,14 +162,15 @@ class AddNoteScreen extends Component {
     handleDeleteButton = async() => {
         this.RBSheet.close()
         await this.setState({
-            isDeleted : 0
+            isDeleted : 1
         })
         const notes = {
             title : this.state.title,
             note : this.state.note,
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
-            isArchived : this.state.isArchived
+            isArchived : this.state.isArchived,
+            reminder : this.state.reminder,
         }
         if(this.props.route.params.newNote){
             await this.setState({
@@ -179,19 +178,17 @@ class AddNoteScreen extends Component {
             })
         } else {
             this.updateNoteIdInLabel();
-            NoteDataController.deleteNote(this.state.userId, this.state.noteKey, notes)
+            NoteDataController.deleteNote(this.props.userId, this.state.noteKey, notes)
                 .then(() => {
                     if(this.props.screenName != 'labelNote') {
                         this.props.navigation.push('Home', { screen: this.props.screenName, 
                                                              params : {isNoteDeleted : true, 
-                                                                       noteKey : this.state.noteKey,
-                                                                       userId : this.state.userId}}) 
+                                                                       noteKey : this.state.noteKey}}) 
                     } else {
                         this.props.navigation.push('Home', { screen : this.props.screenName, 
                                                              params : { labels : this.props.labelKey,
                                                                         isNoteDeleted : true, 
-                                                                        noteKey : this.state.noteKey,
-                                                                        userId : this.state.userId}})
+                                                                        noteKey : this.state.noteKey}})
                     }                               
                 })    
         }
@@ -224,7 +221,7 @@ class AddNoteScreen extends Component {
 
     handleRestoreButton = () => {
         this.RBSheet.close()
-        NoteDataController.restoreNote(this.state.userId, this.state.noteKey)
+        NoteDataController.restoreNote(this.props.userId, this.state.noteKey)
             .then(async () => {
                 await this.setState({
                     isDeleted : 0,
@@ -235,7 +232,7 @@ class AddNoteScreen extends Component {
 
     handleDeleteForeverActionButton = () => {
         this.removeNoteIdinLabel();
-        NoteDataController.removeNote(this.state.userId, this.state.noteKey)
+        NoteDataController.removeNote(this.props.userId, this.state.noteKey)
             .then(() => this.props.navigation.push('Home', {screen : 'Deleted'}))
     }
 
@@ -257,10 +254,11 @@ class AddNoteScreen extends Component {
             note : this.state.note,
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
-            isArchived : this.state.isArchived
+            isArchived : this.state.isArchived,
+            reminder : this.state.reminder,
         }
         this.updateNoteIdInLabel()
-        NoteDataController.deleteNote(this.state.userId, this.state.noteKey, notes)
+        NoteDataController.deleteNote(this.props.userId, this.state.noteKey, notes)
         //onPress()
     }
 
@@ -284,7 +282,7 @@ class AddNoteScreen extends Component {
 
     restoreSnackbarAction = () => {
         const {onPress} = this.props
-        NoteDataController.restoreNote(this.state.userId, this.state.noteKey)
+        NoteDataController.restoreNote(this.props.userId, this.state.noteKey)
             .then(() => {
                 this.setState({
                     isDeleted : 0
@@ -300,7 +298,8 @@ class AddNoteScreen extends Component {
             note : this.state.note,
             isDeleted : this.state.isDeleted,
             labelId : this.state.labelId,
-            isArchived : this.state.isArchived
+            isArchived : this.state.isArchived,
+            reminder : this.state.reminder,
         }
         if(this.props.route.params.newNote) {
             this.props.navigation.push('SelectLabel', { noteKey : this.state.noteKey, notes : notes, newNote : true})
@@ -318,44 +317,41 @@ class AddNoteScreen extends Component {
             note : this.state.note,
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
-            isArchived : this.state.isArchived
+            isArchived : this.state.isArchived,
+            reminder : this.state.reminder,
         }
         if(this.state.title != '' || this.state.note != '') {
             if(this.props.route.params.newNote) {
                 this.updateNoteIdInLabel()
-                NoteDataController.storeNote(this.state.noteKey, this.state.userId, notes)
+                NoteDataController.storeNote(this.state.noteKey, this.props.userId, notes)
                     .then(() => {
                         if(this.props.screenName != 'labelNote') {
                             this.props.navigation.push('Home', {screen : this.props.screenName, 
                                                                 params : {isNoteArchived : true, 
                                                                           noteKey : this.state.noteKey,
-                                                                          userId : this.state.userId,
                                                                           notes : notes}})
                         } else {
                             this.props.navigation.push('Home', { screen : this.props.screenName, 
                                                                  params : {labels : this.props.labelKey,
                                                                             isNoteArchived : true, 
                                                                             noteKey : this.state.noteKey,
-                                                                            userId : this.state.userId,
                                                                             notes : notes}})
                         }
                     })
             } else {
                 this.updateNoteIdInLabel()
-                NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
+                NoteDataController.updateNote(this.state.noteKey, this.props.userId, notes)
                     .then(() => {
                         if(this.props.screenName != 'labelNote') {
                             this.props.navigation.push('Home', {screen : this.props.screenName, 
                                                                 params : {isNoteArchived : true, 
                                                                           noteKey : this.state.noteKey,
-                                                                          userId : this.state.userId,
                                                                           notes : notes}})
                         } else {
                             this.props.navigation.push('Home', { screen : this.props.screenName, 
                                                                  params : { labels : this.props.labelKey,
                                                                             isNoteArchived : true, 
                                                                             noteKey : this.state.noteKey,
-                                                                            userId : this.state.userId,
                                                                             notes : notes}})
                         }
                     })
@@ -372,7 +368,7 @@ class AddNoteScreen extends Component {
                 } 
             } else {
                 this.removeNoteIdinLabel();
-                NoteDataController.removeNote(this.state.userId, this.state.noteKey)
+                NoteDataController.removeNote(this.props.userId, this.state.noteKey)
                     .then(() => {
                         if(this.props.screenName != 'labelNote') {
                             this.props.navigation.push('Home', { screen: this.props.screenName, 
@@ -398,10 +394,11 @@ class AddNoteScreen extends Component {
             note : this.state.note,
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
-            isArchived : this.state.isArchived
+            isArchived : this.state.isArchived,
+            reminder : this.state.reminder,
         }
         this.updateNoteIdInLabel()
-        NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
+        NoteDataController.updateNote(this.state.noteKey, this.props.userId, notes)
     }
 
     unArchiveSnackbarDismiss = () => {
@@ -419,10 +416,11 @@ class AddNoteScreen extends Component {
             note : this.state.note,
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
-            isArchived : this.state.isArchived
+            isArchived : this.state.isArchived,
+            reminder : this.state.reminder,
         }
         this.updateNoteIdInLabel()
-        NoteDataController.updateNote(this.state.noteKey, this.state.userId, notes)
+        NoteDataController.updateNote(this.state.noteKey, this.props.userId, notes)
     }
 
     updateNoteIdInLabel = () => {
@@ -450,7 +448,7 @@ class AddNoteScreen extends Component {
                             noteId : JSON.stringify(noteId)
                         }
                         NoteDataController.updateLabel(this.props.userId, label.label_id, labels)
-                        this.updateLabelinReduxStore()
+                        this.updateLabelinReduxStore();
                     }
                 }
             })  
@@ -486,6 +484,17 @@ class AddNoteScreen extends Component {
                 this.updateLabelinReduxStore();
             }
         })        
+    }
+
+    removeNoteId = (noteId, label) => {
+        let index = noteId.indexOf(this.state.noteKey)
+        noteId.splice(index, 1)
+        const labels = {
+            labelName : label.label_name,
+            noteId : JSON.stringify(noteId)
+        }
+        NoteDataController.updateLabel(this.props.userId, label.label_id, labels)
+        this.updateLabelinReduxStore();
     }
 
     updateLabelinReduxStore = () => {

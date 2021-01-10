@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, ScrollView, Text} from 'react-native'
+import {View, Text, FlatList, ScrollView} from 'react-native'
 import { Appbar, Snackbar} from 'react-native-paper'
 import LabelNoteScreenStyle from '../../styles/LabelNoteScreen.styles'
 import BottomBar from './Bottombar'
@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { storeLabelId, storeNavigationScreen } from '../../redux/actions/CreateNewLabelActions'
 import SQLiteServices from '../../../services/SQLiteServices'
 import NoteCard from './NoteCard'
+import NoteDataController from '../../../services/NoteDataController'
 
 class LabelNoteScreen extends Component {
     constructor(props) {
@@ -131,14 +132,14 @@ class LabelNoteScreen extends Component {
 
     restoreNotes = async() => {
         const {onPress} = this.props
-        NoteDataController.restoreNote(this.props.route.params.userId, this.props.route.params.noteKey)
-            .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
+        NoteDataController.restoreNote(this.props.userId, this.props.route.params.noteKey)
+            .then(() => this.props.navigation.push('Home', {screen : this.props.screenName, params : {labels : this.props.labelKey}}))
         //onPress()
     }
 
     unArchivedNote = async() => {
-        NoteDataController.updateNoteArchive(this.props.route.params.noteKey, this.props.route.params.userId, this.props.route.params.notes)
-            .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
+        NoteDataController.updateNoteArchive(this.props.route.params.noteKey, this.props.userId, this.props.route.params.notes)
+            .then(() => this.props.navigation.push('Home', {screen : this.props.screenName, params : {labels : this.props.labelKey}}))
     }
 
     render() {
@@ -165,6 +166,24 @@ class LabelNoteScreen extends Component {
                             icon = 'dots-vertical' />
                     </Appbar>
                 </View>
+                    {/* <FlatList
+                        numColumns = {this.state.listView ? 1 : 2}
+                        keyExtractor = {(item) => item.note_id}
+                        key = {this.state.listView ? 1 : 2}
+                        data = {this.state.userUnArchivedNotes.concat(this.state.userArchivedNotes)}
+                        renderItem = {({ item }) => (
+                            JSON.parse(item.label_id).includes(this.props.route.params.labels.label_id) ? 
+                                (<NoteCard 
+                                    listView = {this.state.listView}
+                                    notes = {item} 
+                                    noteKey = {item.note_id} 
+                                    navigation = {this.props.navigation}/>)
+                            :
+                            null
+                        )}
+                             
+                    />  */}
+                    
                 <ScrollView style = {{marginBottom : 60}}>
                     <View style = {LabelNoteScreenStyle.list_container}>
                         {this.state.userUnArchivedNotes.length > 0 ?
@@ -250,6 +269,7 @@ const mapStateToProps = state => {
         userId : state.createLabelReducer.userId,
         userLabel : state.createLabelReducer.userLabel,
         screenName : state.createLabelReducer.screenName,
+        labelKey : state.createLabelReducer.labelKey
     }
 }
 

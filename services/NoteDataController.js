@@ -81,7 +81,8 @@ class NoteDataController {
                     note : notes[key].notes.note,
                     isDeleted : notes[key].notes.isDeleted,
                     labelId : notes[key].notes.labelId,
-                    isArchived : notes[key].notes.isArchived
+                    isArchived : notes[key].notes.isArchived,
+                    reminder : notes[key].notes.reminder
                 }
                 SQLiteServices.storeNoteinSQliteStorage(userId, key, UserNotes)
             }
@@ -91,7 +92,8 @@ class NoteDataController {
                     note : notes[key].notes.note,
                     isDeleted : notes[key].notes.isDeleted,
                     labelId : notes[key].notes.labelId,
-                    isArchived : notes[key].notes.isArchived
+                    isArchived : notes[key].notes.isArchived,
+                    reminder : notes[key].notes.reminder
                 }
                 SQLiteServices.updateNoteinSQliteStorage(userId, key, UserNotes)
             }
@@ -198,7 +200,8 @@ class NoteDataController {
             note : usernotes.note,
             isDeleted : usernotes.isDeleted,
             labelId : usernotes.labelId,
-            isArchived : 0
+            isArchived : 0,
+            reminder : usernotes.reminder,
         }
         return new Promise((resolve) => {
             SQLiteServices.updateNoteinSQliteStorage(userId, noteId, notes)

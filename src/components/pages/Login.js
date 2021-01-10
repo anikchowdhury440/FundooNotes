@@ -11,6 +11,7 @@ import {storeUserID, storeUserLabel} from '../../redux/actions/CreateNewLabelAct
 import { connect } from 'react-redux'
 import SQLiteLabelServices from '../../../services/SQLiteLabelServices';
 import NoteDataController from '../../../services/NoteDataController';
+import SQLiteServices from '../../../services/SQLiteServices';
 
 class Login extends Component {
     constructor(props) {
