@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native'
-import {Card, Title, Paragraph} from 'react-native-paper'
+import {Card, Title, Paragraph, Chip} from 'react-native-paper'
 import NoteCardStyle from '../../styles/NoteCard.style';
 import { connect } from 'react-redux'
-import { storeNavigationScreen } from '../../redux/actions/CreateNewLabelActions'
+import moment from "moment";
 
 class NoteCard extends Component {
     constructor(props) {
@@ -35,13 +35,26 @@ class NoteCard extends Component {
                     </Paragraph>
                     <View style = {{flexWrap : 'wrap', flexDirection : 'row'}}>
                         {
+                            JSON.parse(this.props.notes.reminder) != '' ?
+                                <Chip
+                                    textStyle = {{fontSize : 12}}
+                                    style = {NoteCardStyle.chip_style}
+                                    icon = 'alarm'>
+                                        {moment(JSON.parse(this.props.notes.reminder)).format('D MMM, h.mm a')}
+                                </Chip>
+                                :
+                                null
+                        }
+                        {
                             (this.state.labelId.length > 0) ?
                                 this.props.userLabel.map(labels => (
                                     this.state.labelId.includes(labels.label_id) ?
                                         <React.Fragment key = {labels.label_id}>
-                                            <View>
-                                                <Text style = {NoteCardStyle.label_text}>{labels.label_name}</Text>
-                                            </View>
+                                            <Chip
+                                                textStyle = {{fontSize : 12}}
+                                                style = {NoteCardStyle.chip_style}>
+                                                    {labels.label_name}
+                                            </Chip>
                                         </React.Fragment>
                                     :
                                     null
@@ -50,6 +63,12 @@ class NoteCard extends Component {
                             null
                         }
                     </View>
+                    {this.props.noteArchive != undefined ?
+                        <View style = {{flexWrap : 'wrap', flexDirection : 'row-reverse', marginTop : 10}}>
+                            <Text style = {NoteCardStyle.archive_text}>Archived</Text>
+                        </View>
+                    :
+                    null}
                 </Card.Content>  
             </Card>
         )

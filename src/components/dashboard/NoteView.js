@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {ScrollView, View, Text, FlatList} from 'react-native';
+import {ScrollView, View, Text, FlatList, ActivityIndicator} from 'react-native';
 import * as Keychain from 'react-native-keychain';
-import NoteViewStyle from '../../styles/NoteView.style';
 import NoteCard from './NoteCard';
 import SQLiteServices from '../../../services/SQLiteServices';
 
@@ -12,7 +11,8 @@ export default class NoteView extends Component {
             userNotes : [],
             showNotes: [],
             index: 0,
-            endReached : false
+            endReached : false,
+            scroll : false
         }
     }
 
@@ -51,7 +51,9 @@ export default class NoteView extends Component {
                 })
             }
             this.state.showNotes.push(this.state.userNotes[this.state.index])
-            this.state.index ++
+            await this.setState({
+                index: this.state.index + 1,
+            })
         }
     }
 
@@ -62,6 +64,10 @@ export default class NoteView extends Component {
                 keyExtractor = {(item, index) => JSON.stringify(index)}
                 key = {this.props.listView ? 1 : 2}
                 data = {this.state.showNotes}
+                ListFooterComponent = {() => 
+                    (this.state.endReached && this.state.scroll) ? 
+                        <ActivityIndicator size="large" color="grey" /> : 
+                        null}
                 onEndReached = {async () => {
                     await this.setState({
                         endReached : true
@@ -69,9 +75,10 @@ export default class NoteView extends Component {
                 }}
                 onScroll = {async () => {
                     if (this.state.endReached) {
-                        this.loadData(5)
+                        this.loadData(6)
                         await this.setState({
-                            endReached : false
+                            endReached : false,
+                            scroll : true
                         })
                     }
                 }}

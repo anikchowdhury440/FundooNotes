@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
-import {View, FlatList} from 'react-native'
+import {View, FlatList, ActivityIndicator} from 'react-native'
 import { Appbar, Snackbar} from 'react-native-paper'
 import DeletedScreenStyle from '../../styles/DeletedScreen.style'
-import * as Keychain from 'react-native-keychain';
 import SQLiteServices from '../../../services/SQLiteServices';
 import NoteCard from './NoteCard';
 import { connect } from 'react-redux'
@@ -17,6 +16,10 @@ class DeletedScreen extends Component {
             showEmptyNoteSnackbar : false,
             showDeletedNoteSnackbar : false,
             showArchivedNoteSnackbar : false,
+            showNotes: [],
+            index: 0,
+            endReached : false,
+            scroll : false,
         }
     }
 
@@ -38,7 +41,7 @@ class DeletedScreen extends Component {
                 })
             }
         }
-        SQLiteServices.selectNoteByDeletedFromSQliteStorage(this.props.userId, 1)
+        await SQLiteServices.selectNoteByDeletedFromSQliteStorage(this.props.userId, 1)
             .then(async result => {
                 var temp = [];
                 if(result.rows.length != 0) {
@@ -47,6 +50,7 @@ class DeletedScreen extends Component {
                     await this.setState({
                         userNotes : temp.reverse()
                     })
+                    console.log(this.state.userNotes)
                 }                
             })
             .catch(error => console.log(error))  
@@ -95,7 +99,7 @@ class DeletedScreen extends Component {
 
     restoreNotes = async() => {
         const {onPress} = this.props
-        NoteDataController.restoreNote(this.props.userId, this.props.route.params.noteKey)
+        NoteDataController.restoreNoteSnackbar(this.props.userId, this.props.route.params.noteKey, this.props.route.params.notes, this.props.route.params.reminder)
             .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
         //onPress()
     }
@@ -134,7 +138,11 @@ class DeletedScreen extends Component {
                 </View>
                 <FlatList
                     keyExtractor = {(item, index) => JSON.stringify(index)}
-                    data = {this.state.userNotes}
+                    data = {this.state.showNotes}
+                    ListFooterComponent = {() => 
+                        (this.state.endReached && this.state.scroll) ? 
+                            <ActivityIndicator size="large" color="grey" /> : 
+                            null}
                     onEndReached = {async () => {
                         await this.setState({
                             endReached : true
@@ -142,9 +150,10 @@ class DeletedScreen extends Component {
                     }}
                     onScroll = {async () => {
                         if (this.state.endReached) {
-                            this.loadData(5)
+                            this.loadData(6)
                             await this.setState({
-                                endReached : false
+                                endReached : false,
+                                scroll : true
                             })
                         }
                     }}

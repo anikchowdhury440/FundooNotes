@@ -6,25 +6,26 @@ import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 
 const mockStore = configureMockStore();
-
+const store = mockStore({
+            userId: '',
+        });
 
 describe('test AddNoteScrren', () => {
-    let component, store;
-
-    beforeEach(() => {
-        const initialState = {
-            userId : ''
-        };
-        store = mockStore(initialState);
-        // Shallow render the container passing in the mock store
-        component = shallow(
-            <AddNoteScreen store={store} />
-        );
-    });
+    // let store;
+    // let component;
+    
+    // beforeEach(() => {
+    //     store = mockStore({
+    //         userId: '',
+    //     });
+    
+    //     component = shallow(<AddNoteScreen store={store}/>
+    //     );
+    // });
 
     it('should match to snapshot', () => {
-        // const component = shallow( <AddNoteScreen store = {store}/>)
-        expect(component).toMatchSnapshot();
+        const component = shallow( <AddNoteScreen store = {store}/>)
+        expect(component.toJSON()).toMatchSnapshot();
     })
 
     it('test when title provided in textinput should update title state', async () => {

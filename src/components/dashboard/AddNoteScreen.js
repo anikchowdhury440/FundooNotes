@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, ScrollView, TextInput, TouchableWithoutFeedback, Text} from 'react-native'
-import { Appbar, Snackbar, Provider, Portal, Dialog, Paragraph, Button} from 'react-native-paper'
+import { Appbar, Snackbar, Provider, Portal, Dialog, Paragraph, Button, Modal, Chip} from 'react-native-paper'
 import AddNoteScreenStyle from '../../styles/AddNoteScreen.styles'
 import { Strings } from '../../Language/Strings';
 import RBSheet from 'react-native-raw-bottom-sheet'
@@ -10,7 +10,8 @@ import DotsVerticalRestoreRBSheetMenu from './DotsVerticalRestoreRBSheetMenu'
 import { connect } from 'react-redux'
 import {storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
 import SQLiteLabelServices from '../../../services/SQLiteLabelServices'
-import SQLiteServices from '../../../services/SQLiteServices';
+import AddReminder from './AddReminder';
+import moment from "moment";
 
 class AddNoteScreen extends Component {
     constructor(props) {
@@ -28,12 +29,22 @@ class AddNoteScreen extends Component {
             restoreDeleteSnackbar : false,
             restoreSnackbar : false,
             noteUnArchivedSnackbar : false,
+            showReminderModal : false,
+            date : '',
+            mode : 'date',
+            show : false,
+            errorDate : false
         }
-        console.log(this.props.screenName)
-        console.log(this.props.labelKey)
+        
     }
 
     componentDidMount = async () => {
+        let today = new Date();
+        today.setHours(today.getHours() + 4 );
+        today.setMinutes(0)
+        await this.setState({
+            date : today
+        })
         if(!this.props.route.params.newNote) {
             await this.setState({
                 noteKey : this.props.route.params.noteKey,
@@ -42,7 +53,7 @@ class AddNoteScreen extends Component {
                 isDeleted : this.props.route.params.notes.is_deleted,
                 labelId : JSON.parse(this.props.route.params.notes.label_id),
                 isArchived : this.props.route.params.notes.is_archived,
-                reminder : this.props.route.params.notes.reminder
+                reminder : JSON.parse(this.props.route.params.notes.reminder)
             })
         } else {
             if(this.props.route.params.labelId == undefined) {
@@ -54,7 +65,7 @@ class AddNoteScreen extends Component {
                         isDeleted : this.props.route.params.notes.is_deleted,
                         labelId : JSON.parse(this.props.route.params.notes.label_id),
                         isArchived : this.props.route.params.notes.is_archived,
-                        reminder : this.props.route.params.notes.reminder
+                        reminder : JSON.parse(this.props.route.params.notes.reminder)
                     })
                 } else {
                     await this.setState({
@@ -105,7 +116,7 @@ class AddNoteScreen extends Component {
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived,
-            reminder : this.state.reminder
+            reminder : JSON.stringify(this.state.reminder)
         }
         if(this.state.title != '' || this.state.note != '') {
             if(this.props.route.params.newNote) {
@@ -170,7 +181,7 @@ class AddNoteScreen extends Component {
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived,
-            reminder : this.state.reminder,
+            reminder : JSON.stringify(""),
         }
         if(this.props.route.params.newNote){
             await this.setState({
@@ -183,12 +194,16 @@ class AddNoteScreen extends Component {
                     if(this.props.screenName != 'labelNote') {
                         this.props.navigation.push('Home', { screen: this.props.screenName, 
                                                              params : {isNoteDeleted : true, 
-                                                                       noteKey : this.state.noteKey}}) 
+                                                                       noteKey : this.state.noteKey,
+                                                                       reminder : JSON.stringify(this.state.reminder),
+                                                                       notes : notes}}) 
                     } else {
                         this.props.navigation.push('Home', { screen : this.props.screenName, 
                                                              params : { labels : this.props.labelKey,
                                                                         isNoteDeleted : true, 
-                                                                        noteKey : this.state.noteKey}})
+                                                                        noteKey : this.state.noteKey,
+                                                                        reminder : JSON.stringify(this.state.reminder),
+                                                                        notes : notes}})
                     }                               
                 })    
         }
@@ -255,7 +270,7 @@ class AddNoteScreen extends Component {
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived,
-            reminder : this.state.reminder,
+            reminder : JSON.stringify(this.state.reminder),
         }
         this.updateNoteIdInLabel()
         NoteDataController.deleteNote(this.props.userId, this.state.noteKey, notes)
@@ -299,7 +314,7 @@ class AddNoteScreen extends Component {
             isDeleted : this.state.isDeleted,
             labelId : this.state.labelId,
             isArchived : this.state.isArchived,
-            reminder : this.state.reminder,
+            reminder : JSON.stringify(this.state.reminder),
         }
         if(this.props.route.params.newNote) {
             this.props.navigation.push('SelectLabel', { noteKey : this.state.noteKey, notes : notes, newNote : true})
@@ -318,7 +333,7 @@ class AddNoteScreen extends Component {
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived,
-            reminder : this.state.reminder,
+            reminder : JSON.stringify(this.state.reminder),
         }
         if(this.state.title != '' || this.state.note != '') {
             if(this.props.route.params.newNote) {
@@ -395,7 +410,7 @@ class AddNoteScreen extends Component {
             isDeleted : this.state.isDeleted,
             labelId : JSON.stringify(this.state.labelId),
             isArchived : this.state.isArchived,
-            reminder : this.state.reminder,
+            reminder : JSON.stringify(this.state.reminder),
         }
         this.updateNoteIdInLabel()
         NoteDataController.updateNote(this.state.noteKey, this.props.userId, notes)
@@ -486,17 +501,6 @@ class AddNoteScreen extends Component {
         })        
     }
 
-    removeNoteId = (noteId, label) => {
-        let index = noteId.indexOf(this.state.noteKey)
-        noteId.splice(index, 1)
-        const labels = {
-            labelName : label.label_name,
-            noteId : JSON.stringify(noteId)
-        }
-        NoteDataController.updateLabel(this.props.userId, label.label_id, labels)
-        this.updateLabelinReduxStore();
-    }
-
     updateLabelinReduxStore = () => {
         SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.userId)
             .then(async result => {
@@ -508,6 +512,89 @@ class AddNoteScreen extends Component {
                 this.props.storeUserLabel(temp)
             })
             .catch(error => console.log(error))
+    }
+
+    handleReminderModalDismiss = async () => {
+        let today = new Date();
+        today.setHours(today.getHours() + 3 );
+        await this.setState({
+            date : today,
+            showReminderModal : false,
+            errorDate : false
+        })
+    }
+
+    handleReminderIconButton = async () => {
+        if(this.state.reminder != '') {
+           await this.setState({
+               date : new Date(this.state.reminder)
+           })
+        }
+        await this.setState({
+            showReminderModal : true, 
+        })
+    }
+
+    handleDateChange = async (event, selectedDate) => {
+        let now = new Date()
+        var selected = new Date(selectedDate)
+        if (now.getTime() > selected.getTime()) {
+            await this.setState({
+                errorDate : true
+            })
+        } else {
+            await this.setState({
+                errorDate : false
+            })
+        }
+        if(event.type != 'dismissed') {
+            await this.setState({
+                date : selectedDate,
+                show : false
+            })
+        } else {
+            await this.setState({
+                show : false
+            })
+        }
+        console.log(this.state.date)
+    }
+
+    handleSaveButton = async() => {
+        if(!this.state.errorDate) {
+            await this.setState({
+                reminder : this.state.date,
+                showReminderModal : false,
+                errorDate : false
+            })
+        }
+    }
+
+    showMode = async(currentMode) => {
+        await this.setState({
+            show : true,
+            mode : currentMode
+        })
+    };
+    
+    showDatepicker = () => {
+        this.showMode('date');
+    };
+    
+    showTimepicker = () => {
+        this.showMode('time');
+    };
+
+    handleDeleteReminderButton = async () => {
+        let today = new Date();
+        today.setHours(today.getHours() + 4 );
+        today.setMinutes(0)
+        await this.setState({
+            date : today,
+            reminder : '',
+            showReminderModal : false,
+            errorDate : false
+        })
     }
 
     render() {
@@ -529,7 +616,8 @@ class AddNoteScreen extends Component {
                                         icon = 'pin-outline'/>
                                     <Appbar.Action    
                                         style = {AddNoteScreenStyle.header_icon_style}                          
-                                        icon = 'bell-plus-outline'/>
+                                        icon = 'bell-plus-outline'
+                                        onPress = {this.handleReminderIconButton}/>
                                     {
                                         (this.state.isArchived == 0) ?
                                             <Appbar.Action 
@@ -567,15 +655,26 @@ class AddNoteScreen extends Component {
                                 />
                                 <View style = {AddNoteScreenStyle.label_text_container}>
                                 {
+                                    (this.state.reminder != '') ?
+                                        <Chip 
+                                            icon = 'alarm'
+                                            onPress = {this.handleReminderIconButton}
+                                            style = {AddNoteScreenStyle.reminder_text}>
+                                                {moment(this.state.reminder).format('D MMM, h.mm a')}
+                                        </Chip>
+                                        :
+                                        null
+                                }
+                                {
                                     (this.state.labelId.length > 0) ?
                                         this.props.userLabel.map(labels => (
                                             this.state.labelId.includes(labels.label_id) ?
                                                <React.Fragment key = {labels.label_id}>
-                                                    <TouchableWithoutFeedback onPress = {this.handleLabelButton}>
-                                                        <View>
-                                                            <Text style = {AddNoteScreenStyle.label_text}>{labels.label_name}</Text>
-                                                        </View>
-                                                    </TouchableWithoutFeedback>
+                                                    <Chip 
+                                                        onPress = {this.handleLabelButton}
+                                                        style = {AddNoteScreenStyle.reminder_text}>
+                                                            {labels.label_name}
+                                                    </Chip>
                                                 </React.Fragment>
                                             :
                                             null
@@ -623,7 +722,9 @@ class AddNoteScreen extends Component {
                                 backgroundColor: "transparent",
                             },
                         }}>
-                            <DotsVerticalRBSheetMenu delete = {this.handleDeleteButton} label = {this.handleLabelButton}/>
+                            <DotsVerticalRBSheetMenu 
+                                delete = {this.handleDeleteButton} 
+                                label = {this.handleLabelButton}/>
                     </RBSheet>
                     :
                     <RBSheet
@@ -692,6 +793,25 @@ class AddNoteScreen extends Component {
                                 <Button color = 'blue' onPress = {this.handleDeleteForeverActionButton}>Delete</Button>
                             </Dialog.Actions>
                         </Dialog>
+                    </Portal>
+                    <Portal>
+                        <Modal 
+                            visible={this.state.showReminderModal} 
+                            onDismiss={this.handleReminderModalDismiss} 
+                            contentContainerStyle={AddNoteScreenStyle.modal_container_style}>
+                                <AddReminder 
+                                    dismissModal = {this.handleReminderModalDismiss}
+                                    date = {this.state.date}
+                                    show = {this.state.show}
+                                    changeDate = {this.handleDateChange}
+                                    mode = {this.state.mode}
+                                    showDatepicker = {this.showDatepicker}
+                                    showTimepicker = {this.showTimepicker}
+                                    saveReminder = {this.handleSaveButton}
+                                    reminder = {this.state.reminder}
+                                    deleteReminder = {this.handleDeleteReminderButton}
+                                    errorDate = {this.state.errorDate}/>
+                        </Modal>
                     </Portal>
                 </View>
             </Provider>

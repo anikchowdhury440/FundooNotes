@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import {View, TextInput, ScrollView, Text} from 'react-native'
-import { Appbar, Card, Paragraph, Title } from 'react-native-paper'
+import { Appbar, Card, Chip, Paragraph, Title } from 'react-native-paper'
 import SearchNoteScreenStyle from '../../styles/SearchNoteScreen.styles'
 import SQLiteServices from '../../../services/SQLiteServices';
 import Highlighter from 'react-native-highlight-words';
 import { connect } from 'react-redux'
+import moment from "moment";
 
 class SearchNotesScreen extends Component {
     constructor(props) {
@@ -158,13 +159,26 @@ class SearchNotesScreen extends Component {
                                             </Paragraph>
                                             <View style = {{flexWrap : 'wrap', flexDirection : 'row'}}>
                                                 {
+                                                    JSON.parse(note.reminder) != '' ?
+                                                    <Chip
+                                                        textStyle = {{fontSize : 12}}
+                                                        style = {SearchNoteScreenStyle.chip_style}
+                                                        icon = 'alarm'>
+                                                            {moment(JSON.parse(note.reminder)).format('D MMM, h.mm a')}
+                                                    </Chip>
+                                                    :
+                                                    null
+                                                }
+                                                {
                                                     (JSON.parse(note.label_id).length > 0) ?
                                                         this.props.userLabel.map(labels => (
                                                             JSON.parse(note.label_id).includes(labels.label_id) ?
                                                                 <React.Fragment key = {labels.label_id}>
-                                                                    <View>
-                                                                        <Text style = {SearchNoteScreenStyle.label_text}>{labels.label_name}</Text>
-                                                                    </View>
+                                                                    <Chip 
+                                                                        style = {SearchNoteScreenStyle.chip_style}
+                                                                        textStyle = {{fontSize : 12}}>
+                                                                        {labels.label_name}
+                                                                    </Chip>
                                                                 </React.Fragment>
                                                             :
                                                             null
@@ -215,13 +229,26 @@ class SearchNotesScreen extends Component {
                                             </Paragraph>
                                             <View style = {{flexWrap : 'wrap', flexDirection : 'row'}}>
                                                 {
+                                                    JSON.parse(note.reminder) != '' ?
+                                                    <Chip
+                                                        textStyle = {{fontSize : 12}}
+                                                        style = {SearchNoteScreenStyle.chip_style}
+                                                        icon = 'alarm'>
+                                                            {moment(JSON.parse(note.reminder)).format('D MMM, h.mm a')}
+                                                    </Chip>
+                                                    :
+                                                    null
+                                                }
+                                                {
                                                     (JSON.parse(note.label_id).length > 0) ?
                                                         this.props.userLabel.map(labels => (
                                                             JSON.parse(note.label_id).includes(labels.label_id) ?
                                                                 <React.Fragment key = {labels.label_id}>
-                                                                    <View>
-                                                                        <Text style = {SearchNoteScreenStyle.label_text}>{labels.label_name}</Text>
-                                                                    </View>
+                                                                    <Chip 
+                                                                        style = {SearchNoteScreenStyle.chip_style}
+                                                                        textStyle = {{fontSize : 12}}>
+                                                                        {labels.label_name}
+                                                                    </Chip>
                                                                 </React.Fragment>
                                                             :
                                                             null

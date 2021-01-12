@@ -5,7 +5,7 @@ import { Appbar } from 'react-native-paper';
 
 describe('test BottomBar', () => {
     it('should match to snapshot', () => {
-        const component = shallow(<BottomBar />)
+        const component = shallow(<BottomBar />);
         expect(component).toMatchSnapshot();
     })
 
@@ -19,14 +19,25 @@ describe('test BottomBar', () => {
         expect(component.find(Appbar.Action).at(4).props().icon).toEqual('plus')
     })
 
-    it('test onPress event of plus icon it will navigate to add note screen' , async () => {
+    it('test onPress event of plus icon when lableId passed as props it will navigate to add note screen' , async () => {
+        const navigation = { push : jest.fn() }
+        const onPressEvent = jest.fn();
+        const component = shallow(<BottomBar onPress = {onPressEvent} navigation = {navigation} labelId = {1234}/>)
+        const instance = component.instance();
+        await instance.handlePlusIconButton();
+        expect(onPressEvent).toHaveBeenCalled();
+        expect(navigation.push).toBeCalledWith('AddNote', {labelId : 1234, newNote : true});
+    })
+
+    it('test onPress event of plus icon  when labelId not passed as props it will navigate to add note screen' , async () => {
         const navigation = { push : jest.fn() }
         const onPressEvent = jest.fn();
         const component = shallow(<BottomBar onPress = {onPressEvent} navigation = {navigation}/>)
         const instance = component.instance();
         await instance.handlePlusIconButton();
         expect(onPressEvent).toHaveBeenCalled();
-        expect(navigation.push).toBeCalledWith("AddNote");
+        expect(navigation.push).toBeCalledWith('AddNote', {newNote : true});
     })
+
 
 })

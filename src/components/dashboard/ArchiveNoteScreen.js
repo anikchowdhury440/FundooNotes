@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, ScrollView, FlatList} from 'react-native'
+import {View, ActivityIndicator, FlatList} from 'react-native'
 import { Appbar, Snackbar } from 'react-native-paper'
 import SQLiteServices from '../../../services/SQLiteServices'
 import ArchiveNoteScreenStyle from '../../styles/ArchiveNoteScreen.styles'
@@ -20,7 +20,8 @@ class ArchiveNoteScreen extends Component {
             userNotes : [],
             showNotes: [],
             index: 0,
-            endReached : false
+            endReached : false,
+            scroll : false
         }
     }
 
@@ -109,7 +110,7 @@ class ArchiveNoteScreen extends Component {
 
     restoreNotes = async() => {
         const {onPress} = this.props
-        NoteDataController.restoreNote(this.props.userId, this.props.route.params.noteKey)
+        NoteDataController.restoreNoteSnackbar(this.props.userId, this.props.route.params.noteKey, this.props.route.params.notes, this.props.route.params.reminder)
             .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
         //onPress()
     }
@@ -156,7 +157,11 @@ class ArchiveNoteScreen extends Component {
                     numColumns = {this.state.listView ? 1 : 2}
                     keyExtractor = {(item, index) => JSON.stringify(index)}
                     key = {this.state.listView ? 1 : 2}
-                    data = {this.state.userNotes}
+                    data = {this.state.showNotes}
+                    ListFooterComponent = {() => 
+                        (this.state.endReached && this.state.scroll) ? 
+                            <ActivityIndicator size="large" color="grey" /> : 
+                            null}
                     onEndReached = {async () => {
                         await this.setState({
                             endReached : true
@@ -164,9 +169,10 @@ class ArchiveNoteScreen extends Component {
                     }}
                     onScroll = {async () => {
                         if (this.state.endReached) {
-                            this.loadData(5)
+                            this.loadData(6)
                             await this.setState({
-                                endReached : false
+                                endReached : false,
+                                scroll : true
                             })
                         }
                     }}

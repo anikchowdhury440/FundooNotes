@@ -59,6 +59,25 @@ class NoteDataController {
         })
     }
 
+    restoreNoteSnackbar = (userId, noteKey, usernotes, reminder) => {
+        const notes = {
+            title : usernotes.title,
+            note : usernotes.note,
+            isDeleted : 0,
+            labelId : usernotes.labelId,
+            isArchived : usernotes.isArchived,
+            reminder : reminder,
+        }
+        return new Promise((resolve) => {
+            SQLiteServices.updateNoteinSQliteStorage(userId, noteKey, notes)
+                .then(() => resolve('success'))
+                .catch(error => console.log(error))
+            UserNoteServices.updateNoteInFirebase(userId, noteKey, notes)
+                .then(() => console.log('restored'))
+                .catch(error => console.log(error))
+        })
+    }
+
     getNoteFromFirebaseToSqlite = async (userId) => {
         let noteKeyFirebase, noteKeySqlite, notes, title, note, isDeleted
         await UserNoteServices.getNoteFromDatabase(userId)

@@ -9,9 +9,4 @@ describe('test NoteView', () => {
         expect(component).toMatchSnapshot();
     })
 
-    it('test component did mount method should get user details and Update State', async () => {
-        const component = shallow(<NoteView/>)
-        const instance = component.instance();
-        await instance.componentDidMount()
-    })
 })
