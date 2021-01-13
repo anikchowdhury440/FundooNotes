@@ -12,6 +12,7 @@ import {storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
 import SQLiteLabelServices from '../../../services/SQLiteLabelServices'
 import AddReminder from './AddReminder';
 import moment from "moment";
+import AddReminderStyle from '../../styles/AddReminder.styles';
 
 class AddNoteScreen extends Component {
     constructor(props) {
@@ -659,8 +660,13 @@ class AddNoteScreen extends Component {
                                         <Chip 
                                             icon = 'alarm'
                                             onPress = {this.handleReminderIconButton}
-                                            style = {AddNoteScreenStyle.reminder_text}>
-                                                {moment(this.state.reminder).format('D MMM, h.mm a')}
+                                            style = {new Date() > new Date(this.state.reminder) 
+                                                ? AddNoteScreenStyle.reminder_faded_text
+                                                : AddNoteScreenStyle.reminder_text}
+                                            textStyle = {new Date() > new Date(this.state.reminder) 
+                                                ? {color : 'grey'}
+                                                : null}>
+                                                    {moment(this.state.reminder).format('D MMM, h.mm a')}
                                         </Chip>
                                         :
                                         null

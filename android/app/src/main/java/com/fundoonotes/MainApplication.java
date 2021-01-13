@@ -4,9 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;                       
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -17,6 +18,7 @@ import com.facebook.soloader.SoLoader;
 import com.oblador.keychain.KeychainPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 
 import com.facebook.FacebookSdk;
 import com.facebook.CallbackManager;
@@ -42,7 +44,8 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          // packages.add(new FBSDKPackage());
+          // packages.add(new FBSDKPackage());    
+          packages.add(new RNFirebaseMessagingPackage());
           return packages;
         }
 

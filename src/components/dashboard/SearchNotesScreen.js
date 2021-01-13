@@ -161,7 +161,9 @@ class SearchNotesScreen extends Component {
                                                 {
                                                     JSON.parse(note.reminder) != '' ?
                                                     <Chip
-                                                        textStyle = {{fontSize : 12}}
+                                                        textStyle = {new Date() < new Date(JSON.parse(note.reminder)) 
+                                                            ? {fontSize : 13}
+                                                            : {fontSize : 13, color : 'grey'}}
                                                         style = {SearchNoteScreenStyle.chip_style}
                                                         icon = 'alarm'>
                                                             {moment(JSON.parse(note.reminder)).format('D MMM, h.mm a')}
@@ -231,7 +233,9 @@ class SearchNotesScreen extends Component {
                                                 {
                                                     JSON.parse(note.reminder) != '' ?
                                                     <Chip
-                                                        textStyle = {{fontSize : 12}}
+                                                        textStyle = {new Date() < new Date(JSON.parse(note.reminder)) 
+                                                            ? {fontSize : 13}
+                                                            : {fontSize : 13, color : 'grey'}}
                                                         style = {SearchNoteScreenStyle.chip_style}
                                                         icon = 'alarm'>
                                                             {moment(JSON.parse(note.reminder)).format('D MMM, h.mm a')}

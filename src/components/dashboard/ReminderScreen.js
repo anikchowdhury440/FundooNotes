@@ -48,7 +48,7 @@ class ReminderScreen extends Component {
                 var temp = [];
                 if(result.rows.length != 0) {
                     for (let i = 0; i < result.rows.length; ++i)
-                        if(result.rows.item(i).reminder != '') {
+                        if(JSON.parse(result.rows.item(i).reminder) != '') {
                             temp.push(result.rows.item(i));
                         }
                     await this.setState({

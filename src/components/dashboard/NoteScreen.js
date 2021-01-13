@@ -7,7 +7,6 @@ import BottomBar from './Bottombar';
 import NoteView from './NoteView';
 import Profile from './Profile';
 import UserServices from '../../../services/UserServices'
-import * as Keychain from 'react-native-keychain'
 import NoteDataController from '../../../services/NoteDataController';
 import { connect } from 'react-redux'
 import { storeNavigationScreen } from '../../redux/actions/CreateNewLabelActions'

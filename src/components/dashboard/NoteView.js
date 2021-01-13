@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView, View, Text, FlatList, ActivityIndicator} from 'react-native';
+import {FlatList, ActivityIndicator, View, Text} from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import NoteCard from './NoteCard';
 import SQLiteServices from '../../../services/SQLiteServices';

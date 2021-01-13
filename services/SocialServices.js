@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-import Firebase from '../config/Firebase'
 import {LoginManager, AccessToken} from 'react-native-fbsdk'
 
 class SocialServices {
