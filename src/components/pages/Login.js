@@ -37,7 +37,7 @@ class Login extends Component {
                 const UserCredential = JSON.parse(credential.password);
                 await NoteDataController.retrieveDataFromFirebase(UserCredential.user.uid)
                 this.props.storeUserId(UserCredential.user.uid)
-                this.storeUserLabel(UserCredential.user.uid)
+                this.storeUserLabels(UserCredential.user.uid)
                 this.props.navigation.push('Home', { screen: 'Notes' })
             }
           } 
@@ -46,15 +46,15 @@ class Login extends Component {
           }
     }
 
-    storeUserLabel = (userId) => {
+    storeUserLabels = (userId) => {
         SQLiteLabelServices.selectLabelFromSQliteStorage(userId)
             .then(async result => {
                 var temp = [];
                 if(result.rows.length != 0) {
                     for (let i = 0; i < result.rows.length; ++i)
                         temp.push(result.rows.item(i));
-                    this.props.storeUserLabel(temp)
-                }                
+                } 
+                this.props.storeUserLabel(temp)               
             })
             .catch(error => console.log(error))
     }
@@ -105,8 +105,10 @@ class Login extends Component {
             await UserServices.login(this.state.email, this.state.password)
                 .then(async (UserCredential) => {
                     this.storeIteminAsyncStorage()
+                    await NoteDataController.retrieveDataFromFirebase(UserCredential.user.uid)
                     await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
-                    this.storeUserLabel(UserCredential.user.uid)
+                    await this.props.storeUserId(UserCredential.user.uid)
+                    await this.storeUserLabels(UserCredential.user.uid)
                     this.props.navigation.push('Home', { screen: 'Notes' })
                 })
                 .catch(error => {
@@ -168,9 +170,11 @@ class Login extends Component {
                                 UserCredential.additionalUserInfo.profile.email);
                         }
                     })
+                await NoteDataController.retrieveDataFromFirebase(UserCredential.user.uid)
                 this.storeIteminAsyncStorage()
                 await Keychain.setGenericPassword('UserCredential', JSON.stringify(UserCredential));
-                this.storeUserLabel(UserCredential.user.uid)
+                await this.props.storeUserId(UserCredential.user.uid)
+                await this.storeUserLabels(UserCredential.user.uid)
                 this.props.navigation.push('Home', { screen: 'Notes' })
             })
             .catch(error => {
