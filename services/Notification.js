@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from 'react-native-firebase';
 import SQLiteServices from './SQLiteServices';
 import * as Keychain from 'react-native-keychain';
+import PushNotification from "react-native-push-notification";
 
 class Notification {
     checkPermission = async () => {
@@ -72,7 +73,6 @@ class Notification {
     }
 
     reminderNotification = async() => {
-        console.log('true')
         const isLoggedIn = JSON.parse(await AsyncStorage.getItem('isLoggedIn'))
         let date = new Date()
         let reminder
@@ -90,7 +90,7 @@ class Notification {
                                 date.getFullYear() == reminder.getFullYear() &&
                                 date.getHours() == reminder.getHours() &&
                                 date.getMinutes() == reminder.getMinutes()) {
-                                    this.sendPushNotification(result.rows.item(i).title, result.rows.item(i).note);
+                                    this.localNotification(result.rows.item(i).title, result.rows.item(i).note)
                             }
                         }
                     }
@@ -102,8 +102,8 @@ class Notification {
 
     localNotification = (title, note) => {
         PushNotification.localNotification({
-            title: title,
-            message: note
+            title : title,
+            message: note,
         });
     }
 }
