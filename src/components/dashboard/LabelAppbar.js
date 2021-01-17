@@ -131,6 +131,12 @@ class LabelAppbar extends Component {
         })
     }
 
+    componentWillUnmount() {
+        this.setState = (state,callback)=>{
+            return;
+        };
+    }
+
     render() {
         return(
             <View>

@@ -50,7 +50,6 @@ class DeletedScreen extends Component {
                     await this.setState({
                         userNotes : temp.reverse()
                     })
-                    console.log(this.state.userNotes)
                 }                
             })
             .catch(error => console.log(error))  
@@ -69,7 +68,7 @@ class DeletedScreen extends Component {
     handleMenuButton = async () => {
         const {onPress} = this.props
         this.props.navigation.openDrawer();
-        onPress();
+        //onPress();
     }
 
     emptyNoteSnackbarHandler = async () => {

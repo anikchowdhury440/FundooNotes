@@ -39,6 +39,12 @@ class CreateNewLabel extends Component {
             .catch(error => console.log('Error', error))
     }
 
+    componentWillUnmount() {
+        this.setState = (state,callback)=>{
+            return;
+        };
+    }
+    
     selectActiveLabel = async (labelKey) => {
         await this.setState({
             activeLabel : labelKey,

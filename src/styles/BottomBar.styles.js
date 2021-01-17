@@ -23,6 +23,14 @@ const BottomBarStyle = StyleSheet.create({
         backgroundColor : 'white', 
         borderRadius : 30, 
         borderColor : '#CACFD2',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 3,
     },
 
     bottom_bar_action_style : {

@@ -8,11 +8,13 @@ import PushNotification from "react-native-push-notification";
 import BackgroundJob from 'react-native-background-job';
 
 const backgroundJob = {
-  jobKey: "myJob",
+  jobKey: 'PushLotification',
   job: () => setInterval(() => {
-    console.log('working')
-  }, 1000)
+        Notification.reminderNotification()
+      }, 5000)
 };
+
+BackgroundJob.register(backgroundJob);
 
 class App extends Component{
   constructor(props) {
@@ -21,7 +23,6 @@ class App extends Component{
       appState: AppState.currentState
     }
   }
-
 
   componentDidMount = async () => {
     Notification.checkPermission()
@@ -45,15 +46,7 @@ class App extends Component{
       popInitialNotification: true,
       requestPermissions: true,
     });
-    BackgroundJob.register(this.backgroundJob);
   }
-
-  backgroundJob = {
-    jobKey: 'PushLotification',
-    job: () => setInterval(() => {
-          Notification.reminderNotification()
-        }, 60000)
-  };
 
   backgroundSchedule = {
     jobKey : 'PushLotification'
@@ -61,20 +54,32 @@ class App extends Component{
   
   handleAppStateChange = async nextAppState => {
     await this.setState({ appState: nextAppState });
-    if (this.state.appState.match(/inactive|background/) ) {
+    if (this.state.appState == 'background' ) {
       console.log("app is in background");
       BackgroundJob.schedule(this.backgroundSchedule)
-        .then(() => console.log('Tack schedule Success'))
+        .then(() => {
+          console.log('schedule task')
+          setInterval(() => {
+            Notification.reminderNotification()
+          }, 5000)
+        })
         .catch(error => console.log(error))
     }
     else  {
       console.log("App is in foreground");
       setInterval(() => {
         Notification.reminderNotification()
-      }, 60000);
+      }, 5000);
     }
 
   };
+
+  componentWillUnmount() {
+    this.setState = (state,callback)=>{
+        return;
+    };
+  }
+
 
   render() {
     return (

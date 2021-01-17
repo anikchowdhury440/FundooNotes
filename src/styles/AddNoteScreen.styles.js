@@ -7,7 +7,7 @@ const AddNoteScreenStyle = StyleSheet.create({
     },
 
     header_style : {
-        backgroundColor : 'transparent'
+        backgroundColor : 'transparent',
     },
 
     header_icon_style : {
@@ -33,6 +33,8 @@ const AddNoteScreenStyle = StyleSheet.create({
         width: '100%',
         position: 'absolute',
         bottom : 0,
+        borderColor : 'grey',
+        borderTopWidth : 0.7,
     },
 
     bottom_appbar_style : {

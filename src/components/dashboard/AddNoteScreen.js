@@ -602,7 +602,7 @@ class AddNoteScreen extends Component {
         return (
             <Provider>
                 <View style = {AddNoteScreenStyle.mainContainer}>
-                    <View>
+                    <View style = {{ borderBottomWidth : 0.7, borderColor : 'grey'}}>
                         <Appbar style = {AddNoteScreenStyle.header_style}>
                             <Appbar.Action 
                                 style = {{marginLeft : 10}}
