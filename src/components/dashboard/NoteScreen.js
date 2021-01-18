@@ -128,6 +128,12 @@ class NoteScreen extends Component {
         //onPress()
     }
 
+    componentWillUnmount() {
+        this.setState = (state,callback)=>{
+            return;
+        };
+    }
+
     render() {
         return(
             <Provider>

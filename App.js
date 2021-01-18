@@ -5,16 +5,7 @@ import {Provider} from 'react-redux'
 import store from './src/redux/store'
 import Notification from './services/Notification';
 import PushNotification from "react-native-push-notification";
-import BackgroundJob from 'react-native-background-job';
-
-const backgroundJob = {
-  jobKey: 'PushLotification',
-  job: () => setInterval(() => {
-        Notification.reminderNotification()
-      }, 5000)
-};
-
-BackgroundJob.register(backgroundJob);
+import BackgroundTimer from 'react-native-background-timer';
 
 class App extends Component{
   constructor(props) {
@@ -46,32 +37,13 @@ class App extends Component{
       popInitialNotification: true,
       requestPermissions: true,
     });
-  }
-
-  backgroundSchedule = {
-    jobKey : 'PushLotification'
+    BackgroundTimer.setInterval(() => {
+      Notification.reminderNotification()
+    }, 60000);
   }
   
   handleAppStateChange = async nextAppState => {
     await this.setState({ appState: nextAppState });
-    if (this.state.appState == 'background' ) {
-      console.log("app is in background");
-      BackgroundJob.schedule(this.backgroundSchedule)
-        .then(() => {
-          console.log('schedule task')
-          setInterval(() => {
-            Notification.reminderNotification()
-          }, 5000)
-        })
-        .catch(error => console.log(error))
-    }
-    else  {
-      console.log("App is in foreground");
-      setInterval(() => {
-        Notification.reminderNotification()
-      }, 5000);
-    }
-
   };
 
   componentWillUnmount() {
@@ -79,7 +51,6 @@ class App extends Component{
         return;
     };
   }
-
 
   render() {
     return (

@@ -22,6 +22,8 @@ target 'FundooNotes' do
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
 
+  pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
+
   target 'FundooNotesTests' do
     inherit! :complete
     # Pods for testing

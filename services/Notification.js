@@ -3,6 +3,7 @@ import firebase from 'react-native-firebase';
 import SQLiteServices from './SQLiteServices';
 import * as Keychain from 'react-native-keychain';
 import PushNotification from "react-native-push-notification";
+import moment from "moment";
 
 class Notification {
     checkPermission = async () => {
@@ -85,11 +86,7 @@ class Notification {
                     for (let i = 0; i < result.rows.length; ++i) {
                         if(JSON.parse(result.rows.item(i).reminder) != '') {
                             reminder = new Date(JSON.parse(result.rows.item(i).reminder))
-                            if(date.getDate() == reminder.getDate() &&
-                                date.getMonth() == reminder.getMonth() &&
-                                date.getFullYear() == reminder.getFullYear() &&
-                                date.getHours() == reminder.getHours() &&
-                                date.getMinutes() == reminder.getMinutes()) {
+                            if(moment(date).format('D MMM, h.mm a') == moment(reminder).format('D MMM, h.mm a')) {
                                     this.localNotification(result.rows.item(i).title, result.rows.item(i).note)
                             }
                         }
