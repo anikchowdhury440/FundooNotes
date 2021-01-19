@@ -10,7 +10,7 @@ class SelectLabelScreen extends Component {
         super(props)
         this.state = {
             search : '',
-            userLabelAfterSearch : this.props.userLabel,
+            userLabelAfterSearch : this.props.state.createLabelReducer.userLabel,
             selectedLabel : this.props.route.params.notes.labelId
         }
     }
@@ -55,9 +55,9 @@ class SelectLabelScreen extends Component {
         })
         if(this.state.search != '') {
             let temp = [];
-            for(let i = 0; i < this.props.userLabel.length; i++) {
-                if(this.props.userLabel[i].label_name.toLowerCase().includes(searchText.toLowerCase())) {
-                    temp.push(this.props.userLabel[i])
+            for(let i = 0; i < this.props.state.createLabelReducer.userLabel.length; i++) {
+                if(this.props.state.createLabelReducer.userLabel[i].label_name.toLowerCase().includes(searchText.toLowerCase())) {
+                    temp.push(this.props.state.createLabelReducer.userLabel[i])
                 }
             }
             this.setState({
@@ -66,7 +66,7 @@ class SelectLabelScreen extends Component {
         }
         else {
             await this.setState({
-                userLabelAfterSearch : this.props.userLabel
+                userLabelAfterSearch : this.props.state.createLabelReducer.userLabel
             })
         }
     }
@@ -112,10 +112,7 @@ class SelectLabelScreen extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-        userId : state.createLabelReducer.userId,
-        userLabel : state.createLabelReducer.userLabel
-    }
+    return { state }
 }
 
 export default connect(mapStateToProps)(SelectLabelScreen)

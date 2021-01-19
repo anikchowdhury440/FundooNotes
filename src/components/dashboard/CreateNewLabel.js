@@ -25,7 +25,7 @@ class CreateNewLabel extends Component {
     }
 
     componentDidMount = async () => {
-        await SQLiteServices.selectNoteFromSQliteStorage(this.props.userId)
+        await SQLiteServices.selectNoteFromSQliteStorage(this.props.state.createLabelReducer.userId)
             .then(async result => {
                 var temp = [];
                 if(result.rows.length != 0) {
@@ -78,11 +78,11 @@ class CreateNewLabel extends Component {
             })
         }
         else {
-            let labelId = Object.keys(this.props.userLabel);
+            let labelId = Object.keys(this.props.state.createLabelReducer.userLabel);
             let temp = []
             if(labelId.length > 0) {
                 labelId.map(key => {
-                    temp.push(this.props.userLabel[key].label_name.toLowerCase())
+                    temp.push(this.props.state.createLabelReducer.userLabel[key].label_name.toLowerCase())
                 })
             }
             if(temp.includes(this.state.createLabelText.toLowerCase())) {
@@ -96,9 +96,9 @@ class CreateNewLabel extends Component {
                     labelName : this.state.createLabelText,
                     noteId : JSON.stringify([])
                 }
-                NoteDataController.storeLabel(this.props.userId, labelKey, label)
+                NoteDataController.storeLabel(this.props.state.createLabelReducer.userId, labelKey, label)
                     .then(() => {
-                        SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.userId)
+                        SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.state.createLabelReducer.userId)
                             .then(async result => {
                                 var temp = [];
                                 if(result.rows.length != 0) {
@@ -200,8 +200,8 @@ class CreateNewLabel extends Component {
                         </View>
                         <View>
                             {
-                                this.props.userLabel.length > 0 ?
-                                    this.props.userLabel.map(labels =>
+                                this.props.state.createLabelReducer.userLabel.length > 0 ?
+                                    this.props.state.createLabelReducer.userLabel.map(labels =>
                                         (
                                         <React.Fragment key = {labels.label_id}>
                                             <LabelAppbar 
@@ -224,10 +224,7 @@ class CreateNewLabel extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-        userId : state.createLabelReducer.userId,
-        userLabel : state.createLabelReducer.userLabel
-    }
+    return { state }
 }
 
 const mapDispatchToProps = dispatch => {

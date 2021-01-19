@@ -21,7 +21,7 @@ class SearchNotesScreen extends Component {
     }
 
     async componentDidMount() {
-        SQLiteServices.selectNoteFromSQliteStorage(this.props.userId)
+        SQLiteServices.selectNoteFromSQliteStorage(this.props.state.createLabelReducer.userId)
             .then(async result => {
                 var temp = [];
                 if(result.rows.length != 0) {
@@ -37,11 +37,11 @@ class SearchNotesScreen extends Component {
 
     handleBackIconButton = () => {
         const {onPress} = this.props
-        if(this.props.screenName != 'labelNote') {
-            this.props.navigation.push('Home', {screen : this.props.screenName})
+        if(this.props.state.createLabelReducer.screenName != 'labelNote') {
+            this.props.navigation.push('Home', {screen : this.props.state.createLabelReducer.screenName})
         } else {
-            this.props.navigation.push('Home', { screen : this.props.screenName, 
-                                                 params : {labels : this.props.labelKey}})
+            this.props.navigation.push('Home', { screen : this.props.state.createLabelReducer.screenName, 
+                                                 params : {labels : this.props.state.createLabelReducer.labelKey}})
         }
         //onPress()
     }
@@ -55,7 +55,7 @@ class SearchNotesScreen extends Component {
         if(this.state.search != '') {
             let temp = []
             for(let i = 0; i < this.state.userNotes.length; i++) {
-                this.props.userLabel.map(async label => {
+                this.props.state.createLabelReducer.userLabel.map(async label => {
                     if(JSON.parse(this.state.userNotes[i].label_id).includes(label.label_id)) {
                         if(label.label_name.toLowerCase().includes(searchText.toLowerCase())) {
                             await this.setState({
@@ -173,7 +173,7 @@ class SearchNotesScreen extends Component {
                                                 }
                                                 {
                                                     (JSON.parse(note.label_id).length > 0) ?
-                                                        this.props.userLabel.map(labels => (
+                                                        this.props.state.createLabelReducer.userLabel.map(labels => (
                                                             JSON.parse(note.label_id).includes(labels.label_id) ?
                                                                 <React.Fragment key = {labels.label_id}>
                                                                     <Chip 
@@ -245,7 +245,7 @@ class SearchNotesScreen extends Component {
                                                 }
                                                 {
                                                     (JSON.parse(note.label_id).length > 0) ?
-                                                        this.props.userLabel.map(labels => (
+                                                        this.props.state.createLabelReducer.userLabel.map(labels => (
                                                             JSON.parse(note.label_id).includes(labels.label_id) ?
                                                                 <React.Fragment key = {labels.label_id}>
                                                                     <Chip 
@@ -278,12 +278,7 @@ class SearchNotesScreen extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-        userId : state.createLabelReducer.userId,
-        userLabel : state.createLabelReducer.userLabel,
-        screenName : state.createLabelReducer.screenName,
-        labelKey : state.createLabelReducer.labelKey,
-    }
+    return {state}
 }
 
 export default connect(mapStateToProps)(SearchNotesScreen)

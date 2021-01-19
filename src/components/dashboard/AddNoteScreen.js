@@ -12,7 +12,6 @@ import {storeUserLabel} from '../../redux/actions/CreateNewLabelActions'
 import SQLiteLabelServices from '../../../services/SQLiteLabelServices'
 import AddReminder from './AddReminder';
 import moment from "moment";
-import AddReminderStyle from '../../styles/AddReminder.styles';
 
 class AddNoteScreen extends Component {
     constructor(props) {

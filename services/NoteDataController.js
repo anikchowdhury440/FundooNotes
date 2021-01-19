@@ -1,6 +1,7 @@
 import SQLiteLabelServices from "./SQLiteLabelServices";
 import SQLiteServices from "./SQLiteServices";
 import UserLabelServices from "./UserLabelServices";
+import UserNoteApiServices from "./UserNoteApiServices";
 import UserNoteServices from "./UserNoteServices";
 
 class NoteDataController {
@@ -9,7 +10,7 @@ class NoteDataController {
             SQLiteServices.storeNoteinSQliteStorage(userId, noteId, notes)
                 .then(() => resolve('success'))
                 .catch(error => console.log(error))
-            UserNoteServices.storeNoteinDatabaseAPI(userId, noteId, notes)
+            UserNoteApiServices.storeNoteinDatabaseAPI(userId, noteId, notes)
                 .then(() => console.log('added'))
                 .catch(error => console.log(error))
         })
@@ -31,7 +32,7 @@ class NoteDataController {
             SQLiteServices.removeNoteinSQliteStorage(userId, noteKey)
                 .then(() => resolve('success'))
                 .catch(error => console.log(error))
-            UserNoteServices.removeNoteinDatabaseAPI(userId, noteKey)
+            UserNoteApiServices.removeNoteinDatabaseAPI(userId, noteKey)
                 .then(() => console.log('removed'))
                 .catch(error => console.log(error))
         })

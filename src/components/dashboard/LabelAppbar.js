@@ -25,16 +25,15 @@ class LabelAppbar extends Component {
             noteId : this.props.labels.note_id
         }
         if(!this.state.errorMsg && !this.state.emptyMsg) {
-            NoteDataController.updateLabel(this.props.userId, this.props.labelKey, label)
+            NoteDataController.updateLabel(this.props.state.createLabelReducer.userId, this.props.labelKey, label)
                 .then(() => {
-                    SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.userId)
+                    SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.state.createLabelReducer.userId)
                         .then(async result => {
                             var temp = [];
                             if(result.rows.length != 0) {
                                 for (let i = 0; i < result.rows.length; ++i)
                                     temp.push(result.rows.item(i));
                             }
-                            console.log('updated', temp)
                             this.props.storeUserLabel(temp)
                             this.props.selectActiveLabel('')
                         })
@@ -53,8 +52,8 @@ class LabelAppbar extends Component {
 
     handleEditTextInput = async (editText) => {
         let temp = []
-        if(this.props.userLabel.length > 0) {
-            this.props.userLabel.map(labels => {
+        if(this.props.state.createLabelReducer.userLabel.length > 0) {
+            this.props.state.createLabelReducer.userLabel.map(labels => {
                 temp.push(labels.label_name.toLowerCase())
             })
         }
@@ -96,9 +95,9 @@ class LabelAppbar extends Component {
     }
 
     handleDeleteDialogButton = () => {
-        NoteDataController.removeLabel(this.props.userId, this.props.labelKey)
+        NoteDataController.removeLabel(this.props.state.createLabelReducer.userId, this.props.labelKey)
             .then(() => {
-                SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.userId)
+                SQLiteLabelServices.selectLabelFromSQliteStorage(this.props.state.createLabelReducer.userId)
                     .then(async result => {
                         var temp = [];
                         if(result.rows.length != 0) {
@@ -119,7 +118,7 @@ class LabelAppbar extends Component {
                 if(labelId.includes(this.props.labelKey)) {
                     let index = labelId.indexOf(this.props.labelKey)
                     labelId.splice(index, 1)
-                    NoteDataController.updateNoteLabel(this.props.userId, notes.note_id, JSON.stringify(labelId))
+                    NoteDataController.updateNoteLabel(this.props.state.createLabelReducer.userId, notes.note_id, JSON.stringify(labelId))
                 }
             })
         }
@@ -234,10 +233,7 @@ class LabelAppbar extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-        userId : state.createLabelReducer.userId,
-        userLabel : state.createLabelReducer.userLabel
-    }
+    return { state }
 }
 
 const mapDispatchToProps = dispatch => {

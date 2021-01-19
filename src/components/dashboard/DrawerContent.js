@@ -38,7 +38,6 @@ class DrawerContent extends Component {
     }
 
     render() {
-      let labelId = Object.keys(this.props.userLabel);
       return (
         <View style = {{flex : 1}}>
           <DrawerContentScrollView>
@@ -60,32 +59,32 @@ class DrawerContent extends Component {
 
               <Drawer.Section style = {DrawerContentStyle.drawer_section_style}>
                 {
-                  (this.props.userLabel.length > 0) ? 
-                  <View style = {DrawerContentStyle.label_edit_style}>
-                    <Text>LABELS</Text>
-                    <TouchableWithoutFeedback
-                      onPress = {this.handleEditButton}>
-                      <Text style = {{marginLeft : 130}}>EDIT</Text>
-                    </TouchableWithoutFeedback>
-                  </View>
-                  :
-                  null
+                  (this.props.state.createLabelReducer.userLabel.length > 0) ? 
+                    <View style = {DrawerContentStyle.label_edit_style}>
+                      <Text>LABELS</Text>
+                      <TouchableWithoutFeedback
+                        onPress = {this.handleEditButton}>
+                        <Text style = {{marginLeft : 130}}>EDIT</Text>
+                      </TouchableWithoutFeedback>
+                    </View>
+                    :
+                    null
                 }
                 {
-                  (this.props.userLabel.length > 0)
-                  ?    
-                  this.props.userLabel.map(labels => (
-                      <React.Fragment key = {labels.label_id}>
-                        <Drawer.Item
-                          style = {DrawerContentStyle.drawer_item_style}
-                          icon = 'label-outline'
-                          label = {labels.label_name}
-                          onPress = {() => this.props.navigation.navigation.push('Home', { screen : 'labelNote', params : {labels : labels}})}
-                        />
-                      </React.Fragment>
-                    ))
-                  :
-                  null
+                  (this.props.state.createLabelReducer.userLabel.length > 0)
+                    ?    
+                    this.props.state.createLabelReducer.userLabel.map(labels => (
+                        <React.Fragment key = {labels.label_id}>
+                          <Drawer.Item
+                            style = {DrawerContentStyle.drawer_item_style}
+                            icon = 'label-outline'
+                            label = {labels.label_name}
+                            onPress = {() => this.props.navigation.navigation.push('Home', { screen : 'labelNote', params : {labels : labels}})}
+                          />
+                        </React.Fragment>
+                      ))
+                    :
+                    null
                 }
                 <Drawer.Item
                   style = {DrawerContentStyle.drawer_item_style}
@@ -131,10 +130,7 @@ class DrawerContent extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-      userId : state.createLabelReducer.userId,
-      userLabel : state.createLabelReducer.userLabel
-  }
+  return { state }
 }
 
 export default connect(mapStateToProps)(DrawerContent)

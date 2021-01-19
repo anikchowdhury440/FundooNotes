@@ -51,7 +51,7 @@ class NoteCard extends Component {
                         }
                         {
                             (this.state.labelId.length > 0) ?
-                                this.props.userLabel.map(labels => (
+                                this.props.state.createLabelReducer.userLabel.map(labels => (
                                     this.state.labelId.includes(labels.label_id) ?
                                         <React.Fragment key = {labels.label_id}>
                                             <Chip
@@ -80,10 +80,7 @@ class NoteCard extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-        userId : state.createLabelReducer.userId,
-        userLabel : state.createLabelReducer.userLabel,
-    }
+    return { state }
 }
 
 export default connect(mapStateToProps)(NoteCard)

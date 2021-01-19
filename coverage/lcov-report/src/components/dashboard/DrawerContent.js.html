@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.99% </span>
+                <span class="strong">54.31% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>62/117</span>
+                <span class='fraction'>63/116</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">36.67% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>10/30</span>
+                <span class='fraction'>11/30</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">41.94% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/32</span>
+                <span class='fraction'>13/31</span>
             </div>
         
             
@@ -195,11 +195,7 @@
 <a name='L136'></a><a href='#L136'>136</a>
 <a name='L137'></a><a href='#L137'>137</a>
 <a name='L138'></a><a href='#L138'>138</a>
-<a name='L139'></a><a href='#L139'>139</a>
-<a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a>
-<a name='L143'></a><a href='#L143'>143</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L139'></a><a href='#L139'>139</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -240,7 +236,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -332,10 +327,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -381,7 +373,6 @@ class DrawerContent extends Component {
     }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
 &nbsp;
     render() {<span class="cstat-no" title="statement not covered" ></span>
-      let labelId = <span class="cstat-no" title="statement not covered" >Object.keys(this.props.userLabel);</span>
 <span class="cstat-no" title="statement not covered" >      return (</span>
         &lt;View style = {{flex : 1}}&gt;
           &lt;DrawerContentScrollView&gt;
@@ -403,32 +394,32 @@ class DrawerContent extends Component {
 &nbsp;
               &lt;Drawer.Section style = {DrawerContentStyle.drawer_section_style}&gt;
                 {
-                  (this.props.userLabel.length &gt; 0) ? 
-                  &lt;View style = {DrawerContentStyle.label_edit_style}&gt;
-                    &lt;Text&gt;LABELS&lt;/Text&gt;
-                    &lt;TouchableWithoutFeedback
-                      onPress = {this.handleEditButton}&gt;
-                      &lt;Text style = {{marginLeft : 130}}&gt;EDIT&lt;/Text&gt;
-                    &lt;/TouchableWithoutFeedback&gt;
-                  &lt;/View&gt;
-                  :
-                  null
+                  (this.props.state.createLabelReducer.userLabel.length &gt; 0) ? 
+                    &lt;View style = {DrawerContentStyle.label_edit_style}&gt;
+                      &lt;Text&gt;LABELS&lt;/Text&gt;
+                      &lt;TouchableWithoutFeedback
+                        onPress = {this.handleEditButton}&gt;
+                        &lt;Text style = {{marginLeft : 130}}&gt;EDIT&lt;/Text&gt;
+                      &lt;/TouchableWithoutFeedback&gt;
+                    &lt;/View&gt;
+                    :
+                    null
                 }
                 {
-                  (this.props.userLabel.length &gt; 0)
-                  ?    
-                  this.props.user<span class="fstat-no" title="function not covered" >La</span>bel.map(labels =&gt;<span class="cstat-no" title="statement not covered" > (</span>
-                      &lt;React.Fragment key = {labels.label_id}&gt;
-                        &lt;Drawer.Item
-                          style = {DrawerContentStyle.drawer_item_style}
-                          icon = 'label-outline'
-                          label = {labels.label_name}
-                          onPres<span class="fstat-no" title="function not covered" >s = {() </span>=&gt; <span class="cstat-no" title="statement not covered" >this.props.navigation.navigation.push('Home', { screen : 'labelNote', params : {labels : labels}})}</span>
-                        /&gt;
-                      &lt;/React.Fragment&gt;
-                    ))
-                  :
-                  null
+                  (this.props.state.createLabelReducer.userLabel.length &gt; 0)
+                    ?    
+                    this.props.state.createLabelReducer.us<span class="fstat-no" title="function not covered" >er</span>Label.map(labels <span class="cstat-no" title="statement not covered" >=&gt; (</span>
+                        &lt;React.Fragment key = {labels.label_id}&gt;
+                          &lt;Drawer.Item
+                            style = {DrawerContentStyle.drawer_item_style}
+                            icon = 'label-outline'
+                            label = {labels.label_name}
+                            onPr<span class="fstat-no" title="function not covered" >ess = {(</span>) =<span class="cstat-no" title="statement not covered" >&gt; this.props.navigation.navigation.push('Home', { screen : 'labelNote', params : {labels : labels}})}</span>
+                          /&gt;
+                        &lt;/React.Fragment&gt;
+                      ))
+                    :
+                    null
                 }
                 &lt;Drawer.Item
                   style = {DrawerContentStyle.drawer_item_style}
@@ -473,11 +464,8 @@ class DrawerContent extends Component {
     }
 }
 &nbsp;
-const mapStateToProps = state =<span class="fstat-no" title="function not covered" >&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  return {</span>
-      userId : state.createLabelReducer.userId,
-      userLabel : state.createLabelReducer.userLabel
-  }
+const mapStateToProps = state =&gt; {
+  return { state }
 }
 &nbsp;
 export default connect(mapStateToProps)(DrawerContent)
@@ -490,7 +478,7 @@ export default connect(mapStateToProps)(DrawerContent)
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Jan 09 2021 20:26:43 GMT+0530 (India Standard Time)
+                at Tue Jan 19 2021 09:32:10 GMT+0530 (India Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

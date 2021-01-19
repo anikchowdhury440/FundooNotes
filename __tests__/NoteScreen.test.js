@@ -1,16 +1,28 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import NoteScreen from '../src/components/dashboard/NoteScreen';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk'
+
+const middlewares = [thunk]
+const mockStore = configureStore(middlewares);
+const initialState = {
+    userId : '',
+    userLabel : [],
+    screenName : '',
+    labelKey : ''
+}
+const store = mockStore(initialState)
 
 describe('test NoteScreen', () => {
     it('should match to snapshot', () => {
-        const component = shallow(<NoteScreen />)
+        const component = shallow(<NoteScreen store = {store}/>)
         expect(component).toMatchSnapshot();
     })
 
     it('test onPress event of list view icon or grid view icon it will change the listView State', async () => {
         const onPressEvent = jest.fn();
-        const component = shallow(<NoteScreen onPress = {onPressEvent}/>)
+        const component = shallow(<NoteScreen onPress = {onPressEvent} store = {store}/>)
         const instance = component.instance();
         expect(instance.state.listView).toBe(true);
         await instance.selectView();
@@ -26,7 +38,7 @@ describe('test NoteScreen', () => {
     it('test onDismiss event of snackbar for empty note it will change the showEmptyNoteSnackbar State to be false', async () => {
         // const navigation = { setParams : jest.fn() }
         const onDismissEvent = jest.fn();
-        const component = shallow(<NoteScreen onDismiss = {onDismissEvent}/>)
+        const component = shallow(<NoteScreen onDismiss = {onDismissEvent} store = {store}/>)
         const instance = component.instance();
         await instance.emptyNoteSnackbarHandler();
         expect(onPressEvent).toHaveBeenCalled();
@@ -36,7 +48,7 @@ describe('test NoteScreen', () => {
 
     it('test onDismiss event of snackbar for delete note it will change the showDeletedNoteSnackbar State to be false', async () => {
         const onDismissEvent = jest.fn();
-        const component = shallow(<NoteScreen onDismiss = {onDismissEvent}/>)
+        const component = shallow(<NoteScreen onDismiss = {onDismissEvent} store = {store}/>)
         const instance = component.instance();
         await instance.deletedNoteSnackbarHandler();
         expect(onPressEvent).toHaveBeenCalled();
@@ -46,7 +58,7 @@ describe('test NoteScreen', () => {
     it('test onPress method action button Undo in Snackbar it will call the UserNotesServices restoreNoteInFirebase method', async () => {
         const onPressEvent = jest.fn();
         const UserNotesServices = {restoreNoteInFirebase : jest.fn()}
-        const component = shallow(<NoteScreen onPress= {onPressEvent} />)
+        const component = shallow(<NoteScreen onPress= {onPressEvent} store = {store}/>)
         const instance = component.instance();
         await instance.restoreNotes();
         expect(onPressEvent).toHaveBeenCalled();
@@ -55,7 +67,7 @@ describe('test NoteScreen', () => {
 
     it('test onPress event of profile icon button it will set showProfileModal to be true', async () => {
         const onPressEvent = jest.fn();
-        const component = shallow(<NoteScreen onPress = {onPressEvent}/>)
+        const component = shallow(<NoteScreen onPress = {onPressEvent} store = {store}/>)
         const instance = component.instance();
         await instance.showModal();
         expect(onPressEvent).toHaveBeenCalled();
@@ -64,7 +76,7 @@ describe('test NoteScreen', () => {
 
     it('test onDismiss event of profile modal it will set showProfileModal to be false', async () => {
         const onDismissEvent = jest.fn();
-        const component = shallow(<NoteScreen onDismiss = {onDismissEvent}/>)
+        const component = shallow(<NoteScreen onDismiss = {onDismissEvent} store = {store}/>)
         const instance = component.instance();
         await instance.hideModal();
         expect(onDismissEvent).toHaveBeenCalled();
@@ -73,7 +85,7 @@ describe('test NoteScreen', () => {
 
     it('test onPress event of change image method it will set showProfileModal to be false', async () => {
         const onPressEvent = jest.fn();
-        const component = shallow(<NoteScreen onPress = {onPressEvent}/>)
+        const component = shallow(<NoteScreen onPress = {onPressEvent} store = {store}/>)
         const instance = component.instance();
         await instance.changeImage();
         expect(onPressEvent).toHaveBeenCalled();

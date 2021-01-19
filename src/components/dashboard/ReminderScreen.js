@@ -43,7 +43,7 @@ class ReminderScreen extends Component {
                 })
             }
         }
-        await SQLiteServices.selectNoteByDeletedFromSQliteStorage(this.props.userId, 0)
+        await SQLiteServices.selectNoteByDeletedFromSQliteStorage(this.props.state.createLabelReducer.userId, 0)
             .then(async result => {
                 var temp = [];
                 if(result.rows.length != 0) {
@@ -112,13 +112,13 @@ class ReminderScreen extends Component {
 
     restoreNotes = async() => {
         const {onPress} = this.props
-        NoteDataController.restoreNote(this.props.userId, this.props.route.params.noteKey)
+        NoteDataController.restoreNote(this.props.state.createLabelReducer.userId, this.props.route.params.noteKey)
             .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
         //onPress()
     }
 
     unArchivedNote = async() => {
-        NoteDataController.updateNoteArchive(this.props.route.params.noteKey, this.props.userId, this.props.route.params.notes)
+        NoteDataController.updateNoteArchive(this.props.route.params.noteKey, this.props.state.createLabelReducer.userId, this.props.route.params.notes)
             .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
     }
 
@@ -225,11 +225,7 @@ class ReminderScreen extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-        userId : state.createLabelReducer.userId,
-        userLabel : state.createLabelReducer.userLabel,
-        screenName : state.createLabelReducer.screenName,
-    }
+    return {state}
 }
 
 const mapDispatchToProps = dispatch => {

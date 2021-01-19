@@ -48,7 +48,7 @@ class NoteScreen extends Component {
     }
 
     readImage = async () => {
-        await UserServices.readUserDataFromRealtimeDatabase(this.props.userId)
+        await UserServices.readUserDataFromRealtimeDatabase(this.props.state.createLabelReducer.userId)
             .then(async data => {
                 if(data.photo != undefined){
                     await this.setState({
@@ -93,13 +93,13 @@ class NoteScreen extends Component {
 
     restoreNotes = async() => {
         const {onPress} = this.props
-        NoteDataController.restoreNoteSnackbar(this.props.userId, this.props.route.params.noteKey, this.props.route.params.notes, this.props.route.params.reminder)
+        NoteDataController.restoreNoteSnackbar(this.props.state.createLabelReducer.userId, this.props.route.params.noteKey, this.props.route.params.notes, this.props.route.params.reminder)
             .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
         //onPress()
     }
 
     unArchivedNote = async() => {
-        NoteDataController.updateNoteArchive(this.props.route.params.noteKey, this.props.userId, this.props.route.params.notes)
+        NoteDataController.updateNoteArchive(this.props.route.params.noteKey, this.props.state.createLabelReducer.userId, this.props.route.params.notes)
             .then(() => this.props.navigation.push('Home', {screen : this.props.screenName}))
     }
 
@@ -196,11 +196,7 @@ class NoteScreen extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-        userId : state.createLabelReducer.userId,
-        userLabel : state.createLabelReducer.userLabel,
-        screenName : state.createLabelReducer.screenName,
-    }
+    return {state}
 }
 
 const mapDispatchToProps = dispatch => {
